@@ -1,0 +1,218 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Booking Details - KartControl{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'bookings:booking_list' %}">My Bookings</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Booking Details</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-ticket-alt"></i> Booking Details</h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Booking Information -->
+    <div class="col-lg-8">
+        <article>
+            <div class="card mb-4">
+                <div class="card-header {% if booking.status == 'CONFIRMED' %}bg-success text-white{% elif booking.status == 'PENDING' %}bg-warning{% elif booking.status == 'COMPLETED' %}bg-primary text-white{% elif booking.status == 'CANCELLED' %}bg-secondary text-white{% endif %}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h4 mb-0">Booking Status</h2>
+                        <span class="badge {% if booking.status == 'CONFIRMED' %}bg-light text-dark{% elif booking.status == 'PENDING' %}bg-dark{% elif booking.status == 'COMPLETED' %}bg-light text-dark{% elif booking.status == 'CANCELLED' %}bg-dark{% endif %} fs-6">
+                            {{ booking.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if booking.status == 'PENDING' %}
+                        <div class="alert alert-warning" role="status">
+                            <i class="fas fa-hourglass-half"></i> Your booking is pending confirmation. A manager will review and assign a kart soon.
+                        </div>
+                    {% elif booking.status == 'CONFIRMED' %}
+                        <div class="alert alert-success" role="status">
+                            <i class="fas fa-check-circle"></i> Your booking is confirmed! See you on the track.
+                        </div>
+                    {% elif booking.status == 'COMPLETED' %}
+                        <div class="alert alert-info" role="status">
+                            <i class="fas fa-flag-checkered"></i> This session has been completed. Thank you for racing with us!
+                        </div>
+                    {% elif booking.status == 'CANCELLED' %}
+                        <div class="alert alert-secondary" role="status">
+                            <i class="fas fa-times-circle"></i> This booking has been cancelled.
+                        </div>
+                    {% endif %}
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-hashtag" aria-hidden="true"></i> Booking Reference:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            <code>{{ booking.pk }}</code>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-calendar-plus" aria-hidden="true"></i> Booked On:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ booking.booking_datetime|date:"F j, Y g:i A" }}
+                        </div>
+                    </div>
+
+                    {% if booking.assigned_kart %}
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong><i class="fas fa-car-side" aria-hidden="true"></i> Assigned Kart:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                <span class="badge bg-primary">Kart #{{ booking.assigned_kart.kart_number }}</span>
+                                {% if booking.assigned_kart.status == 'ACTIVE' %}
+                                    <span class="badge bg-success">Active</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong><i class="fas fa-car-side" aria-hidden="true"></i> Assigned Kart:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                <span class="text-muted">Not yet assigned</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Session Details -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-{% if booking.session_slot.session_type == 'GRAND_PRIX' %}trophy{% else %}users{% endif %}"></i>
+                        Session Details
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-tag" aria-hidden="true"></i> Session Type:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ booking.session_slot.get_session_type_display }}
+                            {% if booking.session_slot.session_type == 'GRAND_PRIX' %}
+                                <span class="badge bg-warning text-dark">Competitive</span>
+                            {% else %}
+                                <span class="badge bg-info text-white">Casual</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="far fa-calendar" aria-hidden="true"></i> Date:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ booking.session_slot.start_datetime|date:"l, F j, Y" }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="far fa-clock" aria-hidden="true"></i> Time:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ booking.session_slot.start_datetime|date:"g:i A" }} - {{ booking.session_slot.end_datetime|date:"g:i A" }}
+                            <span class="text-muted">({{ booking.session_slot.get_duration }} minutes)</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Location:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ booking.session_slot.track.name }}<br>
+                            <small class="text-muted">{{ booking.session_slot.track.address|linebreaks }}</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-tag" aria-hidden="true"></i> Price:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            <span class="h4 text-primary mb-0">&euro;{{ booking.session_slot.price }}</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <a href="{% url 'sessions:session_detail' booking.session_slot.pk %}" class="btn btn-outline-primary">
+                        <i class="fas fa-external-link-alt"></i> View Full Session Details
+                    </a>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!-- Actions Sidebar -->
+    <div class="col-lg-4">
+        <div class="card sticky-top" style="top: 20px;">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0"><i class="fas fa-cog"></i> Actions</h2>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    {% if booking.can_be_cancelled %}
+                        <a href="{% url 'bookings:booking_cancel' booking.pk %}" class="btn btn-danger">
+                            <i class="fas fa-times"></i> Cancel This Booking
+                        </a>
+                    {% elif booking.status == 'CANCELLED' %}
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-times-circle"></i> Booking Cancelled
+                        </button>
+                    {% elif booking.status == 'COMPLETED' %}
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-flag-checkered"></i> Session Completed
+                        </button>
+                    {% endif %}
+
+                    <a href="{% url 'bookings:booking_list' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-list"></i> View All Bookings
+                    </a>
+
+                    <a href="{% url 'sessions:session_list' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-calendar-alt"></i> Browse Sessions
+                    </a>
+
+                    <a href="{% url 'core:contact' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-envelope"></i> Contact Support
+                    </a>
+                </div>
+
+                <hr>
+
+                <div class="text-muted small">
+                    <p class="mb-2"><strong>Need Help?</strong></p>
+                    <p class="mb-0">
+                        If you have any questions about your booking, please contact our support team.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
