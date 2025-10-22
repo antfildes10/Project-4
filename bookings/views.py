@@ -199,3 +199,25 @@ def booking_complete(request, pk):
         f'Booking for {booking.driver.username} has been marked as completed.'
     )
     return redirect('bookings:booking_detail', pk=booking.pk)
+
+
+@login_required
+@user_passes_test(is_manager)
+def booking_manage(request):
+    """
+    Manager dashboard to view and manage all bookings.
+    Shows bookings grouped by status.
+    """
+    # Get bookings by status
+    pending_bookings = Booking.objects.filter(status='PENDING').order_by('session_slot__start_datetime')
+    confirmed_bookings = Booking.objects.filter(status='CONFIRMED').order_by('session_slot__start_datetime')
+    completed_bookings = Booking.objects.filter(status='COMPLETED').order_by('-session_slot__start_datetime')[:20]
+    cancelled_bookings = Booking.objects.filter(status='CANCELLED').order_by('-updated_at')[:20]
+
+    context = {
+        'pending_bookings': pending_bookings,
+        'confirmed_bookings': confirmed_bookings,
+        'completed_bookings': completed_bookings,
+        'cancelled_bookings': cancelled_bookings,
+    }
+    return render(request, 'bookings/booking_manage.html', context)
