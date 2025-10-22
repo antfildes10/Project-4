@@ -31,7 +31,7 @@ class KartAdmin(admin.ModelAdmin):
         """Display availability icon."""
         if obj.is_available():
             return ' Available'
-        return '=' Maintenance'
+        return '🔧 Maintenance'
     get_availability_icon.short_description = 'Availability'
 
     actions = ['mark_active', 'mark_maintenance']
