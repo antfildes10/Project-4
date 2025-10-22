@@ -22,3 +22,18 @@ def home(request):
         'upcoming_sessions': upcoming_sessions,
     }
     return render(request, 'core/home.html', context)
+
+
+def about(request):
+    """
+    Display the about page with track information and facility details.
+    """
+    from sessions.models import Track
+
+    # Get track information (single venue)
+    track = Track.objects.first()
+
+    context = {
+        'track': track,
+    }
+    return render(request, 'core/about.html', context)
