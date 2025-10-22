@@ -1,0 +1,102 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Create Booking - KartControl{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h1 class="h3 mb-0"><i class="fas fa-calendar-check"></i> Create Booking</h1>
+            </div>
+            <div class="card-body">
+                <p>Complete the form below to book your racing session.</p>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Session Slot Field -->
+                    <div class="mb-3">
+                        <label for="id_session_slot" class="form-label">
+                            Select Session <span class="text-danger" aria-label="required">*</span>
+                        </label>
+                        <select name="session_slot" id="id_session_slot" class="form-select {% if form.session_slot.errors %}is-invalid{% endif %}" required>
+                            <option value="">Choose a session</option>
+                            {% for session in form.fields.session_slot.queryset %}
+                                <option value="{{ session.pk }}" 
+                                        {% if form.session_slot.value == session.pk or request.GET.session == session.pk|stringformat:"s" %}selected{% endif %}
+                                        {% if session.is_full or session.is_past %}disabled{% endif %}>
+                                    {{ session.get_session_type_display }} - 
+                                    {{ session.start_datetime|date:"F j, Y g:i A" }}
+                                    ({{ session.get_available_spots }} spots available)
+                                    {% if session.is_full %} - FULL{% endif %}
+                                    {% if session.is_past %} - PAST{% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Select the session you want to book. Only available sessions are shown.</div>
+                        {% if form.session_slot.errors %}
+                            <div class="invalid-feedback" role="alert">
+                                {{ form.session_slot.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Driver Field (Only shown to managers) -->
+                    {% if user.profile.is_manager %}
+                        <div class="mb-3">
+                            <label for="id_driver" class="form-label">
+                                Driver <span class="text-danger" aria-label="required">*</span>
+                            </label>
+                            <select name="driver" id="id_driver" class="form-select {% if form.driver.errors %}is-invalid{% endif %}" required>
+                                <option value="">Select a driver</option>
+                                {% for driver in form.fields.driver.queryset %}
+                                    <option value="{{ driver.pk }}" {% if form.driver.value == driver.pk %}selected{% endif %}>
+                                        {{ driver.username }} ({{ driver.get_full_name }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">
+                                <i class="fas fa-user-shield"></i> As a manager, you can book sessions for other users.
+                            </div>
+                            {% if form.driver.errors %}
+                                <div class="invalid-feedback" role="alert">
+                                    {{ form.driver.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Important Information -->
+                    <div class="alert alert-info" role="status">
+                        <h2 class="h6 mb-2"><i class="fas fa-info-circle"></i> Important Information</h2>
+                        <ul class="mb-0 small">
+                            <li>Your booking will be in <strong>Pending</strong> status until confirmed by a manager.</li>
+                            <li>A kart will be automatically assigned to you upon confirmation.</li>
+                            <li>You can cancel your booking at any time before the session starts.</li>
+                            <li>Please arrive at least 15 minutes before your session time.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Non-field errors -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Error:</strong> {{ form.non_field_errors|join:", " }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i> Confirm Booking
+                        </button>
+                        <a href="{% url 'sessions:session_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
