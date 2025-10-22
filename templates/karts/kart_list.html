@@ -1,0 +1,209 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Kart Fleet - KartControl{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-car-side"></i> Kart Fleet</h1>
+        <p class="lead">View and manage all racing karts in the fleet.</p>
+        <hr>
+    </div>
+</div>
+
+<!-- Filter Section -->
+<section class="mb-4" aria-labelledby="filter-heading">
+    <div class="card">
+        <div class="card-header bg-light">
+            <h2 id="filter-heading" class="h5 mb-0">
+                <i class="fas fa-filter"></i> Filter Karts
+            </h2>
+        </div>
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="">All Statuses</option>
+                        <option value="ACTIVE" {% if request.GET.status == 'ACTIVE' %}selected{% endif %}>Active</option>
+                        <option value="MAINTENANCE" {% if request.GET.status == 'MAINTENANCE' %}selected{% endif %}>Maintenance</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Apply Filter
+                        </button>
+                        <a href="{% url 'karts:kart_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Clear Filter
+                        </a>
+                        {% if user.is_authenticated and user.profile.is_manager %}
+                            <a href="{% url 'karts:kart_create' %}" class="btn btn-success ms-auto">
+                                <i class="fas fa-plus"></i> Add New Kart
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Karts Grid -->
+<section aria-labelledby="karts-heading">
+    <h2 id="karts-heading" class="visually-hidden">Kart List</h2>
+    
+    {% if karts %}
+        <div class="row g-4">
+            {% for kart in karts %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <article class="card h-100">
+                    <div class="card-header {% if kart.status == 'ACTIVE' %}bg-success text-white{% else %}bg-warning{% endif %}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="h5 mb-0">
+                                <i class="fas fa-car-side" aria-hidden="true"></i>
+                                Kart #{{ kart.kart_number }}
+                            </h3>
+                            <span class="badge {% if kart.status == 'ACTIVE' %}bg-light text-dark{% else %}bg-dark{% endif %}">
+                                {{ kart.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="mb-3">
+                            <p class="mb-2">
+                                <strong><i class="fas fa-info-circle" aria-hidden="true"></i> Status:</strong>
+                                {% if kart.status == 'ACTIVE' %}
+                                    <span class="text-success">Active and ready to race</span>
+                                {% else %}
+                                    <span class="text-warning">Under maintenance</span>
+                                {% endif %}
+                            </p>
+                            
+                            {% if kart.is_available %}
+                                <p class="mb-2">
+                                    <strong><i class="fas fa-check-circle" aria-hidden="true"></i> Availability:</strong>
+                                    <span class="text-success">Available for booking</span>
+                                </p>
+                            {% else %}
+                                <p class="mb-2">
+                                    <strong><i class="fas fa-times-circle" aria-hidden="true"></i> Availability:</strong>
+                                    <span class="text-danger">Currently unavailable</span>
+                                </p>
+                            {% endif %}
+
+                            <p class="mb-0 text-muted small">
+                                <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                Added: {{ kart.created_at|date:"M j, Y" }}
+                            </p>
+                        </div>
+
+                        {% if user.is_authenticated and user.profile.is_manager %}
+                            <div class="mt-auto">
+                                <div class="btn-group w-100" role="group" aria-label="Kart {{ kart.kart_number }} actions">
+                                    <a href="{% url 'karts:kart_edit' kart.pk %}" class="btn btn-primary btn-sm" aria-label="Edit kart {{ kart.kart_number }}">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'karts:kart_toggle_status' kart.pk %}" class="btn btn-warning btn-sm" aria-label="Toggle status for kart {{ kart.kart_number }}">
+                                        <i class="fas fa-wrench"></i> Toggle Status
+                                    </a>
+                                    <a href="{% url 'karts:kart_delete' kart.pk %}" class="btn btn-danger btn-sm" aria-label="Delete kart {{ kart.kart_number }}">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav aria-label="Karts pagination" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="First page">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Previous page">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Next page">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Last page">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info" role="status">
+            <h3 class="h5"><i class="fas fa-info-circle"></i> No Karts Found</h3>
+            <p class="mb-0">
+                {% if request.GET.status %}
+                    No karts match the selected filter. Try clearing the filter to see all karts.
+                {% else %}
+                    There are currently no karts in the fleet.
+                {% endif %}
+            </p>
+            {% if user.is_authenticated and user.profile.is_manager %}
+                <hr>
+                <a href="{% url 'karts:kart_create' %}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Add First Kart
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</section>
+
+<!-- Fleet Summary -->
+{% if karts %}
+<section class="mt-5" aria-labelledby="summary-heading">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 id="summary-heading" class="h5 mb-0">
+                <i class="fas fa-chart-pie"></i> Fleet Summary
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <h3 class="h1 text-primary mb-2">{{ total_karts }}</h3>
+                    <p class="text-muted mb-0">Total Karts</p>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="h1 text-success mb-2">{{ active_karts }}</h3>
+                    <p class="text-muted mb-0">Active</p>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="h1 text-warning mb-2">{{ maintenance_karts }}</h3>
+                    <p class="text-muted mb-0">In Maintenance</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
