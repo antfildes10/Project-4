@@ -1,0 +1,191 @@
+{% extends 'base/base.html' %}
+
+{% block title %}My Bookings - KartControl{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-calendar-check"></i> My Bookings</h1>
+        <p class="lead">View and manage your racing session bookings.</p>
+        <hr>
+    </div>
+</div>
+
+<!-- Filter Tabs -->
+<ul class="nav nav-tabs mb-4" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link {% if not request.GET.status or request.GET.status == 'all' %}active{% endif %}" 
+           href="?status=all" 
+           role="tab"
+           aria-selected="{% if not request.GET.status or request.GET.status == 'all' %}true{% else %}false{% endif %}">
+            All Bookings
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link {% if request.GET.status == 'upcoming' %}active{% endif %}" 
+           href="?status=upcoming" 
+           role="tab"
+           aria-selected="{% if request.GET.status == 'upcoming' %}true{% else %}false{% endif %}">
+            <i class="fas fa-clock" aria-hidden="true"></i> Upcoming
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link {% if request.GET.status == 'PENDING' %}active{% endif %}" 
+           href="?status=PENDING" 
+           role="tab"
+           aria-selected="{% if request.GET.status == 'PENDING' %}true{% else %}false{% endif %}">
+            <i class="fas fa-hourglass-half" aria-hidden="true"></i> Pending
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link {% if request.GET.status == 'CONFIRMED' %}active{% endif %}" 
+           href="?status=CONFIRMED" 
+           role="tab"
+           aria-selected="{% if request.GET.status == 'CONFIRMED' %}true{% else %}false{% endif %}">
+            <i class="fas fa-check-circle" aria-hidden="true"></i> Confirmed
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link {% if request.GET.status == 'COMPLETED' %}active{% endif %}" 
+           href="?status=COMPLETED" 
+           role="tab"
+           aria-selected="{% if request.GET.status == 'COMPLETED' %}true{% else %}false{% endif %}">
+            <i class="fas fa-flag-checkered" aria-hidden="true"></i> Completed
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link {% if request.GET.status == 'CANCELLED' %}active{% endif %}" 
+           href="?status=CANCELLED" 
+           role="tab"
+           aria-selected="{% if request.GET.status == 'CANCELLED' %}true{% else %}false{% endif %}">
+            <i class="fas fa-times-circle" aria-hidden="true"></i> Cancelled
+        </a>
+    </li>
+</ul>
+
+<!-- Bookings List -->
+{% if bookings %}
+    <div class="row g-4">
+        {% for booking in bookings %}
+        <div class="col-12">
+            <article class="card">
+                <div class="card-header {% if booking.status == 'CONFIRMED' %}bg-success text-white{% elif booking.status == 'PENDING' %}bg-warning{% elif booking.status == 'COMPLETED' %}bg-primary text-white{% elif booking.status == 'CANCELLED' %}bg-secondary text-white{% endif %}">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="h5 mb-0">
+                                <i class="fas fa-{% if booking.session_slot.session_type == 'GRAND_PRIX' %}trophy{% else %}users{% endif %}" aria-hidden="true"></i>
+                                {{ booking.session_slot.get_session_type_display }}
+                            </h2>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                            <span class="badge {% if booking.status == 'CONFIRMED' %}bg-light text-dark{% elif booking.status == 'PENDING' %}bg-dark{% elif booking.status == 'COMPLETED' %}bg-light text-dark{% elif booking.status == 'CANCELLED' %}bg-dark{% endif %}">
+                                {{ booking.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="mb-2">
+                                <strong><i class="far fa-calendar" aria-hidden="true"></i> Date:</strong>
+                                {{ booking.session_slot.start_datetime|date:"l, F j, Y" }}
+                            </p>
+                            <p class="mb-2">
+                                <strong><i class="far fa-clock" aria-hidden="true"></i> Time:</strong>
+                                {{ booking.session_slot.start_datetime|date:"g:i A" }} - {{ booking.session_slot.end_datetime|date:"g:i A" }}
+                            </p>
+                            <p class="mb-2">
+                                <strong><i class="fas fa-tag" aria-hidden="true"></i> Price:</strong>
+                                &euro;{{ booking.session_slot.price }}
+                            </p>
+                            {% if booking.assigned_kart %}
+                                <p class="mb-2">
+                                    <strong><i class="fas fa-car-side" aria-hidden="true"></i> Assigned Kart:</strong>
+                                    Kart #{{ booking.assigned_kart.kart_number }}
+                                </p>
+                            {% else %}
+                                <p class="mb-2 text-muted">
+                                    <i class="fas fa-car-side" aria-hidden="true"></i> Kart not yet assigned
+                                </p>
+                            {% endif %}
+                            <p class="mb-0">
+                                <strong><i class="fas fa-calendar-plus" aria-hidden="true"></i> Booked on:</strong>
+                                {{ booking.booking_datetime|date:"F j, Y g:i A" }}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <div class="d-flex flex-column gap-2">
+                                <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-primary">
+                                    <i class="fas fa-info-circle"></i> View Details
+                                </a>
+                                
+                                {% if booking.can_be_cancelled %}
+                                    <a href="{% url 'bookings:booking_cancel' booking.pk %}" class="btn btn-danger">
+                                        <i class="fas fa-times"></i> Cancel Booking
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav aria-label="Bookings pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="First page">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Previous page">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Next page">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Last page">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% else %}
+    <div class="alert alert-info" role="status">
+        <h2 class="h5"><i class="fas fa-info-circle"></i> No Bookings Found</h2>
+        <p class="mb-0">
+            {% if request.GET.status and request.GET.status != 'all' %}
+                You don't have any bookings with status "{{ request.GET.status }}".
+            {% else %}
+                You haven't made any bookings yet. Browse our available sessions to get started!
+            {% endif %}
+        </p>
+        <hr>
+        <a href="{% url 'sessions:session_list' %}" class="btn btn-primary">
+            <i class="fas fa-calendar-alt"></i> Browse Available Sessions
+        </a>
+    </div>
+{% endif %}
+{% endblock %}
