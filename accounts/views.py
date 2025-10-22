@@ -34,3 +34,20 @@ def register(request):
         'form': form,
     }
     return render(request, 'accounts/register.html', context)
+
+
+@login_required
+def profile(request):
+    """
+    Display user profile with booking history.
+    Shows user details, role, and recent bookings.
+    """
+    from bookings.models import Booking
+
+    # Get user's bookings ordered by creation date
+    user_bookings = Booking.objects.filter(driver=request.user).order_by('-created_at')[:10]
+
+    context = {
+        'user_bookings': user_bookings,
+    }
+    return render(request, 'accounts/profile.html', context)
