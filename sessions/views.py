@@ -34,3 +34,27 @@ def session_list(request):
         'past_sessions': past_sessions,
     }
     return render(request, 'sessions/session_list.html', context)
+
+
+def session_detail(request, pk):
+    """
+    Display detailed information about a specific session.
+    Shows capacity, bookings, and availability.
+    Public view - accessible to all users.
+    """
+    session = get_object_or_404(SessionSlot, pk=pk)
+
+    # Calculate availability
+    available_spots = session.get_available_spots()
+    is_full = session.is_full()
+
+    # Get confirmed bookings for this session
+    confirmed_bookings = session.bookings.filter(status__in=['CONFIRMED', 'COMPLETED'])
+
+    context = {
+        'session': session,
+        'available_spots': available_spots,
+        'is_full': is_full,
+        'confirmed_bookings': confirmed_bookings,
+    }
+    return render(request, 'sessions/session_detail.html', context)
