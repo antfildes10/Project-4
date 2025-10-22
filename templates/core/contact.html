@@ -1,0 +1,127 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Contact Us - KartControl{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-envelope"></i> Contact Us</h1>
+        <p class="lead">Have a question or need assistance? We're here to help!</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Contact Form -->
+    <div class="col-md-8">
+        <section aria-labelledby="contact-form-heading">
+            <h2 id="contact-form-heading" class="h3">Send Us a Message</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <!-- Name Field -->
+                <div class="mb-3">
+                    <label for="{{ form.name.id_for_label }}" class="form-label">
+                        Name <span class="text-danger" aria-label="required">*</span>
+                    </label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <div class="invalid-feedback d-block" role="alert">
+                            {{ form.name.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Email Field -->
+                <div class="mb-3">
+                    <label for="{{ form.email.id_for_label }}" class="form-label">
+                        Email Address <span class="text-danger" aria-label="required">*</span>
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="invalid-feedback d-block" role="alert">
+                            {{ form.email.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Subject Field -->
+                <div class="mb-3">
+                    <label for="{{ form.subject.id_for_label }}" class="form-label">
+                        Subject <span class="text-danger" aria-label="required">*</span>
+                    </label>
+                    {{ form.subject }}
+                    {% if form.subject.errors %}
+                        <div class="invalid-feedback d-block" role="alert">
+                            {{ form.subject.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Message Field -->
+                <div class="mb-3">
+                    <label for="{{ form.message.id_for_label }}" class="form-label">
+                        Message <span class="text-danger" aria-label="required">*</span>
+                    </label>
+                    {{ form.message }}
+                    {% if form.message.errors %}
+                        <div class="invalid-feedback d-block" role="alert">
+                            {{ form.message.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <!-- Contact Information Sidebar -->
+    <div class="col-md-4">
+        <section aria-labelledby="contact-info-heading">
+            <h2 id="contact-info-heading" class="h3">Contact Information</h2>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="h5 card-title"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Location</h3>
+                    <address class="card-text">
+                        KartControl Racing Track<br>
+                        Dublin, Ireland
+                    </address>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="h5 card-title"><i class="fas fa-phone" aria-hidden="true"></i> Phone</h3>
+                    <p class="card-text">
+                        <a href="tel:+353123456789">+353 1 234 5678</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="h5 card-title"><i class="fas fa-envelope" aria-hidden="true"></i> Email</h3>
+                    <p class="card-text">
+                        <a href="mailto:info@kartcontrol.com">info@kartcontrol.com</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="h5 card-title"><i class="fas fa-clock" aria-hidden="true"></i> Hours</h3>
+                    <p class="card-text mb-1">
+                        <strong>Monday - Friday:</strong> 10:00 AM - 10:00 PM<br>
+                        <strong>Saturday - Sunday:</strong> 9:00 AM - 11:00 PM
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
