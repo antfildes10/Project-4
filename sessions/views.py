@@ -16,22 +16,30 @@ def is_manager(user):
 
 def session_list(request):
     """
-    Display list of all sessions.
+    Display list of all sessions with filtering.
     Public view - accessible to all users.
     """
     # Get all upcoming sessions
-    upcoming_sessions = SessionSlot.objects.filter(
+    sessions = SessionSlot.objects.filter(
         start_datetime__gte=timezone.now()
     ).order_by('start_datetime')
 
-    # Get past sessions for reference
-    past_sessions = SessionSlot.objects.filter(
-        start_datetime__lt=timezone.now()
-    ).order_by('-start_datetime')[:5]
+    # Apply filters
+    session_type = request.GET.get('session_type')
+    date_from = request.GET.get('date_from')
+    date_to = request.GET.get('date_to')
+
+    if session_type:
+        sessions = sessions.filter(session_type=session_type)
+
+    if date_from:
+        sessions = sessions.filter(start_datetime__date__gte=date_from)
+
+    if date_to:
+        sessions = sessions.filter(start_datetime__date__lte=date_to)
 
     context = {
-        'upcoming_sessions': upcoming_sessions,
-        'past_sessions': past_sessions,
+        'sessions': sessions,
     }
     return render(request, 'sessions/session_list.html', context)
 
