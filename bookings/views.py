@@ -101,3 +101,38 @@ def booking_detail(request, pk):
         'booking': booking,
     }
     return render(request, 'bookings/booking_detail.html', context)
+
+
+@login_required
+def booking_cancel(request, pk):
+    """
+    Cancel a booking.
+    Drivers can cancel their own bookings before session starts.
+    Managers can cancel any booking before session starts.
+    """
+    booking = get_object_or_404(Booking, pk=pk)
+
+    # Check permissions: driver can only cancel own bookings
+    if not is_manager(request.user) and booking.driver != request.user:
+        messages.error(request, 'You do not have permission to cancel this booking.')
+        return redirect('bookings:booking_list')
+
+    # Check if booking can be cancelled
+    if not booking.can_be_cancelled():
+        messages.error(
+            request,
+            'This booking cannot be cancelled. It may have already started or been completed.'
+        )
+        return redirect('bookings:booking_detail', pk=booking.pk)
+
+    if request.method == 'POST':
+        booking.status = 'CANCELLED'
+        booking.save()
+
+        messages.success(request, 'Your booking has been cancelled successfully.')
+        return redirect('bookings:booking_list')
+
+    context = {
+        'booking': booking,
+    }
+    return render(request, 'bookings/booking_confirm_delete.html', context)
