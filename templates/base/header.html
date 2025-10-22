@@ -43,12 +43,16 @@
                                 <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="fas fa-user-circle"></i> Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'bookings:booking_list' %}"><i class="fas fa-calendar-check"></i> My Bookings</a></li>
 
-                                {% if user.profile.is_manager %}
+                                {% if user.profile.is_manager or user.is_superuser %}
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><h6 class="dropdown-header">Manager</h6></li>
+                                    <li><h6 class="dropdown-header">Management</h6></li>
+                                    <li><a class="dropdown-item" href="{% url 'core:management_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                                     <li><a class="dropdown-item" href="{% url 'bookings:booking_manage' %}"><i class="fas fa-tasks"></i> Manage Bookings</a></li>
                                     <li><a class="dropdown-item" href="{% url 'sessions:session_create' %}"><i class="fas fa-plus-circle"></i> Create Session</a></li>
                                     <li><a class="dropdown-item" href="{% url 'karts:kart_list' %}"><i class="fas fa-cog"></i> Manage Karts</a></li>
+                                    {% if user.is_superuser %}
+                                        <li><a class="dropdown-item" href="/admin/"><i class="fas fa-tools"></i> Admin Panel</a></li>
+                                    {% endif %}
                                 {% endif %}
 
                                 <li><hr class="dropdown-divider"></li>
