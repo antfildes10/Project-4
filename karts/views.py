@@ -52,3 +52,77 @@ def kart_create(request):
         'title': 'Add New Kart',
     }
     return render(request, 'karts/kart_form.html', context)
+
+
+@login_required
+@user_passes_test(is_manager)
+def kart_edit(request, pk):
+    """
+    Edit an existing kart.
+    Manager-only view with form validation.
+    """
+    kart = get_object_or_404(Kart, pk=pk)
+
+    if request.method == 'POST':
+        form = KartForm(request.POST, instance=kart)
+        if form.is_valid():
+            kart = form.save()
+            messages.success(
+                request,
+                f'Kart #{kart.number} has been updated successfully.'
+            )
+            return redirect('karts:kart_list')
+    else:
+        form = KartForm(instance=kart)
+
+    context = {
+        'form': form,
+        'title': 'Edit Kart',
+        'kart': kart,
+    }
+    return render(request, 'karts/kart_form.html', context)
+
+
+@login_required
+@user_passes_test(is_manager)
+def kart_delete(request, pk):
+    """
+    Delete a kart.
+    Manager-only view with confirmation.
+    """
+    kart = get_object_or_404(Kart, pk=pk)
+
+    if request.method == 'POST':
+        kart_number = kart.number
+        kart.delete()
+        messages.success(
+            request,
+            f'Kart #{kart_number} has been deleted successfully.'
+        )
+        return redirect('karts:kart_list')
+
+    context = {
+        'kart': kart,
+    }
+    return render(request, 'karts/kart_confirm_delete.html', context)
+
+
+@login_required
+@user_passes_test(is_manager)
+def kart_toggle_status(request, pk):
+    """
+    Toggle kart status between ACTIVE and MAINTENANCE.
+    Manager-only quick action.
+    """
+    kart = get_object_or_404(Kart, pk=pk)
+
+    # Toggle status
+    if kart.status == 'ACTIVE':
+        kart.status = 'MAINTENANCE'
+        messages.info(request, f'Kart #{kart.number} marked as MAINTENANCE.')
+    else:
+        kart.status = 'ACTIVE'
+        messages.success(request, f'Kart #{kart.number} marked as ACTIVE.')
+
+    kart.save()
+    return redirect('karts:kart_list')
