@@ -84,3 +84,56 @@ def session_create(request):
         'title': 'Create New Session',
     }
     return render(request, 'sessions/session_form.html', context)
+
+
+@login_required
+@user_passes_test(is_manager)
+def session_edit(request, pk):
+    """
+    Edit an existing session slot.
+    Manager-only view with form validation.
+    """
+    session = get_object_or_404(SessionSlot, pk=pk)
+
+    if request.method == 'POST':
+        form = SessionSlotForm(request.POST, instance=session)
+        if form.is_valid():
+            session = form.save()
+            messages.success(
+                request,
+                f'Session "{session}" has been updated successfully.'
+            )
+            return redirect('sessions:session_detail', pk=session.pk)
+    else:
+        form = SessionSlotForm(instance=session)
+
+    context = {
+        'form': form,
+        'title': 'Edit Session',
+        'session': session,
+    }
+    return render(request, 'sessions/session_form.html', context)
+
+
+@login_required
+@user_passes_test(is_manager)
+def session_delete(request, pk):
+    """
+    Delete a session slot.
+    Manager-only view with confirmation.
+    """
+    session = get_object_or_404(SessionSlot, pk=pk)
+
+    if request.method == 'POST':
+        session_str = str(session)
+        session.delete()
+        messages.success(
+            request,
+            f'Session "{session_str}" has been deleted successfully.'
+        )
+        return redirect('sessions:session_list')
+
+    context = {
+        'session': session,
+    }
+    return render(request, 'sessions/session_confirm_delete.html', context)
