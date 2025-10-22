@@ -172,3 +172,30 @@ def booking_confirm(request, pk):
         )
 
     return redirect('bookings:booking_detail', pk=booking.pk)
+
+
+@login_required
+@user_passes_test(is_manager)
+def booking_complete(request, pk):
+    """
+    Mark a booking as completed after session ends.
+    Manager-only action.
+    """
+    booking = get_object_or_404(Booking, pk=pk)
+
+    # Check if booking can be completed
+    if not booking.can_be_completed():
+        messages.error(
+            request,
+            'This booking cannot be completed. The session may not have ended yet.'
+        )
+        return redirect('bookings:booking_detail', pk=booking.pk)
+
+    booking.status = 'COMPLETED'
+    booking.save()
+
+    messages.success(
+        request,
+        f'Booking for {booking.driver.username} has been marked as completed.'
+    )
+    return redirect('bookings:booking_detail', pk=booking.pk)
