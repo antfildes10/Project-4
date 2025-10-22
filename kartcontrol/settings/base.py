@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'bookings',
     'karts',
-    'sessions',
+    'sessions.apps.SessionsConfig',
     'core',
 ]
 
