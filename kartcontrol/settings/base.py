@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     # Third-party apps
     'whitenoise.runserver_nostatic',
     # Local apps
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'bookings',
     'karts',
     'sessions',
