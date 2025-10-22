@@ -136,3 +136,39 @@ def booking_cancel(request, pk):
         'booking': booking,
     }
     return render(request, 'bookings/booking_confirm_delete.html', context)
+
+
+@login_required
+@user_passes_test(is_manager)
+def booking_confirm(request, pk):
+    """
+    Confirm a pending booking and assign kart.
+    Manager-only action.
+    """
+    booking = get_object_or_404(Booking, pk=pk)
+
+    # Check if booking can be confirmed
+    if not booking.can_be_confirmed():
+        messages.error(
+            request,
+            'This booking cannot be confirmed. It may have already started or is not pending.'
+        )
+        return redirect('bookings:booking_detail', pk=booking.pk)
+
+    # Try to assign a kart
+    if booking.assign_random_kart():
+        booking.status = 'CONFIRMED'
+        booking.save()
+
+        messages.success(
+            request,
+            f'Booking confirmed for {booking.driver.username}. '
+            f'Kart #{booking.assigned_kart.number} has been assigned.'
+        )
+    else:
+        messages.error(
+            request,
+            'No available karts for this session. Please check kart status or session conflicts.'
+        )
+
+    return redirect('bookings:booking_detail', pk=booking.pk)
