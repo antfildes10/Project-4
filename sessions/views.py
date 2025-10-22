@@ -58,3 +58,29 @@ def session_detail(request, pk):
         'confirmed_bookings': confirmed_bookings,
     }
     return render(request, 'sessions/session_detail.html', context)
+
+
+@login_required
+@user_passes_test(is_manager)
+def session_create(request):
+    """
+    Create a new session slot.
+    Manager-only view with form validation.
+    """
+    if request.method == 'POST':
+        form = SessionSlotForm(request.POST)
+        if form.is_valid():
+            session = form.save()
+            messages.success(
+                request,
+                f'Session "{session}" has been created successfully.'
+            )
+            return redirect('sessions:session_detail', pk=session.pk)
+    else:
+        form = SessionSlotForm()
+
+    context = {
+        'form': form,
+        'title': 'Create New Session',
+    }
+    return render(request, 'sessions/session_form.html', context)
