@@ -1,0 +1,127 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Edit Profile - KartControl{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h1 class="h3 mb-0"><i class="fas fa-edit"></i> Edit Profile</h1>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <fieldset class="mb-4">
+                        <legend class="h5">Account Information</legend>
+
+                        <!-- Username Field -->
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">
+                                Username <span class="text-danger" aria-label="required">*</span>
+                            </label>
+                            <input type="text" name="username" id="id_username" value="{{ user_form.username.value|default:user.username }}" class="form-control {% if user_form.username.errors %}is-invalid{% endif %}" required maxlength="150">
+                            <div class="form-text">150 characters or fewer. Letters, digits and @/./+/-/_ only.</div>
+                            {% if user_form.username.errors %}
+                                <div class="invalid-feedback" role="alert">
+                                    {{ user_form.username.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">
+                                Email Address <span class="text-danger" aria-label="required">*</span>
+                            </label>
+                            <input type="email" name="email" id="id_email" value="{{ user_form.email.value|default:user.email }}" class="form-control {% if user_form.email.errors %}is-invalid{% endif %}" required>
+                            {% if user_form.email.errors %}
+                                <div class="invalid-feedback" role="alert">
+                                    {{ user_form.email.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- First Name Field -->
+                        <div class="mb-3">
+                            <label for="id_first_name" class="form-label">
+                                First Name <span class="text-danger" aria-label="required">*</span>
+                            </label>
+                            <input type="text" name="first_name" id="id_first_name" value="{{ user_form.first_name.value|default:user.first_name }}" class="form-control {% if user_form.first_name.errors %}is-invalid{% endif %}" required maxlength="150">
+                            {% if user_form.first_name.errors %}
+                                <div class="invalid-feedback" role="alert">
+                                    {{ user_form.first_name.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Last Name Field -->
+                        <div class="mb-3">
+                            <label for="id_last_name" class="form-label">
+                                Last Name <span class="text-danger" aria-label="required">*</span>
+                            </label>
+                            <input type="text" name="last_name" id="id_last_name" value="{{ user_form.last_name.value|default:user.last_name }}" class="form-control {% if user_form.last_name.errors %}is-invalid{% endif %}" required maxlength="150">
+                            {% if user_form.last_name.errors %}
+                                <div class="invalid-feedback" role="alert">
+                                    {{ user_form.last_name.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend class="h5">Personal Information</legend>
+
+                        <!-- Phone Number Field -->
+                        <div class="mb-3">
+                            <label for="id_phone_number" class="form-label">
+                                Phone Number
+                            </label>
+                            <input type="tel" name="phone_number" id="id_phone_number" value="{{ profile_form.phone_number.value|default:user.profile.phone_number }}" class="form-control {% if profile_form.phone_number.errors %}is-invalid{% endif %}" maxlength="20">
+                            <div class="form-text">Optional. Format: +353 1 234 5678</div>
+                            {% if profile_form.phone_number.errors %}
+                                <div class="invalid-feedback" role="alert">
+                                    {{ profile_form.phone_number.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Date of Birth Field -->
+                        <div class="mb-3">
+                            <label for="id_date_of_birth" class="form-label">
+                                Date of Birth
+                            </label>
+                            <input type="date" name="date_of_birth" id="id_date_of_birth" value="{{ profile_form.date_of_birth.value|date:'Y-m-d'|default:'' }}" class="form-control {% if profile_form.date_of_birth.errors %}is-invalid{% endif %}">
+                            <div class="form-text">Optional. Required for competitive racing events.</div>
+                            {% if profile_form.date_of_birth.errors %}
+                                <div class="invalid-feedback" role="alert">
+                                    {{ profile_form.date_of_birth.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+
+                    <!-- Non-field errors -->
+                    {% if user_form.non_field_errors or profile_form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ user_form.non_field_errors|join:", " }}
+                            {{ profile_form.non_field_errors|join:", " }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
