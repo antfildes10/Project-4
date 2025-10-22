@@ -1,0 +1,288 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Management Dashboard - KartControl{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-tachometer-alt"></i> Management Dashboard</h1>
+        <p class="lead">Overview of sessions, bookings, and operations</p>
+        <hr>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<section class="mb-4" aria-labelledby="stats-heading">
+    <h2 id="stats-heading" class="h4 mb-3">Quick Statistics</h2>
+    <div class="row g-3">
+        <!-- Session Stats -->
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h3 class="h6 card-title"><i class="fas fa-calendar-alt"></i> Sessions</h3>
+                    <p class="h2 mb-0">{{ upcoming_sessions }}</p>
+                    <small>Upcoming sessions</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Booking Stats -->
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h3 class="h6 card-title"><i class="fas fa-ticket-alt"></i> Bookings</h3>
+                    <p class="h2 mb-0">{{ total_bookings }}</p>
+                    <small>Total bookings</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pending Bookings -->
+        <div class="col-md-3">
+            <div class="card bg-warning">
+                <div class="card-body">
+                    <h3 class="h6 card-title"><i class="fas fa-hourglass-half"></i> Pending</h3>
+                    <p class="h2 mb-0">{{ pending_bookings }}</p>
+                    <small>Awaiting confirmation</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Kart Stats -->
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h3 class="h6 card-title"><i class="fas fa-car-side"></i> Karts</h3>
+                    <p class="h2 mb-0">{{ active_karts }}/{{ total_karts }}</p>
+                    <small>Active karts</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Actions -->
+<section class="mb-4" aria-labelledby="actions-heading">
+    <h2 id="actions-heading" class="h4 mb-3">Quick Actions</h2>
+    <div class="btn-group" role="group" aria-label="Quick management actions">
+        <a href="{% url 'sessions:session_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create Session
+        </a>
+        <a href="{% url 'bookings:booking_manage' %}" class="btn btn-primary">
+            <i class="fas fa-cog"></i> Manage All Bookings
+        </a>
+        <a href="{% url 'karts:kart_list' %}" class="btn btn-primary">
+            <i class="fas fa-car-side"></i> View Fleet
+        </a>
+        <a href="/admin/" class="btn btn-outline-primary">
+            <i class="fas fa-tools"></i> Admin Panel
+        </a>
+    </div>
+</section>
+
+<!-- Today's Sessions -->
+<section class="mb-4" aria-labelledby="today-heading">
+    <h2 id="today-heading" class="h4 mb-3">Today's Sessions ({{ today|date:"l, F j, Y" }})</h2>
+    {% if todays_sessions %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <caption class="visually-hidden">Today's session schedule with booking information</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Bookings</th>
+                        <th scope="col">Capacity</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in todays_sessions %}
+                    <tr>
+                        <td>{{ session.start_datetime|date:"g:i A" }}</td>
+                        <td>
+                            {% if session.session_type == 'GRAND_PRIX' %}
+                                <span class="badge bg-warning text-dark">Grand Prix</span>
+                            {% else %}
+                                <span class="badge bg-info text-white">Open Session</span>
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ session.booking_count }}</strong></td>
+                        <td>{{ session.capacity }}</td>
+                        <td>
+                            {% if session.booking_count >= session.capacity %}
+                                <span class="badge bg-danger">Full</span>
+                            {% elif session.booking_count >= session.capacity|add:"-2" %}
+                                <span class="badge bg-warning text-dark">Nearly Full</span>
+                            {% else %}
+                                <span class="badge bg-success">Available</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'sessions:session_detail' session.pk %}" class="btn btn-sm btn-outline-primary">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No sessions scheduled for today.
+        </div>
+    {% endif %}
+</section>
+
+<!-- Tomorrow's Sessions -->
+<section class="mb-4" aria-labelledby="tomorrow-heading">
+    <h2 id="tomorrow-heading" class="h4 mb-3">Tomorrow's Sessions</h2>
+    {% if tomorrows_sessions %}
+        <div class="table-responsive">
+            <table class="table table-hover table-sm">
+                <caption class="visually-hidden">Tomorrow's session schedule with booking information</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Bookings</th>
+                        <th scope="col">Capacity</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in tomorrows_sessions %}
+                    <tr>
+                        <td>{{ session.start_datetime|date:"g:i A" }}</td>
+                        <td>
+                            {% if session.session_type == 'GRAND_PRIX' %}
+                                <span class="badge bg-warning text-dark">GP</span>
+                            {% else %}
+                                <span class="badge bg-info text-white">Open</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ session.booking_count }}</td>
+                        <td>{{ session.capacity }}</td>
+                        <td>
+                            {% if session.booking_count >= session.capacity %}
+                                <span class="badge bg-danger">Full</span>
+                            {% elif session.booking_count >= session.capacity|add:"-2" %}
+                                <span class="badge bg-warning text-dark">Nearly Full</span>
+                            {% else %}
+                                <span class="badge bg-success">Available</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No sessions scheduled for tomorrow.
+        </div>
+    {% endif %}
+</section>
+
+<!-- Pending Bookings -->
+{% if pending_bookings_list %}
+<section class="mb-4" aria-labelledby="pending-heading">
+    <h2 id="pending-heading" class="h4 mb-3">
+        <i class="fas fa-exclamation-triangle text-warning"></i> Pending Bookings Requiring Attention
+    </h2>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <caption class="visually-hidden">Pending bookings that need confirmation</caption>
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Driver</th>
+                    <th scope="col">Session</th>
+                    <th scope="col">Date/Time</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in pending_bookings_list %}
+                <tr>
+                    <td>{{ booking.pk }}</td>
+                    <td>{{ booking.driver.username }}</td>
+                    <td>{{ booking.session_slot.get_session_type_display }}</td>
+                    <td>{{ booking.session_slot.start_datetime|date:"M j, g:i A" }}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="{% url 'bookings:booking_confirm' booking.pk %}" class="btn btn-success">
+                                <i class="fas fa-check"></i> Confirm
+                            </a>
+                            <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-outline-primary">
+                                View
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'bookings:booking_manage' %}?status=PENDING" class="btn btn-primary">
+        View All Pending Bookings
+    </a>
+</section>
+{% endif %}
+
+<!-- Recent Bookings -->
+<section class="mb-4" aria-labelledby="recent-heading">
+    <h2 id="recent-heading" class="h4 mb-3">Recent Bookings</h2>
+    {% if recent_bookings %}
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <caption class="visually-hidden">Most recent bookings in the system</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Driver</th>
+                        <th scope="col">Session</th>
+                        <th scope="col">Date/Time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Kart</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in recent_bookings %}
+                    <tr>
+                        <td>{{ booking.pk }}</td>
+                        <td>{{ booking.driver.username }}</td>
+                        <td>{{ booking.session_slot.get_session_type_display }}</td>
+                        <td>{{ booking.session_slot.start_datetime|date:"M j, g:i A" }}</td>
+                        <td>
+                            {% if booking.status == 'CONFIRMED' %}
+                                <span class="badge bg-success">Confirmed</span>
+                            {% elif booking.status == 'PENDING' %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% elif booking.status == 'COMPLETED' %}
+                                <span class="badge bg-primary">Completed</span>
+                            {% elif booking.status == 'CANCELLED' %}
+                                <span class="badge bg-secondary">Cancelled</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if booking.assigned_kart %}
+                                Kart #{{ booking.assigned_kart.number }}
+                            {% else %}
+                                <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No bookings yet.
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
