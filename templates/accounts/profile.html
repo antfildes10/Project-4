@@ -1,0 +1,158 @@
+{% extends 'base/base.html' %}
+
+{% block title %}My Profile - KartControl{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-user"></i> My Profile</h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Profile Information Card -->
+    <div class="col-md-8">
+        <section aria-labelledby="profile-info-heading">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 id="profile-info-heading" class="h4 mb-0">
+                        <i class="fas fa-id-card"></i> Profile Information
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-user" aria-hidden="true"></i> Username:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ user.username }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-signature" aria-hidden="true"></i> Full Name:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ user.get_full_name|default:"Not provided" }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-envelope" aria-hidden="true"></i> Email:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ user.email|default:"Not provided" }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-id-badge" aria-hidden="true"></i> Role:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {% if user.profile.role == 'MANAGER' %}
+                                <span class="badge bg-danger">Manager</span>
+                            {% elif user.profile.role == 'MARSHAL' %}
+                                <span class="badge bg-warning text-dark">Marshal</span>
+                            {% else %}
+                                <span class="badge bg-success">Driver</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-phone" aria-hidden="true"></i> Phone Number:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ user.profile.phone_number|default:"Not provided" }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-calendar-alt" aria-hidden="true"></i> Date of Birth:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ user.profile.date_of_birth|date:"F j, Y"|default:"Not provided" }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <strong><i class="fas fa-calendar-plus" aria-hidden="true"></i> Member Since:</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ user.date_joined|date:"F j, Y" }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'accounts:profile_edit' %}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </a>
+                        <a href="{% url 'bookings:booking_list' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-calendar-check"></i> My Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Quick Stats Sidebar -->
+    <div class="col-md-4">
+        <section aria-labelledby="stats-heading">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 id="stats-heading" class="h5 mb-0">
+                        <i class="fas fa-chart-bar"></i> Quick Stats
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h3 class="h6 text-muted mb-1">Total Bookings</h3>
+                        <p class="h4 mb-0">{{ total_bookings }}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h3 class="h6 text-muted mb-1">Upcoming Sessions</h3>
+                        <p class="h4 mb-0 text-success">{{ upcoming_bookings }}</p>
+                    </div>
+
+                    <div>
+                        <h3 class="h6 text-muted mb-1">Completed Sessions</h3>
+                        <p class="h4 mb-0 text-primary">{{ completed_bookings }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h5 mb-0">
+                        <i class="fas fa-bolt"></i> Quick Actions
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'sessions:session_list' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-calendar-alt"></i> Browse Sessions
+                        </a>
+                        <a href="{% url 'bookings:booking_list' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-list"></i> View My Bookings
+                        </a>
+                        <a href="{% url 'core:contact' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope"></i> Contact Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
