@@ -26,3 +26,29 @@ def kart_list(request):
         'karts': karts,
     }
     return render(request, 'karts/kart_list.html', context)
+
+
+@login_required
+@user_passes_test(is_manager)
+def kart_create(request):
+    """
+    Create a new kart.
+    Manager-only view with form validation.
+    """
+    if request.method == 'POST':
+        form = KartForm(request.POST)
+        if form.is_valid():
+            kart = form.save()
+            messages.success(
+                request,
+                f'Kart #{kart.number} has been created successfully.'
+            )
+            return redirect('karts:kart_list')
+    else:
+        form = KartForm()
+
+    context = {
+        'form': form,
+        'title': 'Add New Kart',
+    }
+    return render(request, 'karts/kart_form.html', context)
