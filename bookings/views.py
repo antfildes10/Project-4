@@ -81,3 +81,23 @@ def booking_create(request, session_id):
         'session': session,
     }
     return render(request, 'bookings/booking_form.html', context)
+
+
+@login_required
+def booking_detail(request, pk):
+    """
+    Display booking details.
+    Drivers can only view their own bookings.
+    Managers can view all bookings.
+    """
+    booking = get_object_or_404(Booking, pk=pk)
+
+    # Check permissions: driver can only view own bookings
+    if not is_manager(request.user) and booking.driver != request.user:
+        messages.error(request, 'You do not have permission to view this booking.')
+        return redirect('bookings:booking_list')
+
+    context = {
+        'booking': booking,
+    }
+    return render(request, 'bookings/booking_detail.html', context)
