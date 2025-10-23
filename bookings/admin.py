@@ -3,54 +3,123 @@ Admin configuration for bookings app.
 """
 from django.contrib import admin
 from django.utils.html import format_html
+from django.db.models import Count
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from .models import Booking
 
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    """Admin interface for Booking model."""
+    """Enhanced admin interface for Booking model with CRM-style features."""
     list_display = (
         'id',
-        'driver',
-        'get_session_info',
+        'get_driver_link',
+        'get_session_link',
         'get_status_badge',
-        'assigned_kart',
-        'created_at'
+        'get_kart_badge',
+        'booking_datetime',
+        'get_session_date'
     )
-    list_filter = ('status', 'session_slot__session_type', 'created_at')
+    list_filter = (
+        'status',
+        'session_slot__session_type',
+        ('booking_datetime', admin.DateFieldListFilter),
+        ('session_slot__start_datetime', admin.DateFieldListFilter),
+        'assigned_kart__status'
+    )
     search_fields = (
+        'id',
         'driver__username',
         'driver__email',
-        'session_slot__description',
+        'driver__first_name',
+        'driver__last_name',
+        'assigned_kart__number',
         'driver_notes',
         'manager_notes'
     )
-    readonly_fields = ('created_at', 'updated_at')
-    date_hierarchy = 'created_at'
-    ordering = ('-created_at',)
+    readonly_fields = ('booking_datetime', 'created_at', 'updated_at', 'get_booking_summary')
+    date_hierarchy = 'booking_datetime'
+    ordering = ('-booking_datetime',)
+    list_per_page = 25
+    list_select_related = ('driver', 'session_slot', 'assigned_kart', 'session_slot__track')
 
     fieldsets = (
+        (None, {
+            'fields': ('get_booking_summary',)
+        }),
         ('Booking Information', {
             'fields': ('driver', 'session_slot', 'status')
         }),
         ('Kart Assignment', {
-            'fields': ('chosen_kart_number', 'assigned_kart')
+            'fields': ('chosen_kart_number', 'assigned_kart'),
+            'description': 'Assign a kart to this booking. Leave empty for automatic assignment.'
         }),
         ('Notes', {
-            'fields': ('driver_notes', 'manager_notes')
+            'fields': ('driver_notes', 'manager_notes'),
+            'classes': ('collapse',)
         }),
         ('Timestamps', {
-            'fields': ('created_at', 'updated_at'),
+            'fields': ('booking_datetime', 'created_at', 'updated_at'),
             'classes': ('collapse',)
         }),
     )
 
     actions = ['confirm_bookings', 'cancel_bookings', 'complete_bookings']
 
-    def get_session_info(self, obj):
-        """Display session information."""
-        return f"{obj.session_slot.get_session_type_display()} - {obj.session_slot.start_datetime.strftime('%Y-%m-%d %H:%M')}"
-    get_session_info.short_description = 'Session'
+    def get_driver_link(self, obj):
+        """Display clickable driver link."""
+        url = reverse('admin:auth_user_change', args=[obj.driver.id])
+        return format_html('<a href="{}">{}</a>', url, obj.driver.username)
+    get_driver_link.short_description = 'Driver'
+    get_driver_link.admin_order_field = 'driver__username'
+
+    def get_session_link(self, obj):
+        """Display clickable session link with details."""
+        url = reverse('admin:session_slots_sessionslot_change', args=[obj.session_slot.id])
+        session_type = 'GP' if obj.session_slot.session_type == 'GRAND_PRIX' else 'Open'
+        return format_html(
+            '<a href="{}">{} Session</a>',
+            url,
+            session_type
+        )
+    get_session_link.short_description = 'Session Type'
+    get_session_link.admin_order_field = 'session_slot__session_type'
+
+    def get_session_date(self, obj):
+        """Display session date and time."""
+        return obj.session_slot.start_datetime.strftime('%d %b %Y, %H:%M')
+    get_session_date.short_description = 'Session Date/Time'
+    get_session_date.admin_order_field = 'session_slot__start_datetime'
+
+    def get_kart_badge(self, obj):
+        """Display kart assignment with badge."""
+        if obj.assigned_kart:
+            return format_html(
+                '<span style="background-color: #007bff; color: white; padding: 3px 8px; border-radius: 3px;">Kart #{}</span>',
+                obj.assigned_kart.number
+            )
+        return format_html('<span style="color: #999;">Not assigned</span>')
+    get_kart_badge.short_description = 'Kart'
+    get_kart_badge.admin_order_field = 'assigned_kart__number'
+
+    def get_booking_summary(self, obj):
+        """Display comprehensive booking summary."""
+        html = f'''
+        <div style="font-family: monospace; background: #f5f5f5; padding: 15px; border-radius: 5px;">
+            <h3 style="margin-top: 0;">Booking #{obj.id} Summary</h3>
+            <p><strong>Driver:</strong> {obj.driver.get_full_name()} ({obj.driver.username})</p>
+            <p><strong>Email:</strong> {obj.driver.email}</p>
+            <p><strong>Session:</strong> {obj.session_slot.get_session_type_display()}</p>
+            <p><strong>Date:</strong> {obj.session_slot.start_datetime.strftime('%A, %d %B %Y at %H:%M')}</p>
+            <p><strong>Price:</strong> €{obj.session_slot.price}</p>
+            <p><strong>Track:</strong> {obj.session_slot.track.name}</p>
+            <p><strong>Status:</strong> {obj.get_status_display()}</p>
+            {'<p><strong>Kart:</strong> #' + str(obj.assigned_kart.number) + '</p>' if obj.assigned_kart else '<p><strong>Kart:</strong> Not yet assigned</p>'}
+        </div>
+        '''
+        return mark_safe(html)
+    get_booking_summary.short_description = 'Booking Summary'
 
     def get_status_badge(self, obj):
         """Display status with color badge."""
