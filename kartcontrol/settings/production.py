@@ -23,7 +23,7 @@ DATABASES = {
 
 # WhiteNoise static files configuration
 MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # Security settings for production
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
