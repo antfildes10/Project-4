@@ -1,6 +1,7 @@
 """
 Views for sessions app (session slot management).
 """
+
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import SessionSlot
@@ -12,13 +13,11 @@ def session_list(request):
     Public view - accessible to all users.
     """
     # Get all upcoming sessions
-    sessions = SessionSlot.objects.filter(
-        start_datetime__gte=timezone.now()
-    ).order_by('start_datetime')
+    sessions = SessionSlot.objects.filter(start_datetime__gte=timezone.now()).order_by("start_datetime")
 
     # Apply filters
-    session_type = request.GET.get('session_type')
-    date = request.GET.get('date')
+    session_type = request.GET.get("session_type")
+    date = request.GET.get("date")
 
     if session_type:
         sessions = sessions.filter(session_type=session_type)
@@ -28,9 +27,9 @@ def session_list(request):
         sessions = sessions.filter(start_datetime__date=date)
 
     context = {
-        'sessions': sessions,
+        "sessions": sessions,
     }
-    return render(request, 'sessions/session_list.html', context)
+    return render(request, "sessions/session_list.html", context)
 
 
 def session_detail(request, pk):
@@ -46,21 +45,18 @@ def session_detail(request, pk):
     is_full = session.is_full()
 
     # Get confirmed bookings for this session
-    confirmed_bookings = session.bookings.filter(status__in=['CONFIRMED', 'COMPLETED'])
+    confirmed_bookings = session.bookings.filter(status__in=["CONFIRMED", "COMPLETED"])
 
     # Check if user already has a booking for this session
     user_has_booking = False
     if request.user.is_authenticated:
-        user_has_booking = session.bookings.filter(
-            driver=request.user,
-            status__in=['PENDING', 'CONFIRMED']
-        ).exists()
+        user_has_booking = session.bookings.filter(driver=request.user, status__in=["PENDING", "CONFIRMED"]).exists()
 
     context = {
-        'session': session,
-        'available_spots': available_spots,
-        'is_full': is_full,
-        'confirmed_bookings': confirmed_bookings,
-        'user_has_booking': user_has_booking,
+        "session": session,
+        "available_spots": available_spots,
+        "is_full": is_full,
+        "confirmed_bookings": confirmed_bookings,
+        "user_has_booking": user_has_booking,
     }
-    return render(request, 'sessions/session_detail.html', context)
+    return render(request, "sessions/session_detail.html", context)

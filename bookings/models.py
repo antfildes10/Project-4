@@ -1,6 +1,7 @@
 """
 Booking models for managing session reservations and kart assignments.
 """
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -16,47 +17,36 @@ class Booking(models.Model):
     """
 
     STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('CONFIRMED', 'Confirmed'),
-        ('CANCELLED', 'Cancelled'),
-        ('COMPLETED', 'Completed'),
+        ("PENDING", "Pending"),
+        ("CONFIRMED", "Confirmed"),
+        ("CANCELLED", "Cancelled"),
+        ("COMPLETED", "Completed"),
     ]
 
     # Core relationships
     session_slot = models.ForeignKey(
-        SessionSlot,
-        on_delete=models.CASCADE,
-        related_name='bookings',
-        help_text='The session being booked'
+        SessionSlot, on_delete=models.CASCADE, related_name="bookings", help_text="The session being booked"
     )
     driver = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='bookings',
-        help_text='Driver making the booking'
+        User, on_delete=models.CASCADE, related_name="bookings", help_text="Driver making the booking"
     )
 
     # Kart assignment
     chosen_kart_number = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-        help_text='Driver preferred kart number (optional)'
+        null=True, blank=True, help_text="Driver preferred kart number (optional)"
     )
     assigned_kart = models.ForeignKey(
         Kart,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='bookings',
-        help_text='Kart assigned on confirmation'
+        related_name="bookings",
+        help_text="Kart assigned on confirmation",
     )
 
     # Booking state
     status = models.CharField(
-        max_length=15,
-        choices=STATUS_CHOICES,
-        default='PENDING',
-        help_text='Current booking status'
+        max_length=15, choices=STATUS_CHOICES, default="PENDING", help_text="Current booking status"
     )
 
     # Timestamps
@@ -64,23 +54,17 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     # Optional notes
-    driver_notes = models.TextField(
-        blank=True,
-        help_text='Notes from the driver'
-    )
-    manager_notes = models.TextField(
-        blank=True,
-        help_text='Internal manager notes'
-    )
+    driver_notes = models.TextField(blank=True, help_text="Notes from the driver")
+    manager_notes = models.TextField(blank=True, help_text="Internal manager notes")
 
     class Meta:
-        ordering = ['-created_at']
-        verbose_name = 'Booking'
-        verbose_name_plural = 'Bookings'
+        ordering = ["-created_at"]
+        verbose_name = "Booking"
+        verbose_name_plural = "Bookings"
         indexes = [
-            models.Index(fields=['driver']),
-            models.Index(fields=['session_slot']),
-            models.Index(fields=['status']),
+            models.Index(fields=["driver"]),
+            models.Index(fields=["session_slot"]),
+            models.Index(fields=["status"]),
         ]
 
     def __str__(self):
@@ -94,46 +78,40 @@ class Booking(models.Model):
         3. Validate chosen kart is available
         """
         # Skip validation if being cancelled or completed
-        if self.status in ['CANCELLED', 'COMPLETED']:
+        if self.status in ["CANCELLED", "COMPLETED"]:
             return
 
         # Check session capacity
         if self.session_slot:
-            existing_bookings = self.session_slot.bookings.filter(
-                status__in=['PENDING', 'CONFIRMED']
-            ).exclude(pk=self.pk)
+            existing_bookings = self.session_slot.bookings.filter(status__in=["PENDING", "CONFIRMED"]).exclude(
+                pk=self.pk
+            )
 
             if existing_bookings.count() >= self.session_slot.capacity:
-                raise ValidationError({
-                    'session_slot': 'This session is at full capacity.'
-                })
+                raise ValidationError({"session_slot": "This session is at full capacity."})
 
         # Check for driver overlap (same driver, overlapping time)
         if self.driver and self.session_slot:
             overlapping = Booking.objects.filter(
                 driver=self.driver,
-                status__in=['PENDING', 'CONFIRMED'],
+                status__in=["PENDING", "CONFIRMED"],
                 session_slot__start_datetime__lt=self.session_slot.end_datetime,
-                session_slot__end_datetime__gt=self.session_slot.start_datetime
+                session_slot__end_datetime__gt=self.session_slot.start_datetime,
             ).exclude(pk=self.pk)
 
             if overlapping.exists():
-                raise ValidationError({
-                    'session_slot': 'You already have a booking during this time.'
-                })
+                raise ValidationError({"session_slot": "You already have a booking during this time."})
 
         # Validate chosen kart exists and is active
         if self.chosen_kart_number:
             try:
                 kart = Kart.objects.get(number=self.chosen_kart_number)
                 if not kart.is_available():
-                    raise ValidationError({
-                        'chosen_kart_number': f'Kart #{self.chosen_kart_number} is currently in maintenance.'
-                    })
+                    raise ValidationError(
+                        {"chosen_kart_number": f"Kart #{self.chosen_kart_number} is currently in maintenance."}
+                    )
             except Kart.DoesNotExist:
-                raise ValidationError({
-                    'chosen_kart_number': f'Kart #{self.chosen_kart_number} does not exist.'
-                })
+                raise ValidationError({"chosen_kart_number": f"Kart #{self.chosen_kart_number} does not exist."})
 
     def save(self, *args, **kwargs):
         """Run validation before saving."""
@@ -142,24 +120,15 @@ class Booking(models.Model):
 
     def can_be_cancelled(self):
         """Check if booking can be cancelled (before session start)."""
-        return (
-            self.status in ['PENDING', 'CONFIRMED'] and
-            self.session_slot.start_datetime > timezone.now()
-        )
+        return self.status in ["PENDING", "CONFIRMED"] and self.session_slot.start_datetime > timezone.now()
 
     def can_be_confirmed(self):
         """Check if booking can be confirmed by manager."""
-        return (
-            self.status == 'PENDING' and
-            self.session_slot.start_datetime > timezone.now()
-        )
+        return self.status == "PENDING" and self.session_slot.start_datetime > timezone.now()
 
     def can_be_completed(self):
         """Check if booking can be marked complete (after session end)."""
-        return (
-            self.status == 'CONFIRMED' and
-            self.session_slot.end_datetime < timezone.now()
-        )
+        return self.status == "CONFIRMED" and self.session_slot.end_datetime < timezone.now()
 
     def assign_random_kart(self):
         """
@@ -167,13 +136,14 @@ class Booking(models.Model):
         Returns True if successful, False otherwise.
         """
         # Get all active karts
-        available_karts = Kart.objects.filter(status='ACTIVE')
+        available_karts = Kart.objects.filter(status="ACTIVE")
 
         # Exclude karts already assigned to this session
-        assigned_kart_ids = self.session_slot.bookings.filter(
-            status__in=['CONFIRMED', 'COMPLETED'],
-            assigned_kart__isnull=False
-        ).exclude(pk=self.pk).values_list('assigned_kart_id', flat=True)
+        assigned_kart_ids = (
+            self.session_slot.bookings.filter(status__in=["CONFIRMED", "COMPLETED"], assigned_kart__isnull=False)
+            .exclude(pk=self.pk)
+            .values_list("assigned_kart_id", flat=True)
+        )
 
         available_karts = available_karts.exclude(id__in=assigned_kart_ids)
 
@@ -188,7 +158,7 @@ class Booking(models.Model):
 
         # Otherwise assign random available kart
         if available_karts.exists():
-            self.assigned_kart = available_karts.order_by('?').first()
+            self.assigned_kart = available_karts.order_by("?").first()
             return True
 
         return False

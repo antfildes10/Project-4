@@ -2,111 +2,118 @@
 
 /* Root Variables - Motorsport Theme Colors */
 :root {
-    --dark-charcoal: #1E1E1E;
-    --racing-red: #D32F2F;
-    --signal-yellow: #FFB300;
-    --track-gray: #F4F4F4;
-    --white: #FFFFFF;
+  --dark-charcoal: #1e1e1e;
+  --racing-red: #d32f2f;
+  --signal-yellow: #ffb300;
+  --track-gray: #f4f4f4;
+  --white: #ffffff;
 }
 
 /* Skip to main content link (accessibility) */
 .skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--racing-red);
-    color: var(--white);
-    padding: 8px;
-    text-decoration: none;
-    z-index: 100;
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--racing-red);
+  color: var(--white);
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
 }
 
 .skip-link:focus {
-    top: 0;
+  top: 0;
 }
 
 /* Body and Typography */
 body {
-    font-family: 'Roboto', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  font-family: "Roboto", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
-    flex: 1;
+  flex: 1;
 }
 
 /* Headings */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Oswald', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Oswald", sans-serif;
 }
 
 /* Navbar customization */
 .navbar-brand {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.5rem;
-    font-weight: bold;
+  font-family: "Oswald", sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 /* Buttons */
 .btn-primary {
-    background-color: var(--racing-red);
-    border-color: var(--racing-red);
+  background-color: var(--racing-red);
+  border-color: var(--racing-red);
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-    background-color: #B71C1C;
-    border-color: #B71C1C;
+  background-color: #b71c1c;
+  border-color: #b71c1c;
 }
 
 /* Cards */
 .card {
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Status Badges */
 .badge {
-    padding: 0.5em 0.75em;
-    font-size: 0.875rem;
+  padding: 0.5em 0.75em;
+  font-size: 0.875rem;
 }
 
 /* Forms */
 .form-control:focus,
 .form-select:focus {
-    border-color: var(--racing-red);
-    box-shadow: 0 0 0 0.25rem rgba(211, 47, 47, 0.25);
+  border-color: var(--racing-red);
+  box-shadow: 0 0 0 0.25rem rgba(211, 47, 47, 0.25);
 }
 
 /* Messages */
 .messages-container {
-    position: relative;
-    z-index: 10;
+  position: relative;
+  z-index: 10;
 }
 
 /* Footer */
 footer a:hover {
-    color: var(--white) !important;
-    text-decoration: underline;
+  color: var(--white) !important;
+  text-decoration: underline;
 }
 
 /* Responsive spacing */
 @media (max-width: 768px) {
-    .navbar-brand {
-        font-size: 1.2rem;
-    }
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
 
-    h1 {
-        font-size: 2rem;
-    }
+  h1 {
+    font-size: 2rem;
+  }
 }
 
 /* Focus indicators for accessibility */
@@ -115,12 +122,12 @@ button:focus,
 input:focus,
 select:focus,
 textarea:focus {
-    outline: 2px solid var(--racing-red);
-    outline-offset: 2px;
+  outline: 2px solid var(--racing-red);
+  outline-offset: 2px;
 }
 
 /* Loading states */
 .loading {
-    opacity: 0.6;
-    pointer-events: none;
+  opacity: 0.6;
+  pointer-events: none;
 }

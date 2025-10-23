@@ -53,6 +53,10 @@ venv.bak/
 .pytest_cache/
 htmlcov/
 
+# Node/NPM
+node_modules/
+package-lock.json
+
 # Claude Code memory
 CLAUDE.md
 .claude/CLAUDE.md

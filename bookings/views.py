@@ -1,6 +1,7 @@
 """
 Views for bookings app (booking management with business logic).
 """
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -12,7 +13,7 @@ from sessions.models import SessionSlot
 
 def is_manager(user):
     """Check if user has manager role."""
-    return user.is_authenticated and hasattr(user, 'profile') and user.profile.is_manager()
+    return user.is_authenticated and hasattr(user, "profile") and user.profile.is_manager()
 
 
 @login_required
@@ -22,12 +23,12 @@ def booking_list(request):
     Drivers see only their own bookings.
     """
     # Get user's bookings ordered by creation date
-    bookings = Booking.objects.filter(driver=request.user).order_by('-created_at')
+    bookings = Booking.objects.filter(driver=request.user).order_by("-created_at")
 
     context = {
-        'bookings': bookings,
+        "bookings": bookings,
     }
-    return render(request, 'bookings/booking_list.html', context)
+    return render(request, "bookings/booking_list.html", context)
 
 
 @login_required
@@ -40,15 +41,15 @@ def booking_create(request, session_id):
 
     # Check if session is full
     if session.is_full():
-        messages.error(request, 'This session is fully booked.')
-        return redirect('sessions:session_detail', pk=session_id)
+        messages.error(request, "This session is fully booked.")
+        return redirect("sessions:session_detail", pk=session_id)
 
     # Check if session is in the past
     if session.is_past():
-        messages.error(request, 'Cannot book past sessions.')
-        return redirect('sessions:session_detail', pk=session_id)
+        messages.error(request, "Cannot book past sessions.")
+        return redirect("sessions:session_detail", pk=session_id)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = BookingForm(request.POST)
         if form.is_valid():
             try:
@@ -56,17 +57,15 @@ def booking_create(request, session_id):
                 booking = form.save(commit=False)
                 booking.session_slot = session
                 booking.driver = request.user
-                booking.status = 'PENDING'
+                booking.status = "PENDING"
 
                 # Validate and save (model validation will run)
                 booking.save()
 
                 messages.success(
-                    request,
-                    'Your booking has been created successfully. '
-                    'It is pending confirmation by a manager.'
+                    request, "Your booking has been created successfully. " "It is pending confirmation by a manager."
                 )
-                return redirect('bookings:booking_detail', pk=booking.pk)
+                return redirect("bookings:booking_detail", pk=booking.pk)
 
             except ValidationError as e:
                 # Display validation errors from model
@@ -77,10 +76,10 @@ def booking_create(request, session_id):
         form = BookingForm()
 
     context = {
-        'form': form,
-        'session': session,
+        "form": form,
+        "session": session,
     }
-    return render(request, 'bookings/booking_form.html', context)
+    return render(request, "bookings/booking_form.html", context)
 
 
 @login_required
@@ -94,13 +93,13 @@ def booking_detail(request, pk):
 
     # Check permissions: driver can only view own bookings
     if not is_manager(request.user) and booking.driver != request.user:
-        messages.error(request, 'You do not have permission to view this booking.')
-        return redirect('bookings:booking_list')
+        messages.error(request, "You do not have permission to view this booking.")
+        return redirect("bookings:booking_list")
 
     context = {
-        'booking': booking,
+        "booking": booking,
     }
-    return render(request, 'bookings/booking_detail.html', context)
+    return render(request, "bookings/booking_detail.html", context)
 
 
 @login_required
@@ -114,28 +113,25 @@ def booking_cancel(request, pk):
 
     # Check permissions: driver can only cancel own bookings
     if not is_manager(request.user) and booking.driver != request.user:
-        messages.error(request, 'You do not have permission to cancel this booking.')
-        return redirect('bookings:booking_list')
+        messages.error(request, "You do not have permission to cancel this booking.")
+        return redirect("bookings:booking_list")
 
     # Check if booking can be cancelled
     if not booking.can_be_cancelled():
-        messages.error(
-            request,
-            'This booking cannot be cancelled. It may have already started or been completed.'
-        )
-        return redirect('bookings:booking_detail', pk=booking.pk)
+        messages.error(request, "This booking cannot be cancelled. It may have already started or been completed.")
+        return redirect("bookings:booking_detail", pk=booking.pk)
 
-    if request.method == 'POST':
-        booking.status = 'CANCELLED'
+    if request.method == "POST":
+        booking.status = "CANCELLED"
         booking.save()
 
-        messages.success(request, 'Your booking has been cancelled successfully.')
-        return redirect('bookings:booking_list')
+        messages.success(request, "Your booking has been cancelled successfully.")
+        return redirect("bookings:booking_list")
 
     context = {
-        'booking': booking,
+        "booking": booking,
     }
-    return render(request, 'bookings/booking_confirm_delete.html', context)
+    return render(request, "bookings/booking_confirm_delete.html", context)
 
 
 @login_required
@@ -149,29 +145,23 @@ def booking_confirm(request, pk):
 
     # Check if booking can be confirmed
     if not booking.can_be_confirmed():
-        messages.error(
-            request,
-            'This booking cannot be confirmed. It may have already started or is not pending.'
-        )
-        return redirect('bookings:booking_detail', pk=booking.pk)
+        messages.error(request, "This booking cannot be confirmed. It may have already started or is not pending.")
+        return redirect("bookings:booking_detail", pk=booking.pk)
 
     # Try to assign a kart
     if booking.assign_random_kart():
-        booking.status = 'CONFIRMED'
+        booking.status = "CONFIRMED"
         booking.save()
 
         messages.success(
             request,
-            f'Booking confirmed for {booking.driver.username}. '
-            f'Kart #{booking.assigned_kart.number} has been assigned.'
+            f"Booking confirmed for {booking.driver.username}. "
+            f"Kart #{booking.assigned_kart.number} has been assigned.",
         )
     else:
-        messages.error(
-            request,
-            'No available karts for this session. Please check kart status or session conflicts.'
-        )
+        messages.error(request, "No available karts for this session. Please check kart status or session conflicts.")
 
-    return redirect('bookings:booking_detail', pk=booking.pk)
+    return redirect("bookings:booking_detail", pk=booking.pk)
 
 
 @login_required
@@ -185,17 +175,11 @@ def booking_complete(request, pk):
 
     # Check if booking can be completed
     if not booking.can_be_completed():
-        messages.error(
-            request,
-            'This booking cannot be completed. The session may not have ended yet.'
-        )
-        return redirect('bookings:booking_detail', pk=booking.pk)
+        messages.error(request, "This booking cannot be completed. The session may not have ended yet.")
+        return redirect("bookings:booking_detail", pk=booking.pk)
 
-    booking.status = 'COMPLETED'
+    booking.status = "COMPLETED"
     booking.save()
 
-    messages.success(
-        request,
-        f'Booking for {booking.driver.username} has been marked as completed.'
-    )
-    return redirect('bookings:booking_detail', pk=booking.pk)
+    messages.success(request, f"Booking for {booking.driver.username} has been marked as completed.")
+    return redirect("bookings:booking_detail", pk=booking.pk)

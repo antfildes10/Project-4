@@ -1,6 +1,7 @@
 """
 URL configuration for kartcontrol project.
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -18,11 +19,11 @@ admin.site.index_title = "Operations Dashboard"
 setup_admin_dashboard(admin.site)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('core.urls', namespace='core')),
-    path('accounts/', include('accounts.urls', namespace='accounts')),
-    path('sessions/', include('sessions.urls', namespace='sessions')),
-    path('bookings/', include('bookings.urls', namespace='bookings')),
+    path("admin/", admin.site.urls),
+    path("", include("core.urls", namespace="core")),
+    path("accounts/", include("accounts.urls", namespace="accounts")),
+    path("sessions/", include("sessions.urls", namespace="sessions")),
+    path("bookings/", include("bookings.urls", namespace="bookings")),
     # Kart management now handled via Django admin
 ]
 
