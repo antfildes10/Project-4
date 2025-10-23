@@ -51,16 +51,15 @@ def booking_create(request, session_id):
 
     if request.method == "POST":
         form = BookingForm(request.POST)
+        # Set required fields on the form instance before validation
+        form.instance.session_slot = session
+        form.instance.driver = request.user
+        form.instance.status = "PENDING"
+
         if form.is_valid():
             try:
-                # Create booking but don't save yet
-                booking = form.save(commit=False)
-                booking.session_slot = session
-                booking.driver = request.user
-                booking.status = "PENDING"
-
-                # Validate and save (model validation will run)
-                booking.save()
+                # Save the booking (model validation already ran during is_valid)
+                booking = form.save()
 
                 messages.success(
                     request, "Your booking has been created successfully. " "It is pending confirmation by a manager."
