@@ -59,11 +59,20 @@ def session_detail(request, pk):
     # Get confirmed bookings for this session
     confirmed_bookings = session.bookings.filter(status__in=['CONFIRMED', 'COMPLETED'])
 
+    # Check if user already has a booking for this session
+    user_has_booking = False
+    if request.user.is_authenticated:
+        user_has_booking = session.bookings.filter(
+            driver=request.user,
+            status__in=['PENDING', 'CONFIRMED']
+        ).exists()
+
     context = {
         'session': session,
         'available_spots': available_spots,
         'is_full': is_full,
         'confirmed_bookings': confirmed_bookings,
+        'user_has_booking': user_has_booking,
     }
     return render(request, 'sessions/session_detail.html', context)
 
