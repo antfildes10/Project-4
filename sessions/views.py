@@ -29,6 +29,15 @@ def session_list(request):
     context = {
         "sessions": sessions,
     }
+
+    # Add user booking information if authenticated
+    if request.user.is_authenticated:
+        from bookings.models import Booking
+
+        user_bookings = Booking.objects.filter(driver=request.user, status__in=["PENDING", "CONFIRMED"])
+        context["user_bookings_count"] = user_bookings.count()
+        context["user_booked_sessions"] = list(user_bookings.values_list("session_slot_id", flat=True))
+
     return render(request, "sessions/session_list.html", context)
 
 

@@ -3,6 +3,15 @@
 {% block title %}Browse Sessions - KartControl{% endblock %}
 
 {% block content %}
+<!-- User Status Banner -->
+{% if user.is_authenticated %}
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle"></i>
+    <strong>Welcome, {{ user.username }}!</strong> You have {{ user_bookings_count }} active booking{{ user_bookings_count|pluralize }}. Sessions you've booked are marked with a <span class="badge bg-info"><i class="fas fa-bookmark"></i> Booked</span> badge.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
 <div class="row">
     <div class="col-12">
         <h1><i class="fas fa-calendar-alt"></i> Browse Racing Sessions</h1>
@@ -88,6 +97,10 @@
                                 <span class="badge bg-secondary">Past Session</span>
                             {% else %}
                                 <span class="badge bg-success">Available</span>
+                            {% endif %}
+
+                            {% if user.is_authenticated and session.pk in user_booked_sessions %}
+                                <span class="badge bg-info"><i class="fas fa-bookmark"></i> Booked</span>
                             {% endif %}
                         </div>
                         
