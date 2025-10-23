@@ -12,7 +12,6 @@ from datetime import timedelta
 from .models import Booking
 from sessions.models import SessionSlot, Track
 from karts.models import Kart
-from accounts.models import Profile
 
 User = get_user_model()
 
@@ -239,7 +238,7 @@ class BookingViewTests(TestCase):
     def test_booking_create_authenticated(self):
         """Test authenticated user can create booking."""
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.post(reverse("bookings:booking_create", args=[self.session.pk]), {})
+        self.client.post(reverse("bookings:booking_create", args=[self.session.pk]), {})
         # Should create booking and redirect
         self.assertEqual(Booking.objects.filter(driver=self.driver).count(), 1)
 
