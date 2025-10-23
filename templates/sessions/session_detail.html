@@ -3,6 +3,21 @@
 {% block title %}{{ session.get_session_type_display }} - KartControl{% endblock %}
 
 {% block content %}
+<!-- User Status Banner -->
+{% if not user.is_authenticated %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle"></i>
+    <strong>Not logged in?</strong> You need to <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="alert-link">login</a> or <a href="{% url 'accounts:register' %}" class="alert-link">register</a> to book this session.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% else %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-user-check"></i>
+    <strong>Hello, {{ user.username }}!</strong> You're logged in and ready to book. {{ session.get_available_spots }} spot{{ session.get_available_spots|pluralize }} remaining.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
 <div class="row">
     <div class="col-12">
         <nav aria-label="breadcrumb">
