@@ -19,11 +19,29 @@ def is_manager(user):
 @login_required
 def booking_list(request):
     """
-    Display list of user's bookings.
+    Display list of user's bookings with filtering.
     Drivers see only their own bookings.
     """
-    # Get user's bookings ordered by creation date
-    bookings = Booking.objects.filter(driver=request.user).order_by("-created_at")
+    from django.utils import timezone
+
+    # Get user's bookings
+    bookings = Booking.objects.filter(driver=request.user).select_related("session_slot", "assigned_kart")
+
+    # Apply status filter
+    status_filter = request.GET.get("status", "all")
+
+    if status_filter == "upcoming":
+        # Show confirmed bookings for future sessions
+        bookings = bookings.filter(
+            status__in=["PENDING", "CONFIRMED"], session_slot__start_datetime__gte=timezone.now()
+        )
+    elif status_filter in ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"]:
+        # Filter by specific status
+        bookings = bookings.filter(status=status_filter)
+    # else: show all bookings
+
+    # Order by session date (most recent first)
+    bookings = bookings.order_by("-session_slot__start_datetime")
 
     context = {
         "bookings": bookings,
