@@ -16,6 +16,16 @@ def home(request):
     context = {
         "upcoming_sessions": upcoming_sessions,
     }
+
+    # Add user booking statistics if authenticated
+    if request.user.is_authenticated:
+        from bookings.models import Booking
+
+        user_bookings = Booking.objects.filter(driver=request.user)
+        context["user_bookings_count"] = user_bookings.count()
+        context["user_pending_count"] = user_bookings.filter(status="PENDING").count()
+        context["user_confirmed_count"] = user_bookings.filter(status="CONFIRMED").count()
+
     return render(request, "core/home.html", context)
 
 
