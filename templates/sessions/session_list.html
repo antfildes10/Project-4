@@ -40,11 +40,6 @@
                     <a href="{% url 'sessions:session_list' %}" class="btn btn-secondary">
                         <i class="fas fa-redo"></i> Clear Filters
                     </a>
-                    {% if user.is_authenticated and user.profile.is_manager %}
-                        <a href="{% url 'sessions:session_create' %}" class="btn btn-success float-end">
-                            <i class="fas fa-plus"></i> Create New Session
-                        </a>
-                    {% endif %}
                 </div>
             </form>
         </div>
@@ -155,12 +150,6 @@
                     There are currently no upcoming racing sessions available. Please check back later or contact us for more information.
                 {% endif %}
             </p>
-            {% if user.is_authenticated and user.profile.is_manager %}
-                <hr>
-                <a href="{% url 'sessions:session_create' %}" class="btn btn-success">
-                    <i class="fas fa-plus"></i> Create First Session
-                </a>
-            {% endif %}
         </div>
     {% endif %}
 </section>

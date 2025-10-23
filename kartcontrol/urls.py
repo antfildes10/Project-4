@@ -23,7 +23,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('sessions/', include('sessions.urls', namespace='sessions')),
     path('bookings/', include('bookings.urls', namespace='bookings')),
-    path('karts/', include('karts.urls', namespace='karts')),
+    # Kart management now handled via Django admin
 ]
 
 # Serve media files in development

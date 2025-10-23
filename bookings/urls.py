@@ -13,10 +13,7 @@ urlpatterns = [
     path('<int:pk>/', views.booking_detail, name='booking_detail'),
     path('<int:pk>/cancel/', views.booking_cancel, name='booking_cancel'),
 
-    # Manager actions
+    # Manager actions (now handled via Django admin)
     path('<int:pk>/confirm/', views.booking_confirm, name='booking_confirm'),
     path('<int:pk>/complete/', views.booking_complete, name='booking_complete'),
-
-    # Manager dashboard
-    path('manage/', views.booking_manage, name='booking_manage'),
 ]
