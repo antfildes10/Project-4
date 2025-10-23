@@ -13,8 +13,8 @@ class BookingInline(admin.TabularInline):
     """Inline display of bookings for a session."""
     model = Booking
     extra = 0
-    fields = ('driver', 'status', 'assigned_kart', 'booking_datetime')
-    readonly_fields = ('booking_datetime',)
+    fields = ('driver', 'status', 'assigned_kart', 'created_at')
+    readonly_fields = ('created_at',)
     can_delete = False
     show_change_link = True
     verbose_name = 'Booking'

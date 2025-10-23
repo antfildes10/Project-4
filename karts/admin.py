@@ -13,8 +13,8 @@ class KartBookingInline(admin.TabularInline):
     """Inline display of bookings for a kart."""
     model = Booking
     extra = 0
-    fields = ('driver', 'session_slot', 'status', 'booking_datetime')
-    readonly_fields = ('driver', 'session_slot', 'booking_datetime')
+    fields = ('driver', 'session_slot', 'status', 'created_at')
+    readonly_fields = ('driver', 'session_slot', 'created_at')
     can_delete = False
     show_change_link = True
     verbose_name = 'Booking'

@@ -18,13 +18,13 @@ class BookingAdmin(admin.ModelAdmin):
         'get_session_link',
         'get_status_badge',
         'get_kart_badge',
-        'booking_datetime',
+        'created_at',
         'get_session_date'
     )
     list_filter = (
         'status',
         'session_slot__session_type',
-        ('booking_datetime', admin.DateFieldListFilter),
+        ('created_at', admin.DateFieldListFilter),
         ('session_slot__start_datetime', admin.DateFieldListFilter),
         'assigned_kart__status'
     )
@@ -38,9 +38,9 @@ class BookingAdmin(admin.ModelAdmin):
         'driver_notes',
         'manager_notes'
     )
-    readonly_fields = ('booking_datetime', 'created_at', 'updated_at', 'get_booking_summary')
-    date_hierarchy = 'booking_datetime'
-    ordering = ('-booking_datetime',)
+    readonly_fields = ('created_at', 'updated_at', 'get_booking_summary')
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)
     list_per_page = 25
     list_select_related = ('driver', 'session_slot', 'assigned_kart', 'session_slot__track')
 
@@ -60,7 +60,7 @@ class BookingAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
         ('Timestamps', {
-            'fields': ('booking_datetime', 'created_at', 'updated_at'),
+            'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
         }),
     )

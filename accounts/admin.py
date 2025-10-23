@@ -15,8 +15,8 @@ class BookingInline(admin.TabularInline):
     """Inline display of bookings for a user."""
     model = Booking
     extra = 0
-    fields = ('session_slot', 'status', 'assigned_kart', 'booking_datetime')
-    readonly_fields = ('session_slot', 'booking_datetime')
+    fields = ('session_slot', 'status', 'assigned_kart', 'created_at')
+    readonly_fields = ('session_slot', 'created_at')
     can_delete = False
     show_change_link = True
     verbose_name = 'Booking'
@@ -71,8 +71,8 @@ class UserAdmin(BaseUserAdmin):
 
     def get_booking_count(self, obj):
         """Display user's booking count."""
-        total = obj.driver_bookings.count()
-        upcoming = obj.driver_bookings.filter(
+        total = obj.bookings.count()
+        upcoming = obj.bookings.filter(
             session_slot__start_datetime__gte=timezone.now(),
             status__in=['PENDING', 'CONFIRMED']
         ).count()
@@ -148,12 +148,12 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def get_booking_count(self, obj):
         """Display booking statistics."""
-        total = obj.user.driver_bookings.count()
-        upcoming = obj.user.driver_bookings.filter(
+        total = obj.user.bookings.count()
+        upcoming = obj.user.bookings.filter(
             session_slot__start_datetime__gte=timezone.now(),
             status__in=['PENDING', 'CONFIRMED']
         ).count()
-        completed = obj.user.driver_bookings.filter(status='COMPLETED').count()
+        completed = obj.user.bookings.filter(status='COMPLETED').count()
 
         return format_html(
             '<strong>{}</strong> total (<span style="color: #007bff;">{} upcoming</span>, <span style="color: #6c757d;">{} completed</span>)',
@@ -165,13 +165,13 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def get_profile_summary(self, obj):
         """Display comprehensive profile summary."""
-        total_bookings = obj.user.driver_bookings.count()
-        upcoming_bookings = obj.user.driver_bookings.filter(
+        total_bookings = obj.user.bookings.count()
+        upcoming_bookings = obj.user.bookings.filter(
             session_slot__start_datetime__gte=timezone.now(),
             status__in=['PENDING', 'CONFIRMED']
         ).count()
-        completed_bookings = obj.user.driver_bookings.filter(status='COMPLETED').count()
-        cancelled_bookings = obj.user.driver_bookings.filter(status='CANCELLED').count()
+        completed_bookings = obj.user.bookings.filter(status='COMPLETED').count()
+        cancelled_bookings = obj.user.bookings.filter(status='CANCELLED').count()
 
         role_colors = {
             'DRIVER': '#17a2b8',
