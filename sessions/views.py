@@ -26,17 +26,14 @@ def session_list(request):
 
     # Apply filters
     session_type = request.GET.get('session_type')
-    date_from = request.GET.get('date_from')
-    date_to = request.GET.get('date_to')
+    date = request.GET.get('date')
 
     if session_type:
         sessions = sessions.filter(session_type=session_type)
 
-    if date_from:
-        sessions = sessions.filter(start_datetime__date__gte=date_from)
-
-    if date_to:
-        sessions = sessions.filter(start_datetime__date__lte=date_to)
+    if date:
+        # Filter sessions for the specific date
+        sessions = sessions.filter(start_datetime__date=date)
 
     context = {
         'sessions': sessions,

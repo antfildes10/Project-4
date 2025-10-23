@@ -21,7 +21,7 @@
         </div>
         <div class="card-body">
             <form method="get" class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="session_type" class="form-label">Session Type</label>
                     <select name="session_type" id="session_type" class="form-select">
                         <option value="">All Types</option>
@@ -29,13 +29,9 @@
                         <option value="GRAND_PRIX" {% if request.GET.session_type == 'GRAND_PRIX' %}selected{% endif %}>Grand Prix</option>
                     </select>
                 </div>
-                <div class="col-md-4">
-                    <label for="date_from" class="form-label">From Date</label>
-                    <input type="date" name="date_from" id="date_from" value="{{ request.GET.date_from }}" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label for="date_to" class="form-label">To Date</label>
-                    <input type="date" name="date_to" id="date_to" value="{{ request.GET.date_to }}" class="form-control">
+                <div class="col-md-6">
+                    <label for="date" class="form-label">Select Date</label>
+                    <input type="date" name="date" id="date" value="{{ request.GET.date }}" class="form-control">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
@@ -117,12 +113,12 @@
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page=1{% if request.GET.session_type %}&session_type={{ request.GET.session_type }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" aria-label="First page">
+                        <a class="page-link" href="?page=1{% if request.GET.session_type %}&session_type={{ request.GET.session_type }}{% endif %}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}" aria-label="First page">
                             <span aria-hidden="true">&laquo;&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.session_type %}&session_type={{ request.GET.session_type }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" aria-label="Previous page">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.session_type %}&session_type={{ request.GET.session_type }}{% endif %}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}" aria-label="Previous page">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -136,12 +132,12 @@
 
                 {% if page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.session_type %}&session_type={{ request.GET.session_type }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" aria-label="Next page">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.session_type %}&session_type={{ request.GET.session_type }}{% endif %}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}" aria-label="Next page">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.session_type %}&session_type={{ request.GET.session_type }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" aria-label="Last page">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.session_type %}&session_type={{ request.GET.session_type }}{% endif %}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}" aria-label="Last page">
                             <span aria-hidden="true">&raquo;&raquo;</span>
                         </a>
                     </li>
