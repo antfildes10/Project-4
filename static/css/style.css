@@ -131,3 +131,8 @@ textarea:focus {
   opacity: 0.6;
   pointer-events: none;
 }
+
+/* Hero section extra padding for logged-in users */
+.hero-section.bg-primary {
+  padding: 4rem 2rem !important;
+}
