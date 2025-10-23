@@ -6,6 +6,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# Import custom admin setup
+from core.admin import setup_admin_dashboard
+
+# Customize admin site
+admin.site.site_header = "KartControl Administration"
+admin.site.site_title = "KartControl Admin"
+admin.site.index_title = "Operations Dashboard"
+
+# Setup custom dashboard
+setup_admin_dashboard(admin.site)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls', namespace='core')),
