@@ -310,12 +310,7 @@ class ProfileAdmin(admin.ModelAdmin):
         completed_bookings = obj.user.bookings.filter(status="COMPLETED").count()
         cancelled_bookings = obj.user.bookings.filter(status="CANCELLED").count()
 
-        role_colors = {
-            "DRIVER": "#17a2b8",
-            "MANAGER": "#ffc107",
-            "MARSHAL": "#6f42c1",
-        }
-        role_color = role_colors.get(obj.role, "#6c757d")
+        role_color = ROLE_COLORS.get(obj.role, "#6c757d")
 
         html = f"""
         <div style="font-family: monospace; background: #f5f5f5; padding: 15px; border-radius: 5px; border-left: 4px solid {role_color};">
