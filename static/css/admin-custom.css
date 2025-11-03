@@ -1410,9 +1410,11 @@ select:focus {
     font-weight: 600;
 }
 
-/* Hide the old filter sidebar */
+/* Ensure dropdown panel stays positioned correctly */
 .filtered #changelist-filter {
     float: none !important;
-    width: auto !important;
+    width: 300px !important;
     position: absolute !important;
+    left: 0 !important;
+    top: calc(100% + 0.5rem) !important;
 }
