@@ -48,12 +48,18 @@ def setup_admin_dashboard(site):
         )
 
         # Kart status with upcoming booking count
-        karts = Kart.objects.all().order_by("number")
-        for kart in karts:
-            kart.upcoming_count = kart.bookings.filter(
-                session_slot__start_datetime__gte=now,
-                status__in=["PENDING", "CONFIRMED"],
-            ).count()
+        # Use annotation to avoid N+1 queries
+        from django.db.models import Count, Q
+
+        karts = Kart.objects.annotate(
+            upcoming_count=Count(
+                "bookings",
+                filter=Q(
+                    bookings__session_slot__start_datetime__gte=now,
+                    bookings__status__in=["PENDING", "CONFIRMED"],
+                ),
+            )
+        ).order_by("number")
 
         # Statistics
         stats = {
