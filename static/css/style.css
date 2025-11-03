@@ -241,6 +241,55 @@ footer a:hover {
   .features-section .fa-3x {
     font-size: 2.5rem !important;
   }
+
+  /* Sessions page */
+  .filter-section .card-body {
+    padding: 1rem;
+  }
+
+  .filter-section .form-label {
+    font-size: 0.9rem;
+  }
+
+  .filter-section .form-select,
+  .filter-section .form-control {
+    font-size: 1rem;
+  }
+
+  .filter-section .btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Session cards */
+  .session-card {
+    margin-bottom: 1rem;
+  }
+
+  .session-card .card-header {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+
+  .session-card .card-body {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .session-card .badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+  }
+
+  /* Pagination */
+  .pagination {
+    font-size: 0.9rem;
+  }
+
+  .page-link {
+    padding: 0.5rem 0.75rem;
+  }
 }
 
 /* Focus indicators for accessibility */
