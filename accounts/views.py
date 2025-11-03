@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from .forms import UserRegistrationForm, UserEditForm, ProfileEditForm
 
 
@@ -76,3 +77,18 @@ def profile_edit(request):
         "profile_form": profile_form,
     }
     return render(request, "accounts/profile_edit.html", context)
+
+
+class CustomLoginView(LoginView):
+    """
+    Custom login view that redirects superusers to admin dashboard.
+    Regular users are redirected to homepage.
+    """
+
+    template_name = "accounts/login.html"
+
+    def get_success_url(self):
+        """Redirect superusers to admin, regular users to homepage."""
+        if self.request.user.is_superuser:
+            return "/admin/"
+        return "/"
