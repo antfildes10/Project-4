@@ -441,6 +441,50 @@ footer a:hover {
     font-size: 1rem;
     padding: 0.65rem 1.5rem;
   }
+
+  /* Footer improvements */
+  footer {
+    font-size: 0.85rem;
+    padding: 1.5rem 0;
+  }
+
+  footer .container {
+    text-align: center;
+  }
+
+  footer a {
+    display: inline-block;
+    margin: 0.25rem;
+  }
+
+  /* Messages/alerts */
+  .messages-container {
+    margin-top: 1rem;
+  }
+
+  .messages-container .alert {
+    font-size: 0.9rem;
+  }
+
+  /* Profile page */
+  .profile-info .card-body {
+    padding: 1rem;
+  }
+
+  /* General card improvements */
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .card-body p {
+    font-size: 0.9rem;
+  }
+
+  /* Improve icon spacing */
+  .fas,
+  .far {
+    margin-right: 0.25rem;
+  }
 }
 
 /* Focus indicators for accessibility */
