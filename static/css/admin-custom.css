@@ -33,6 +33,9 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     padding: 1rem 2rem !important;
     border-bottom: 3px solid var(--admin-accent);
+    overflow: visible !important;
+    position: relative;
+    z-index: 9000;
 }
 
 #branding h1 {
@@ -80,12 +83,14 @@
     font-weight: 500 !important;
     padding: 0.5rem 0 !important;
     position: relative;
+    z-index: 10000;
 }
 
 /* User Dropdown */
 .user-dropdown {
     position: relative;
     display: inline-block;
+    z-index: 10001;
 }
 
 .user-dropdown-toggle {
@@ -121,9 +126,9 @@
 }
 
 .user-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
+    position: fixed;
+    top: 60px;
+    right: 2rem;
     background: #ffffff;
     border: 1px solid var(--admin-border);
     border-radius: 8px;
@@ -133,7 +138,7 @@
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.2s ease;
-    z-index: 9999;
+    z-index: 10002;
 }
 
 .user-dropdown-menu.show {
