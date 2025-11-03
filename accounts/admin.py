@@ -51,6 +51,24 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ("is_staff", "is_superuser", "is_active", "profile__role", "date_joined")
     search_fields = ("username", "email", "first_name", "last_name", "profile__phone_number")
 
+    # Hide Groups and Permissions - we use Profile.role instead
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        ("Personal info", {"fields": ("first_name", "last_name", "email")}),
+        ("Status", {"fields": ("is_active", "is_staff", "is_superuser")}),
+        ("Important dates", {"fields": ("last_login", "date_joined")}),
+    )
+
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("username", "password1", "password2", "email"),
+            },
+        ),
+    )
+
     def get_full_name_display(self, obj):
         """Display user's full name."""
         full_name = obj.get_full_name()
