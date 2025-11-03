@@ -217,6 +217,11 @@ class UserAdmin(BaseUserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
+# Hide Groups from admin index - we use Profile.role instead
+from django.contrib.auth.models import Group
+
+admin.site.unregister(Group)
+
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
