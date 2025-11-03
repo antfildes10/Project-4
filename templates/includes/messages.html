@@ -1,19 +1,24 @@
 {% if messages %}
-    <div class="messages-container" role="alert" aria-live="polite">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {% if message.tags == 'error' %}
-                    <i class="fas fa-exclamation-circle"></i>
-                {% elif message.tags == 'success' %}
-                    <i class="fas fa-check-circle"></i>
-                {% elif message.tags == 'warning' %}
-                    <i class="fas fa-exclamation-triangle"></i>
-                {% elif message.tags == 'info' %}
-                    <i class="fas fa-info-circle"></i>
-                {% endif %}
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    </div>
+  <div class="messages-container" role="alert" aria-live="polite">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+           role="alert">
+        {% if message.tags == 'error' %}
+          <i class="fas fa-exclamation-circle"></i>
+        {% elif message.tags == 'success' %}
+          <i class="fas fa-check-circle"></i>
+        {% elif message.tags == 'warning' %}
+          <i class="fas fa-exclamation-triangle"></i>
+        {% elif message.tags == 'info' %}
+          <i class="fas fa-info-circle"></i>
+        {% endif %}
+        {{ message }}
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close">
+        </button>
+      </div>
+    {% endfor %}
+  </div>
 {% endif %}

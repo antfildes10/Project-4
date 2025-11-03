@@ -1,127 +1,194 @@
 {% extends 'base/base.html' %}
 
-{% block title %}About Us - KartControl{% endblock %}
+{% block title %}
+  About Us - KartControl
+
+{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-12">
-        <h1><i class="fas fa-info-circle"></i> About KartControl</h1>
-        <hr>
+      <h1>
+        <i class="fas fa-info-circle"></i> About KartControl
+      </h1>
+      <hr />
     </div>
-</div>
+  </div>
 
-<!-- Track Information -->
-<section class="about-section" role="region" aria-labelledby="track-info-heading">
+  <!-- Track Information -->
+  <section class="about-section"
+           role="region"
+           aria-labelledby="track-info-heading">
     <div class="row">
-        <div class="col-md-8">
-            <h2 id="track-info-heading">Our Track</h2>
+      <div class="col-md-8">
+        <h2 id="track-info-heading">
+          Our Track
+        </h2>
+        {% if track %}
+          <h3 class="h4">
+            {{ track.name }}
+          </h3>
+          <div class="mb-4">
+            <p>
+              <strong><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Address:</strong>
+            </p>
+            <address>{{ track.address|linebreaks }}</address>
+          </div>
+
+          {% if track.description %}
+            <div class="mb-4">
+              <h3 class="h5">
+                About Our Facility
+              </h3>
+              <p>
+                {{ track.description|linebreaks }}
+              </p>
+            </div>
+          {% else %}
+            <div class="mb-4">
+              <h3 class="h5">
+                About Our Facility
+              </h3>
+              <p>
+                Welcome to our state-of-the-art go-kart racing facility. We offer a professional racing experience for drivers of all skill levels, from beginners to experienced racers.
+              </p>
+              <p>
+                Our track features modern safety equipment, well-maintained karts, and a challenging layout that will test your racing skills while ensuring maximum safety and fun.
+              </p>
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="alert alert-info">
+            <p>
+              <strong>Welcome to KartControl!</strong>
+            </p>
+            <p>
+              KartControl is a premier go-kart track booking and management system designed to make your racing experience seamless and enjoyable.
+            </p>
+            <p>
+              Our facility offers professional-grade racing equipment and a safe, exciting environment for all racers.
+            </p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Contact Information -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h2 class="h5 mb-0">
+              <i class="fas fa-phone"></i> Contact Information
+            </h2>
+          </div>
+          <div class="card-body">
             {% if track %}
-                <h3 class="h4">{{ track.name }}</h3>
-                <div class="mb-4">
-                    <p><strong><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Address:</strong></p>
-                    <address>{{ track.address|linebreaks }}</address>
-                </div>
-
-                {% if track.description %}
-                    <div class="mb-4">
-                        <h3 class="h5">About Our Facility</h3>
-                        <p>{{ track.description|linebreaks }}</p>
-                    </div>
-                {% else %}
-                    <div class="mb-4">
-                        <h3 class="h5">About Our Facility</h3>
-                        <p>Welcome to our state-of-the-art go-kart racing facility. We offer a professional racing experience for drivers of all skill levels, from beginners to experienced racers.</p>
-                        <p>Our track features modern safety equipment, well-maintained karts, and a challenging layout that will test your racing skills while ensuring maximum safety and fun.</p>
-                    </div>
-                {% endif %}
+              <p class="mb-2">
+                <strong><i class="fas fa-envelope" aria-hidden="true"></i> Email:</strong>
+                <br />
+                <a href="mailto:{{ track.email }}">{{ track.email }}</a>
+              </p>
+              <p class="mb-2">
+                <strong><i class="fas fa-phone" aria-hidden="true"></i> Phone:</strong>
+                <br />
+                <a href="tel:{{ track.phone }}">{{ track.phone }}</a>
+              </p>
             {% else %}
-                <div class="alert alert-info">
-                    <p><strong>Welcome to KartControl!</strong></p>
-                    <p>KartControl is a premier go-kart track booking and management system designed to make your racing experience seamless and enjoyable.</p>
-                    <p>Our facility offers professional-grade racing equipment and a safe, exciting environment for all racers.</p>
-                </div>
+              <p class="mb-2">
+                <strong><i class="fas fa-envelope" aria-hidden="true"></i> Email:</strong>
+                <br />
+                <a href="mailto:info@kartcontrol.com">info@kartcontrol.com</a>
+              </p>
+              <p class="mb-2">
+                <strong><i class="fas fa-phone" aria-hidden="true"></i> Phone:</strong>
+                <br />
+                <a href="tel:+353123456789">+353 1 234 5678</a>
+              </p>
             {% endif %}
+
+            <hr />
+
+            <p class="mb-0">
+              <a href="{% url 'core:contact' %}" class="btn btn-primary w-100">
+                <i class="fas fa-paper-plane"></i> Send Us a Message
+              </a>
+            </p>
+          </div>
         </div>
-
-        <!-- Contact Information -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="h5 mb-0"><i class="fas fa-phone"></i> Contact Information</h2>
-                </div>
-                <div class="card-body">
-                    {% if track %}
-                        <p class="mb-2">
-                            <strong><i class="fas fa-envelope" aria-hidden="true"></i> Email:</strong><br>
-                            <a href="mailto:{{ track.email }}">{{ track.email }}</a>
-                        </p>
-                        <p class="mb-2">
-                            <strong><i class="fas fa-phone" aria-hidden="true"></i> Phone:</strong><br>
-                            <a href="tel:{{ track.phone }}">{{ track.phone }}</a>
-                        </p>
-                    {% else %}
-                        <p class="mb-2">
-                            <strong><i class="fas fa-envelope" aria-hidden="true"></i> Email:</strong><br>
-                            <a href="mailto:info@kartcontrol.com">info@kartcontrol.com</a>
-                        </p>
-                        <p class="mb-2">
-                            <strong><i class="fas fa-phone" aria-hidden="true"></i> Phone:</strong><br>
-                            <a href="tel:+353123456789">+353 1 234 5678</a>
-                        </p>
-                    {% endif %}
-
-                    <hr>
-
-                    <p class="mb-0">
-                        <a href="{% url 'core:contact' %}" class="btn btn-primary w-100">
-                            <i class="fas fa-paper-plane"></i> Send Us a Message
-                        </a>
-                    </p>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Session Types -->
-<section class="session-types-section mt-5" role="region" aria-labelledby="session-types-heading">
-    <h2 id="session-types-heading">Session Types</h2>
+  <!-- Session Types -->
+  <section class="session-types-section mt-5"
+           role="region"
+           aria-labelledby="session-types-heading">
+    <h2 id="session-types-heading">
+      Session Types
+    </h2>
     <div class="row g-4 mt-2">
-        <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h3 class="h5 card-title"><i class="fas fa-users text-primary" aria-hidden="true"></i> Open Session</h3>
-                    <p class="card-text">Perfect for casual racers and beginners. Open sessions allow you to race at your own pace and enjoy the track with other drivers. Great for practice and improving your skills.</p>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check text-success" aria-hidden="true"></i> Suitable for all skill levels</li>
-                        <li><i class="fas fa-check text-success" aria-hidden="true"></i> Flexible racing pace</li>
-                        <li><i class="fas fa-check text-success" aria-hidden="true"></i> Practice and training</li>
-                    </ul>
-                </div>
-            </div>
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h3 class="h5 card-title">
+              <i class="fas fa-users text-primary" aria-hidden="true"></i> Open Session
+            </h3>
+            <p class="card-text">
+              Perfect for casual racers and beginners. Open sessions allow you to race at your own pace and enjoy the track with other drivers. Great for practice and improving your skills.
+            </p>
+            <ul class="list-unstyled">
+              <li>
+                <i class="fas fa-check text-success" aria-hidden="true"></i> Suitable for all skill levels
+              </li>
+              <li>
+                <i class="fas fa-check text-success" aria-hidden="true"></i> Flexible racing pace
+              </li>
+              <li>
+                <i class="fas fa-check text-success" aria-hidden="true"></i> Practice and training
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h3 class="h5 card-title"><i class="fas fa-trophy text-warning" aria-hidden="true"></i> Grand Prix</h3>
-                    <p class="card-text">Competitive racing for experienced drivers. Grand Prix sessions feature timed laps, qualifying rounds, and podium finishes. Test your skills against other racers in an exciting competitive format.</p>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check text-success" aria-hidden="true"></i> Competitive racing format</li>
-                        <li><i class="fas fa-check text-success" aria-hidden="true"></i> Timed laps and results</li>
-                        <li><i class="fas fa-check text-success" aria-hidden="true"></i> Podium and recognition</li>
-                    </ul>
-                </div>
-            </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h3 class="h5 card-title">
+              <i class="fas fa-trophy text-warning" aria-hidden="true"></i> Grand Prix
+            </h3>
+            <p class="card-text">
+              Competitive racing for experienced drivers. Grand Prix sessions feature timed laps, qualifying rounds, and podium finishes. Test your skills against other racers in an exciting competitive format.
+            </p>
+            <ul class="list-unstyled">
+              <li>
+                <i class="fas fa-check text-success" aria-hidden="true"></i> Competitive racing format
+              </li>
+              <li>
+                <i class="fas fa-check text-success" aria-hidden="true"></i> Timed laps and results
+              </li>
+              <li>
+                <i class="fas fa-check text-success" aria-hidden="true"></i> Podium and recognition
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Call to Action -->
-<section class="cta-section mt-5 p-4 bg-light rounded text-center" role="region" aria-label="Get Started">
-    <h2>Ready to Experience the Thrill?</h2>
-    <p class="lead">Browse our available sessions and book your spot today!</p>
-    <a href="{% url 'sessions:session_list' %}" class="btn btn-primary btn-lg">
-        <i class="fas fa-calendar-alt"></i> View Available Sessions
+  <!-- Call to Action -->
+  <section class="cta-section mt-5 p-4 bg-light rounded text-center"
+           role="region"
+           aria-label="Get Started">
+    <h2>
+      Ready to Experience the Thrill?
+    </h2>
+    <p class="lead">
+      Browse our available sessions and book your spot today!
+    </p>
+    <a href="{% url 'sessions:session_list' %}"
+       class="btn btn-primary btn-lg">
+      <i class="fas fa-calendar-alt"></i> View Available Sessions
     </a>
-</section>
+  </section>
+
 {% endblock %}

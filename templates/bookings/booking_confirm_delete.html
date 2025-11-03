@@ -1,68 +1,89 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Cancel Booking - KartControl{% endblock %}
+{% block title %}
+  Cancel Booking - KartControl
+
+{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
+  <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card">
-            <div class="card-header bg-danger text-white">
-                <h1 class="h3 mb-0"><i class="fas fa-exclamation-triangle"></i> Cancel Booking</h1>
-            </div>
-            <div class="card-body">
-                <h2 class="h4">Are you sure you want to cancel this booking?</h2>
-                
-                <div class="alert alert-warning mt-3" role="alert">
-                    <h3 class="h6 mb-2"><strong>Booking Details:</strong></h3>
-                    <p class="mb-1">
-                        <strong>Session:</strong> {{ booking.session_slot.get_session_type_display }}
-                    </p>
-                    <p class="mb-1">
-                        <strong>Date:</strong> {{ booking.session_slot.start_datetime|date:"l, F j, Y" }}
-                    </p>
-                    <p class="mb-1">
-                        <strong>Time:</strong> {{ booking.session_slot.start_datetime|date:"g:i A" }} - {{ booking.session_slot.end_datetime|date:"g:i A" }}
-                    </p>
-                    <p class="mb-1">
-                        <strong>Price:</strong> &euro;{{ booking.session_slot.price }}
-                    </p>
-                    {% if booking.assigned_kart %}
-                        <p class="mb-0">
-                            <strong>Assigned Kart:</strong> Kart #{{ booking.assigned_kart.kart_number }}
-                        </p>
-                    {% endif %}
-                </div>
-
-                <div class="alert alert-info" role="status">
-                    <h3 class="h6 mb-2"><i class="fas fa-info-circle"></i> What happens when you cancel?</h3>
-                    <ul class="mb-0 small">
-                        <li>Your booking will be marked as <strong>Cancelled</strong></li>
-                        <li>Your spot will become available for other racers</li>
-                        {% if booking.assigned_kart %}
-                            <li>The assigned kart will be released for reassignment</li>
-                        {% endif %}
-                        <li>You can always book another session later</li>
-                    </ul>
-                </div>
-
-                <p class="text-danger mb-4">
-                    <strong><i class="fas fa-exclamation-circle"></i> Warning:</strong> 
-                    This action cannot be undone. You will need to create a new booking if you change your mind.
-                </p>
-
-                <form method="post" class="mt-4">
-                    {% csrf_token %}
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-times"></i> Yes, Cancel My Booking
-                        </button>
-                        <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> No, Keep My Booking
-                        </a>
-                    </div>
-                </form>
-            </div>
+      <div class="card">
+        <div class="card-header bg-danger text-white">
+          <h1 class="h3 mb-0">
+            <i class="fas fa-exclamation-triangle"></i> Cancel Booking
+          </h1>
         </div>
+        <div class="card-body">
+          <h2 class="h4">
+            Are you sure you want to cancel this booking?
+          </h2>
+
+          <div class="alert alert-warning mt-3" role="alert">
+            <h3 class="h6 mb-2">
+              <strong>Booking Details:</strong>
+            </h3>
+            <p class="mb-1">
+              <strong>Session:</strong> {{ booking.session_slot.get_session_type_display }}
+            </p>
+            <p class="mb-1">
+              <strong>Date:</strong> {{ booking.session_slot.start_datetime|date:"l, F j, Y" }}
+            </p>
+            <p class="mb-1">
+              <strong>Time:</strong> {{ booking.session_slot.start_datetime|date:"g:i A" }} - {{ booking.session_slot.end_datetime|date:"g:i A" }}
+            </p>
+            <p class="mb-1">
+              <strong>Price:</strong> &euro;{{ booking.session_slot.price }}
+            </p>
+            {% if booking.assigned_kart %}
+              <p class="mb-0">
+                <strong>Assigned Kart:</strong> Kart #{{ booking.assigned_kart.kart_number }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="alert alert-info" role="status">
+            <h3 class="h6 mb-2">
+              <i class="fas fa-info-circle"></i> What happens when you cancel?
+            </h3>
+            <ul class="mb-0 small">
+              <li>
+                Your booking will be marked as <strong>Cancelled</strong>
+              </li>
+              <li>
+                Your spot will become available for other racers
+              </li>
+              {% if booking.assigned_kart %}
+                <li>
+                  The assigned kart will be released for reassignment
+                </li>
+              {% endif %}
+              <li>
+                You can always book another session later
+              </li>
+            </ul>
+          </div>
+
+          <p class="text-danger mb-4">
+            <strong><i class="fas fa-exclamation-circle"></i> Warning:</strong>
+            This action cannot be undone. You will need to create a new booking if you change your mind.
+          </p>
+
+          <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-danger">
+                <i class="fas fa-times"></i> Yes, Cancel My Booking
+              </button>
+              <a href="{% url 'bookings:booking_detail' booking.pk %}"
+                 class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> No, Keep My Booking
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
 {% endblock %}

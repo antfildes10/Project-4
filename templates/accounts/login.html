@@ -1,66 +1,87 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Login - KartControl{% endblock %}
+{% block title %}
+  Login - KartControl
+
+{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
+  <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h1 class="h3 mb-0"><i class="fas fa-sign-in-alt"></i> Login to KartControl</h1>
-            </div>
-            <div class="card-body">
-                <form method="post" novalidate>
-                    {% csrf_token %}
-
-                    <!-- Username Field -->
-                    <div class="mb-3">
-                        <label for="id_username" class="form-label">
-                            Username <span class="text-danger" aria-label="required">*</span>
-                        </label>
-                        <input type="text" name="username" id="id_username" class="form-control {% if form.username.errors %}is-invalid{% endif %}" required autofocus>
-                        {% if form.username.errors %}
-                            <div class="invalid-feedback" role="alert">
-                                {{ form.username.errors|join:", " }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Password Field -->
-                    <div class="mb-3">
-                        <label for="id_password" class="form-label">
-                            Password <span class="text-danger" aria-label="required">*</span>
-                        </label>
-                        <input type="password" name="password" id="id_password" class="form-control {% if form.password.errors %}is-invalid{% endif %}" required>
-                        {% if form.password.errors %}
-                            <div class="invalid-feedback" role="alert">
-                                {{ form.password.errors|join:", " }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Non-field errors -->
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ form.non_field_errors|join:", " }}
-                        </div>
-                    {% endif %}
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </button>
-                </form>
-
-                <hr>
-
-                <!-- Register Link -->
-                <p class="text-center mb-0">
-                    Don't have an account?
-                    <a href="{% url 'accounts:register' %}">Register here</a>
-                </p>
-            </div>
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h1 class="h3 mb-0">
+            <i class="fas fa-sign-in-alt"></i> Login to KartControl
+          </h1>
         </div>
+        <div class="card-body">
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Username Field -->
+            <div class="mb-3">
+              <label for="id_username" class="form-label">
+                Username <span class="text-danger" aria-label="required">*</span>
+              </label>
+              <input type="text"
+                     name="username"
+                     id="id_username"
+                     class="form-control
+                            {% if form.username.errors %}
+                              is-invalid
+                            {% endif %}"
+                     required
+                     autofocus />
+              {% if form.username.errors %}
+                <div class="invalid-feedback" role="alert">
+                  {{ form.username.errors|join:", " }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+              <label for="id_password" class="form-label">
+                Password <span class="text-danger" aria-label="required">*</span>
+              </label>
+              <input type="password"
+                     name="password"
+                     id="id_password"
+                     class="form-control
+                            {% if form.password.errors %}
+                              is-invalid
+                            {% endif %}"
+                     required />
+              {% if form.password.errors %}
+                <div class="invalid-feedback" role="alert">
+                  {{ form.password.errors|join:", " }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Non-field errors -->
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ form.non_field_errors|join:", " }}
+              </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+          </form>
+
+          <hr />
+
+          <!-- Register Link -->
+          <p class="text-center mb-0">
+            Don't have an account?
+            <a href="{% url 'accounts:register' %}">Register here</a>
+          </p>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
 {% endblock %}

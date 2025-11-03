@@ -1,135 +1,195 @@
 {% extends 'base/base.html' %}
+
 {% load static %}
 
-{% block title %}Home - KartControl{% endblock %}
+{% block title %}
+  Home - KartControl
+
+{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section {% if user.is_authenticated %}bg-primary text-white py-5 px-4{% else %}bg-light py-5{% endif %}" role="banner">
+  <!-- Hero Section -->
+  <section class="hero-section
+                  {% if user.is_authenticated %}
+                    bg-primary text-white py-5 px-4
+                  {% else %}
+                    bg-light py-5
+                  {% endif %}"
+           role="banner">
     <div class="row align-items-center">
-        <div class="col-md-6">
-            {% if user.is_authenticated %}
-                <h1 class="display-4">
-                    <i class="fas fa-flag-checkered text-warning"></i> Welcome back, {{ user.username }}!
-                </h1>
-                <p class="lead">Ready for your next race? Check out our available sessions and book your spot on the track.</p>
-                <div class="alert alert-light mb-3" role="status">
-                    <i class="fas fa-info-circle"></i> <strong>Your Stats:</strong>
-                    {{ user_bookings_count }} booking{{ user_bookings_count|pluralize }} |
-                    {{ user_pending_count }} pending |
-                    {{ user_confirmed_count }} confirmed
-                </div>
-                <a href="{% url 'sessions:session_list' %}" class="btn btn-warning btn-lg me-2">
-                    <i class="fas fa-calendar-alt"></i> View Available Sessions
-                </a>
-                <a href="{% url 'bookings:booking_list' %}" class="btn btn-outline-light btn-lg">
-                    <i class="fas fa-calendar-check"></i> My Bookings
-                </a>
-            {% else %}
-                <h1 class="display-4"><i class="fas fa-flag-checkered text-danger"></i> Welcome to KartControl</h1>
-                <p class="lead">Your premier go-kart racing experience. Book your session online and feel the thrill of the track.</p>
-                <div class="alert alert-info" role="status">
-                    <i class="fas fa-user-plus"></i> <strong>New here?</strong> Create an account to start booking your racing sessions!
-                </div>
-                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg me-2">
-                    <i class="fas fa-user-plus"></i> Register Now
-                </a>
-                <a href="{% url 'sessions:session_list' %}" class="btn btn-outline-primary btn-lg">
-                    <i class="fas fa-calendar-alt"></i> View Sessions
-                </a>
-            {% endif %}
-        </div>
-        <div class="col-md-6 text-center">
-            <i class="fas fa-car-side fa-10x {% if user.is_authenticated %}text-warning{% else %}text-danger{% endif %}" aria-hidden="true"></i>
-        </div>
+      <div class="col-md-6">
+        {% if user.is_authenticated %}
+          <h1 class="display-4">
+            <i class="fas fa-flag-checkered text-warning"></i> Welcome back, {{ user.username }}!
+          </h1>
+          <p class="lead">
+            Ready for your next race? Check out our available sessions and book your spot on the track.
+          </p>
+          <div class="alert alert-light mb-3" role="status">
+            <i class="fas fa-info-circle"></i> <strong>Your Stats:</strong>
+            {{ user_bookings_count }} booking{{ user_bookings_count|pluralize }} |
+            {{ user_pending_count }} pending |
+            {{ user_confirmed_count }} confirmed
+          </div>
+          <a href="{% url 'sessions:session_list' %}"
+             class="btn btn-warning btn-lg me-2">
+            <i class="fas fa-calendar-alt"></i> View Available Sessions
+          </a>
+          <a href="{% url 'bookings:booking_list' %}"
+             class="btn btn-outline-light btn-lg">
+            <i class="fas fa-calendar-check"></i> My Bookings
+          </a>
+        {% else %}
+          <h1 class="display-4">
+            <i class="fas fa-flag-checkered text-danger"></i> Welcome to KartControl
+          </h1>
+          <p class="lead">
+            Your premier go-kart racing experience. Book your session online and feel the thrill of the track.
+          </p>
+          <div class="alert alert-info" role="status">
+            <i class="fas fa-user-plus"></i> <strong>New here?</strong> Create an account to start booking your racing sessions!
+          </div>
+          <a href="{% url 'accounts:register' %}"
+             class="btn btn-primary btn-lg me-2">
+            <i class="fas fa-user-plus"></i> Register Now
+          </a>
+          <a href="{% url 'sessions:session_list' %}"
+             class="btn btn-outline-primary btn-lg">
+            <i class="fas fa-calendar-alt"></i> View Sessions
+          </a>
+        {% endif %}
+      </div>
+      <div class="col-md-6 text-center">
+        <i class="fas fa-car-side fa-10x
+                  {% if user.is_authenticated %}
+                    text-warning
+                  {% else %}
+                    text-danger
+                  {% endif %}"
+           aria-hidden="true"></i>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Features Section -->
-<section class="features-section py-5" role="region" aria-label="Key Features">
-    <h2 class="text-center mb-4">Why Choose KartControl?</h2>
+  <!-- Features Section -->
+  <section class="features-section py-5" role="region" aria-label="Key Features">
+    <h2 class="text-center mb-4">
+      Why Choose KartControl?
+    </h2>
     <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <i class="fas fa-clock fa-3x text-primary mb-3" aria-hidden="true"></i>
-                    <h3 class="h5 card-title">Easy Online Booking</h3>
-                    <p class="card-text">Book your racing sessions 24/7 from any device. Simple, fast, and secure.</p>
-                </div>
-            </div>
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fas fa-clock fa-3x text-primary mb-3" aria-hidden="true"></i>
+            <h3 class="h5 card-title">
+              Easy Online Booking
+            </h3>
+            <p class="card-text">
+              Book your racing sessions 24/7 from any device. Simple, fast, and secure.
+            </p>
+          </div>
         </div>
-        <div class="col-md-4">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <i class="fas fa-cogs fa-3x text-primary mb-3" aria-hidden="true"></i>
-                    <h3 class="h5 card-title">Well-Maintained Karts</h3>
-                    <p class="card-text">Our fleet is regularly serviced and maintained to ensure your safety and performance.</p>
-                </div>
-            </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fas fa-cogs fa-3x text-primary mb-3" aria-hidden="true"></i>
+            <h3 class="h5 card-title">
+              Well-Maintained Karts
+            </h3>
+            <p class="card-text">
+              Our fleet is regularly serviced and maintained to ensure your safety and performance.
+            </p>
+          </div>
         </div>
-        <div class="col-md-4">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <i class="fas fa-trophy fa-3x text-primary mb-3" aria-hidden="true"></i>
-                    <h3 class="h5 card-title">Professional Track</h3>
-                    <p class="card-text">Experience racing on a professionally designed track suitable for all skill levels.</p>
-                </div>
-            </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fas fa-trophy fa-3x text-primary mb-3" aria-hidden="true"></i>
+            <h3 class="h5 card-title">
+              Professional Track
+            </h3>
+            <p class="card-text">
+              Experience racing on a professionally designed track suitable for all skill levels.
+            </p>
+          </div>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Upcoming Sessions -->
-{% if upcoming_sessions %}
-<section class="upcoming-sessions py-5 bg-light" role="region" aria-label="Upcoming Sessions">
-    <h2 class="text-center mb-4">Upcoming Sessions</h2>
-    <div class="row g-4">
+  <!-- Upcoming Sessions -->
+  {% if upcoming_sessions %}
+    <section class="upcoming-sessions py-5 bg-light"
+             role="region"
+             aria-label="Upcoming Sessions">
+      <h2 class="text-center mb-4">
+        Upcoming Sessions
+      </h2>
+      <div class="row g-4">
         {% for session in upcoming_sessions %}
-        <div class="col-md-6">
+          <div class="col-md-6">
             <div class="card">
-                <div class="card-body">
-                    <h3 class="h5 card-title">
-                        <i class="fas fa-racing-flag" aria-hidden="true"></i>
-                        {{ session.get_session_type_display }}
-                    </h3>
-                    <p class="card-text">
-                        <strong><i class="far fa-calendar" aria-hidden="true"></i> Date:</strong>
-                        {{ session.start_datetime|date:"l, F j, Y" }}<br>
-                        <strong><i class="far fa-clock" aria-hidden="true"></i> Time:</strong>
-                        {{ session.start_datetime|date:"g:i A" }} - {{ session.end_datetime|date:"g:i A" }}<br>
-                        <strong><i class="fas fa-users" aria-hidden="true"></i> Available Spots:</strong>
-                        <span class="{% if session.get_available_spots <= 3 %}text-danger{% else %}text-success{% endif %}">
-                            {{ session.get_available_spots }} / {{ session.capacity }}
-                        </span>
-                    </p>
-                    <a href="{% url 'sessions:session_detail' session.pk %}" class="btn btn-primary">
-                        <i class="fas fa-info-circle"></i> View Details
-                    </a>
-                </div>
+              <div class="card-body">
+                <h3 class="h5 card-title">
+                  <i class="fas fa-racing-flag" aria-hidden="true"></i>
+                  {{ session.get_session_type_display }}
+                </h3>
+                <p class="card-text">
+                  <strong><i class="far fa-calendar" aria-hidden="true"></i> Date:</strong>
+                  {{ session.start_datetime|date:"l, F j, Y" }}
+                  <br />
+                  <strong><i class="far fa-clock" aria-hidden="true"></i> Time:</strong>
+                  {{ session.start_datetime|date:"g:i A" }} - {{ session.end_datetime|date:"g:i A" }}
+                  <br />
+                  <strong><i class="fas fa-users" aria-hidden="true"></i> Available Spots:</strong>
+                  <span class="{% if session.get_available_spots <= 3 %}
+                                 text-danger
+                               {% else %}
+                                 text-success
+                               {% endif %}">
+                    {{ session.get_available_spots }} / {{ session.capacity }}
+                  </span>
+                </p>
+                <a href="{% url 'sessions:session_detail' session.pk %}"
+                   class="btn btn-primary">
+                  <i class="fas fa-info-circle"></i> View Details
+                </a>
+              </div>
             </div>
-        </div>
+          </div>
         {% endfor %}
-    </div>
-    <div class="text-center mt-4">
-        <a href="{% url 'sessions:session_list' %}" class="btn btn-outline-primary">
-            <i class="fas fa-list"></i> View All Sessions
+      </div>
+      <div class="text-center mt-4">
+        <a href="{% url 'sessions:session_list' %}"
+           class="btn btn-outline-primary">
+          <i class="fas fa-list"></i> View All Sessions
         </a>
-    </div>
-</section>
-{% endif %}
+      </div>
+    </section>
+  {% endif %}
 
-<!-- Call to Action -->
-<section class="cta-section py-5 text-center" role="region" aria-label="Call to Action">
-    <h2 class="mb-3">Ready to Race?</h2>
-    <p class="lead mb-4">Join us today and experience the thrill of go-kart racing!</p>
+  <!-- Call to Action -->
+  <section class="cta-section py-5 text-center"
+           role="region"
+           aria-label="Call to Action">
+    <h2 class="mb-3">
+      Ready to Race?
+    </h2>
+    <p class="lead mb-4">
+      Join us today and experience the thrill of go-kart racing!
+    </p>
     {% if not user.is_authenticated %}
-        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
-            <i class="fas fa-user-plus"></i> Create Your Account
-        </a>
+      <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
+        <i class="fas fa-user-plus"></i> Create Your Account
+      </a>
     {% else %}
-        <a href="{% url 'sessions:session_list' %}" class="btn btn-primary btn-lg">
-            <i class="fas fa-calendar-check"></i> Book Your Session
-        </a>
+      <a href="{% url 'sessions:session_list' %}"
+         class="btn btn-primary btn-lg">
+        <i class="fas fa-calendar-check"></i> Book Your Session
+      </a>
     {% endif %}
-</section>
+  </section>
+
 {% endblock %}

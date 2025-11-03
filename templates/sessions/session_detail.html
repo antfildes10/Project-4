@@ -1,202 +1,284 @@
 {% extends 'base/base.html' %}
 
-{% block title %}{{ session.get_session_type_display }} - KartControl{% endblock %}
+{% block title %}
+  {{ session.get_session_type_display }} - KartControl
+
+{% endblock %}
 
 {% block content %}
-<!-- User Status Banner -->
-{% if not user.is_authenticated %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle"></i>
-    <strong>Not logged in?</strong> You need to <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="alert-link">login</a> or <a href="{% url 'accounts:register' %}" class="alert-link">register</a> to book this session.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% else %}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-user-check"></i>
-    <strong>Hello, {{ user.username }}!</strong> You're logged in and ready to book. {{ session.get_available_spots }} spot{{ session.get_available_spots|pluralize }} remaining.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endif %}
-
-<div class="row">
-    <div class="col-12">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'sessions:session_list' %}">Sessions</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ session.get_session_type_display }}</li>
-            </ol>
-        </nav>
+  <!-- User Status Banner -->
+  {% if not user.is_authenticated %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <i class="fas fa-exclamation-circle"></i>
+      <strong>Not logged in?</strong> You need to <a href="{% url 'accounts:login' %}?next={{ request.path }}"
+    class="alert-link">login</a> or <a href="{% url 'accounts:register' %}" class="alert-link">register</a> to book this session.
+      <button type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close">
+      </button>
     </div>
-</div>
+  {% else %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="fas fa-user-check"></i>
+      <strong>Hello, {{ user.username }}!</strong> You're logged in and ready to book. {{ session.get_available_spots }} spot{{ session.get_available_spots|pluralize }} remaining.
+      <button type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close">
+      </button>
+    </div>
+  {% endif %}
 
-<div class="row">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'core:home' %}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'sessions:session_list' %}">Sessions</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ session.get_session_type_display }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
     <!-- Main Session Details -->
     <div class="col-lg-8">
-        <article>
-            <header class="mb-4">
-                <h1>
-                    <i class="fas fa-{% if session.session_type == 'GRAND_PRIX' %}trophy{% else %}users{% endif %}" aria-hidden="true"></i>
-                    {{ session.get_session_type_display }}
-                </h1>
-                <div class="d-flex gap-2 flex-wrap">
-                    {% if session.is_full %}
-                        <span class="badge bg-danger">Fully Booked</span>
-                    {% elif session.is_past %}
-                        <span class="badge bg-secondary">Past Session</span>
-                    {% else %}
-                        <span class="badge bg-success">Available Now</span>
-                    {% endif %}
-                    
-                    {% if session.session_type == 'GRAND_PRIX' %}
-                        <span class="badge bg-warning text-dark">Competitive Racing</span>
-                    {% else %}
-                        <span class="badge bg-info text-white">Casual Racing</span>
-                    {% endif %}
-                </div>
-            </header>
+      <article>
+        <header class="mb-4">
+          <h1>
+            <i class="fas fa-
+                      {% if session.session_type == 'GRAND_PRIX' %}
+                        trophy
+                      {% else %}
+                        users
+                      {% endif %}"
+               aria-hidden="true"></i>
+            {{ session.get_session_type_display }}
+          </h1>
+          <div class="d-flex gap-2 flex-wrap">
+            {% if session.is_full %}
+              <span class="badge bg-danger">Fully Booked</span>
+            {% elif session.is_past %}
+              <span class="badge bg-secondary">Past Session</span>
+            {% else %}
+              <span class="badge bg-success">Available Now</span>
+            {% endif %}
 
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="h4 mb-0"><i class="fas fa-info-circle"></i> Session Information</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-sm-4">
-                            <strong><i class="far fa-calendar" aria-hidden="true"></i> Date:</strong>
-                        </div>
-                        <div class="col-sm-8">
-                            {{ session.start_datetime|date:"l, F j, Y" }}
-                        </div>
-                    </div>
+            {% if session.session_type == 'GRAND_PRIX' %}
+              <span class="badge bg-warning text-dark">Competitive Racing</span>
+            {% else %}
+              <span class="badge bg-info text-white">Casual Racing</span>
+            {% endif %}
+          </div>
+        </header>
 
-                    <div class="row mb-3">
-                        <div class="col-sm-4">
-                            <strong><i class="far fa-clock" aria-hidden="true"></i> Time:</strong>
-                        </div>
-                        <div class="col-sm-8">
-                            {{ session.start_datetime|date:"g:i A" }} - {{ session.end_datetime|date:"g:i A" }}
-                            <span class="text-muted">({{ session.get_duration }} minutes)</span>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-4">
-                            <strong><i class="fas fa-tag" aria-hidden="true"></i> Price:</strong>
-                        </div>
-                        <div class="col-sm-8">
-                            <span class="h4 text-primary mb-0">&euro;{{ session.price }}</span> per driver
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-4">
-                            <strong><i class="fas fa-users" aria-hidden="true"></i> Capacity:</strong>
-                        </div>
-                        <div class="col-sm-8">
-                            <span class="{% if session.get_available_spots <= 3 %}text-danger{% elif session.get_available_spots <= 5 %}text-warning{% else %}text-success{% endif %}">
-                                {{ session.get_available_spots }} spots available
-                            </span> out of {{ session.capacity }}
-                            
-                            <div class="progress mt-2" role="progressbar" aria-label="Session capacity" aria-valuenow="{{ session.bookings.count }}" aria-valuemin="0" aria-valuemax="{{ session.capacity }}">
-                                {% widthratio session.bookings.count session.capacity 100 as capacity_percentage %}
-                                <div class="progress-bar {% if capacity_percentage >= 90 %}bg-danger{% elif capacity_percentage >= 70 %}bg-warning{% else %}bg-success{% endif %}" style="width: {{ capacity_percentage }}%">
-                                    {{ capacity_percentage }}%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <strong><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Location:</strong>
-                        </div>
-                        <div class="col-sm-8">
-                            {{ session.track.name }}
-                        </div>
-                    </div>
-                </div>
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h2 class="h4 mb-0">
+              <i class="fas fa-info-circle"></i> Session Information
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <strong><i class="far fa-calendar" aria-hidden="true"></i> Date:</strong>
+              </div>
+              <div class="col-sm-8">
+                {{ session.start_datetime|date:"l, F j, Y" }}
+              </div>
             </div>
 
-            <!-- Session Description -->
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h2 class="h5 mb-0"><i class="fas fa-align-left"></i> About This Session</h2>
-                </div>
-                <div class="card-body">
-                    {% if session.session_type == 'GRAND_PRIX' %}
-                        <p>Grand Prix sessions offer a competitive racing experience with timed laps and results tracking. Perfect for experienced drivers looking to test their skills against other racers.</p>
-                        <ul>
-                            <li>Competitive racing format</li>
-                            <li>Qualifying and final race</li>
-                            <li>Timed lap results</li>
-                            <li>Podium finish recognition</li>
-                            <li>Recommended for experienced drivers</li>
-                        </ul>
-                    {% else %}
-                        <p>Open sessions provide a relaxed racing environment where you can drive at your own pace. Ideal for beginners and casual racers looking to practice and have fun.</p>
-                        <ul>
-                            <li>Casual racing format</li>
-                            <li>Drive at your own pace</li>
-                            <li>Perfect for practice</li>
-                            <li>Suitable for all skill levels</li>
-                            <li>Family-friendly environment</li>
-                        </ul>
-                    {% endif %}
-                </div>
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <strong><i class="far fa-clock" aria-hidden="true"></i> Time:</strong>
+              </div>
+              <div class="col-sm-8">
+                {{ session.start_datetime|date:"g:i A" }} - {{ session.end_datetime|date:"g:i A" }}
+                <span class="text-muted">({{ session.get_duration }} minutes)</span>
+              </div>
             </div>
-        </article>
+
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <strong><i class="fas fa-tag" aria-hidden="true"></i> Price:</strong>
+              </div>
+              <div class="col-sm-8">
+                <span class="h4 text-primary mb-0">&euro;{{ session.price }}</span> per driver
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <strong><i class="fas fa-users" aria-hidden="true"></i> Capacity:</strong>
+              </div>
+              <div class="col-sm-8">
+                <span class="{% if session.get_available_spots <= 3 %}
+                               text-danger
+                             {% elif session.get_available_spots <= 5 %}
+                               text-warning
+                             {% else %}
+                               text-success
+                             {% endif %}">
+                  {{ session.get_available_spots }} spots available
+                </span> out of {{ session.capacity }}
+
+                <div class="progress mt-2"
+                     role="progressbar"
+                     aria-label="Session capacity"
+                     aria-valuenow="{{ session.bookings.count }}"
+                     aria-valuemin="0"
+                     aria-valuemax="{{ session.capacity }}">
+                  {% widthratio session.bookings.count session.capacity 100 as capacity_percentage %}
+                  <div class="progress-bar
+                              {% if capacity_percentage >= 90 %}
+                                bg-danger
+                              {% elif capacity_percentage >= 70 %}
+                                bg-warning
+                              {% else %}
+                                bg-success
+                              {% endif %}"
+                       style="width: {{ capacity_percentage }}%">
+                    {{ capacity_percentage }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <strong><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Location:</strong>
+              </div>
+              <div class="col-sm-8">
+                {{ session.track.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session Description -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h2 class="h5 mb-0">
+              <i class="fas fa-align-left"></i> About This Session
+            </h2>
+          </div>
+          <div class="card-body">
+            {% if session.session_type == 'GRAND_PRIX' %}
+              <p>
+                Grand Prix sessions offer a competitive racing experience with timed laps and results tracking. Perfect for experienced drivers looking to test their skills against other racers.
+              </p>
+              <ul>
+                <li>
+                  Competitive racing format
+                </li>
+                <li>
+                  Qualifying and final race
+                </li>
+                <li>
+                  Timed lap results
+                </li>
+                <li>
+                  Podium finish recognition
+                </li>
+                <li>
+                  Recommended for experienced drivers
+                </li>
+              </ul>
+            {% else %}
+              <p>
+                Open sessions provide a relaxed racing environment where you can drive at your own pace. Ideal for beginners and casual racers looking to practice and have fun.
+              </p>
+              <ul>
+                <li>
+                  Casual racing format
+                </li>
+                <li>
+                  Drive at your own pace
+                </li>
+                <li>
+                  Perfect for practice
+                </li>
+                <li>
+                  Suitable for all skill levels
+                </li>
+                <li>
+                  Family-friendly environment
+                </li>
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+      </article>
     </div>
 
     <!-- Booking Sidebar -->
     <div class="col-lg-4">
-        <div class="card sticky-top" style="top: 20px;">
-            <div class="card-header bg-primary text-white">
-                <h2 class="h5 mb-0"><i class="fas fa-ticket-alt"></i> Book This Session</h2>
-            </div>
-            <div class="card-body">
-                <div class="text-center mb-3">
-                    <div class="display-6 text-primary mb-2">&euro;{{ session.price }}</div>
-                    <p class="text-muted mb-0">per driver</p>
-                </div>
-
-                {% if user.is_authenticated %}
-                    {% if session.is_past %}
-                        <div class="alert alert-secondary" role="alert">
-                            <i class="fas fa-clock"></i> This session has already ended.
-                        </div>
-                    {% elif session.is_full %}
-                        <div class="alert alert-danger" role="alert">
-                            <i class="fas fa-exclamation-triangle"></i> This session is fully booked.
-                        </div>
-                    {% elif user_has_booking %}
-                        <div class="alert alert-info" role="alert">
-                            <i class="fas fa-check-circle"></i> You already have a booking for this session.
-                        </div>
-                        <a href="{% url 'bookings:booking_list' %}" class="btn btn-outline-primary w-100">
-                            <i class="fas fa-list"></i> View My Bookings
-                        </a>
-                    {% else %}
-                        <a href="{% url 'bookings:booking_create' session.pk %}" class="btn btn-primary btn-lg w-100">
-                            <i class="fas fa-calendar-check"></i> Book Now
-                        </a>
-                        <p class="text-muted small text-center mt-2 mb-0">
-                            Kart will be assigned upon confirmation
-                        </p>
-                    {% endif %}
-                {% else %}
-                    <div class="alert alert-warning" role="alert">
-                        <i class="fas fa-sign-in-alt"></i> Please login to book this session.
-                    </div>
-                    <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary w-100 mb-2">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </a>
-                    <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary w-100">
-                        <i class="fas fa-user-plus"></i> Register
-                    </a>
-                {% endif %}
-            </div>
+      <div class="card sticky-top" style="top: 20px;">
+        <div class="card-header bg-primary text-white">
+          <h2 class="h5 mb-0">
+            <i class="fas fa-ticket-alt"></i> Book This Session
+          </h2>
         </div>
+        <div class="card-body">
+          <div class="text-center mb-3">
+            <div class="display-6 text-primary mb-2">
+              &euro;{{ session.price }}
+            </div>
+            <p class="text-muted mb-0">
+              per driver
+            </p>
+          </div>
+
+          {% if user.is_authenticated %}
+            {% if session.is_past %}
+              <div class="alert alert-secondary" role="alert">
+                <i class="fas fa-clock"></i> This session has already ended.
+              </div>
+            {% elif session.is_full %}
+              <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-triangle"></i> This session is fully booked.
+              </div>
+            {% elif user_has_booking %}
+              <div class="alert alert-info" role="alert">
+                <i class="fas fa-check-circle"></i> You already have a booking for this session.
+              </div>
+              <a href="{% url 'bookings:booking_list' %}"
+                 class="btn btn-outline-primary w-100">
+                <i class="fas fa-list"></i> View My Bookings
+              </a>
+            {% else %}
+              <a href="{% url 'bookings:booking_create' session.pk %}"
+                 class="btn btn-primary btn-lg w-100">
+                <i class="fas fa-calendar-check"></i> Book Now
+              </a>
+              <p class="text-muted small text-center mt-2 mb-0">
+                Kart will be assigned upon confirmation
+              </p>
+            {% endif %}
+          {% else %}
+            <div class="alert alert-warning" role="alert">
+              <i class="fas fa-sign-in-alt"></i> Please login to book this session.
+            </div>
+            <a href="{% url 'accounts:login' %}?next={{ request.path }}"
+               class="btn btn-primary w-100 mb-2">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <a href="{% url 'accounts:register' %}"
+               class="btn btn-outline-primary w-100">
+              <i class="fas fa-user-plus"></i> Register
+            </a>
+          {% endif %}
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
 {% endblock %}
