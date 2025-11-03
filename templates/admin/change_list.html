@@ -24,20 +24,35 @@
 <script src="{% static 'admin/js/filters.js' %}" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Filter dropdown script loaded');
+
     const filterBtn = document.getElementById('filterToggleBtn');
     const filterPanel = document.getElementById('changelist-filter');
 
+    console.log('Filter button:', filterBtn);
+    console.log('Filter panel:', filterPanel);
+
     if (filterBtn && filterPanel) {
+        console.log('Both elements found, attaching event listeners');
+
         // Toggle filter dropdown
         filterBtn.addEventListener('click', function(e) {
+            console.log('Filter button clicked');
             e.stopPropagation();
+            e.preventDefault();
+
+            const isShown = filterPanel.classList.contains('show');
+            console.log('Current show state:', isShown);
+
             filterPanel.classList.toggle('show');
             filterBtn.classList.toggle('active');
+
+            console.log('After toggle:', filterPanel.classList.contains('show'));
         });
 
         // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
-            if (!filterPanel.contains(e.target) && e.target !== filterBtn) {
+            if (!filterPanel.contains(e.target) && !filterBtn.contains(e.target)) {
                 filterPanel.classList.remove('show');
                 filterBtn.classList.remove('active');
             }
@@ -47,6 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
         filterPanel.addEventListener('click', function(e) {
             e.stopPropagation();
         });
+    } else {
+        console.error('Filter elements not found!');
+        console.error('Button:', filterBtn);
+        console.error('Panel:', filterPanel);
     }
 });
 </script>
