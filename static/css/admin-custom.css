@@ -1198,3 +1198,170 @@ select:focus {
 #changelist {
     display: block !important;
 }
+
+/* ===========================
+   FILTER DROPDOWN STYLING
+   =========================== */
+
+/* Filter Toggle Button */
+.filter-dropdown-container {
+    margin-bottom: 1rem;
+}
+
+.filter-toggle-btn {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.filter-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.filter-toggle-btn .filter-chevron {
+    transition: transform 0.2s ease;
+}
+
+.filter-toggle-btn.active .filter-chevron {
+    transform: rotate(180deg);
+}
+
+.filter-active-badge {
+    background: #ffffff;
+    color: var(--admin-primary);
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* Filter Dropdown Panel */
+#changelist-filter {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: #ffffff;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 300px;
+    max-height: 600px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+#changelist-filter.show {
+    display: block;
+}
+
+.filter-dropdown-header {
+    padding: 1rem;
+    background: var(--admin-light);
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.filter-dropdown-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--admin-primary);
+    font-weight: 600;
+}
+
+.clear-filters-btn {
+    color: #dc3545;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.filter-dropdown-content {
+    padding: 1rem;
+}
+
+/* Filter Details Styling */
+#changelist-filter details {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--admin-border);
+    padding-bottom: 1rem;
+}
+
+#changelist-filter details:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+#changelist-filter summary {
+    font-weight: 600;
+    color: var(--admin-primary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+#changelist-filter summary:hover {
+    background: var(--admin-light);
+}
+
+#changelist-filter ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.5rem 0 0 0;
+}
+
+#changelist-filter li {
+    padding: 0.25rem 0;
+}
+
+#changelist-filter li a {
+    color: var(--body-fg);
+    text-decoration: none;
+    padding: 0.375rem 0.75rem;
+    display: block;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+#changelist-filter li a:hover {
+    background: var(--admin-light);
+    color: var(--admin-primary);
+}
+
+#changelist-filter li.selected a {
+    background: var(--admin-primary);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Hide the old filter sidebar */
+.filtered #changelist-filter {
+    float: none !important;
+    width: auto !important;
+    position: absolute !important;
+}
