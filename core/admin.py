@@ -67,6 +67,7 @@ def setup_admin_dashboard(site):
         }
 
         dashboard_context = {
+            "title": "Operations Dashboard",
             "today": today,
             "todays_sessions": todays_sessions,
             "pending_bookings": pending_bookings,

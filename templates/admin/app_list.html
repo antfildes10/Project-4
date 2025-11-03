@@ -1,15 +1,15 @@
 {% load i18n %}
 
 {% if app_list %}
-    <div class="app-dashboard">
-        <a href="{% url 'admin:index' %}" class="section">
-            <table>
-                <caption>
+    <div class="app-dashboard module">
+        <table>
+            <caption>
+                <a href="{% url 'admin:index' %}" class="section">
                     <i class="fas fa-tachometer-alt"></i>
                     Dashboard
-                </caption>
-            </table>
-        </a>
+                </a>
+            </caption>
+        </table>
     </div>
     {% for app in app_list %}
         <div class="app-{{ app.app_label }} module">
