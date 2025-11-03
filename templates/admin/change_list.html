@@ -22,6 +22,34 @@
 {{ block.super }}
 {{ media.js }}
 <script src="{% static 'admin/js/filters.js' %}" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtn = document.getElementById('filterToggleBtn');
+    const filterPanel = document.getElementById('changelist-filter');
+
+    if (filterBtn && filterPanel) {
+        // Toggle filter dropdown
+        filterBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            filterPanel.classList.toggle('show');
+            filterBtn.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!filterPanel.contains(e.target) && e.target !== filterBtn) {
+                filterPanel.classList.remove('show');
+                filterBtn.classList.remove('active');
+            }
+        });
+
+        // Prevent dropdown from closing when clicking inside
+        filterPanel.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+});
+</script>
 {% endblock %}
 
 {% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
