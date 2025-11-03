@@ -10,6 +10,77 @@ from sessions.models import SessionSlot
 from karts.models import Kart
 
 
+class BookingQuerySet(models.QuerySet):
+    """Custom QuerySet for Booking model with reusable filters."""
+
+    def upcoming(self):
+        """Return bookings for upcoming sessions."""
+        return self.filter(
+            session_slot__start_datetime__gte=timezone.now(),
+            status__in=["PENDING", "CONFIRMED"],
+        )
+
+    def for_driver(self, driver):
+        """Return bookings for a specific driver."""
+        return self.filter(driver=driver)
+
+    def upcoming_for_driver(self, driver):
+        """Return upcoming bookings for a specific driver."""
+        return self.for_driver(driver).upcoming()
+
+    def completed(self):
+        """Return completed bookings."""
+        return self.filter(status="COMPLETED")
+
+    def cancelled(self):
+        """Return cancelled bookings."""
+        return self.filter(status="CANCELLED")
+
+    def pending(self):
+        """Return pending bookings."""
+        return self.filter(status="PENDING")
+
+    def confirmed(self):
+        """Return confirmed bookings."""
+        return self.filter(status="CONFIRMED")
+
+
+class BookingManager(models.Manager):
+    """Custom Manager for Booking model."""
+
+    def get_queryset(self):
+        """Return custom QuerySet."""
+        return BookingQuerySet(self.model, using=self._db)
+
+    def upcoming(self):
+        """Return bookings for upcoming sessions."""
+        return self.get_queryset().upcoming()
+
+    def for_driver(self, driver):
+        """Return bookings for a specific driver."""
+        return self.get_queryset().for_driver(driver)
+
+    def upcoming_for_driver(self, driver):
+        """Return upcoming bookings for a specific driver."""
+        return self.get_queryset().upcoming_for_driver(driver)
+
+    def completed(self):
+        """Return completed bookings."""
+        return self.get_queryset().completed()
+
+    def cancelled(self):
+        """Return cancelled bookings."""
+        return self.get_queryset().cancelled()
+
+    def pending(self):
+        """Return pending bookings."""
+        return self.get_queryset().pending()
+
+    def confirmed(self):
+        """Return confirmed bookings."""
+        return self.get_queryset().confirmed()
+
+
 class Booking(models.Model):
     """
     Represents a driver's booking for a specific session slot.
@@ -65,6 +136,9 @@ class Booking(models.Model):
     # Optional notes
     driver_notes = models.TextField(blank=True, help_text="Notes from the driver")
     manager_notes = models.TextField(blank=True, help_text="Internal manager notes")
+
+    # Custom manager
+    objects = BookingManager()
 
     class Meta:
         ordering = ["-created_at"]
