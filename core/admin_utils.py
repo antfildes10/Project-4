@@ -28,8 +28,8 @@ STATUS_COLORS = {
 }
 
 KART_STATUS_COLORS = {
-    'ACTIVE': '#28a745',      # Green
-    'MAINTENANCE': '#dc3545', # Red
+    'ACTIVE': '#28a745',       # Green
+    'MAINTENANCE': '#dc3545',  # Red
 }
 
 SESSION_TYPE_COLORS = {
@@ -207,7 +207,8 @@ def create_grid_summary_box(items):
     ])
 
     return format_html(
-        '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); '
+        '<div style="display: grid; '
+        'grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); '
         'gap: 15px; margin: 20px 0;">{}</div>',
         format_html(boxes)
     )
