@@ -21,5 +21,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     """
     Automatically save the Profile when the User is saved.
+    Only saves if profile exists to avoid RelatedObjectDoesNotExist errors.
     """
-    instance.profile.save()
+    if hasattr(instance, 'profile'):
+        instance.profile.save()
