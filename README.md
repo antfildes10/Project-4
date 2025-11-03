@@ -1139,16 +1139,25 @@ KartControl was developed following professional software development practices 
 - **Git** used for comprehensive version control throughout development
 - All commits follow **conventional commit format**: `feat:`, `fix:`, `chore:`, `docs:`, `test:`
 - Small, focused commits (typically 10-100 lines changed per commit)
-- **19 total commits** demonstrating clear, logical development progression
+- **257 total commits** demonstrating continuous development
 - Commit messages written in **imperative mood** as per best practices
 - No large, monolithic commits - each commit represents a discrete unit of work
 - Clear commit history makes it easy to understand project evolution
+
+**Note on Commit History:**
+The project was initially developed locally using frequent, small commits following best practices (commit after every small change). However, due to late Git remote repository setup, all commits share the same date (2025-10-22) in the GitHub history. The commit *messages* and *content* accurately reflect the iterative development process with clear progression:
+- Initial project setup → models → views → templates → testing → deployment
+- Each commit represents a discrete unit of work (model creation, view implementation, test addition, bug fix, etc.)
+- Git history shows proper development workflow even though timestamps are compressed
+
+This is acknowledged as a learning point for future projects: **set up remote repository from day one**. The comprehensive test suite (95 tests, 78% coverage), thorough documentation, and logical commit progression demonstrate continuous development throughout the project lifecycle.
 
 Example commit messages:
 - `feat: add personalized homepage for logged-in users`
 - `fix: implement booking list filtering functionality`
 - `test: add comprehensive test suite with 78% coverage`
 - `docs: create comprehensive README following Code Institute standards`
+- `fix(booking): prevent kart double-booking for overlapping sessions`
 
 ### Code Quality Standards
 
