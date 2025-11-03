@@ -5,8 +5,10 @@ This module provides reusable utilities for:
 - Color constants for consistent styling
 - Badge generation for status/role displays
 - Summary box generation for admin views
+- Shared admin inline classes
 """
 
+from django.contrib import admin
 from django.utils.html import format_html
 
 # =============================================================================
@@ -212,3 +214,44 @@ def create_grid_summary_box(items):
         'gap: 15px; margin: 20px 0;">{}</div>',
         format_html(boxes)
     )
+
+
+# =============================================================================
+# SHARED ADMIN INLINE CLASSES - Eliminate duplicate inline definitions
+# =============================================================================
+
+class BaseBookingInline(admin.TabularInline):
+    """
+    Base inline class for Booking model with shared configuration.
+
+    This eliminates code duplication between user and session admin inlines.
+    Subclass this to create context-specific inline views.
+    """
+    extra = 0
+    can_delete = False
+    show_change_link = True
+    verbose_name = "Booking"
+    readonly_fields = ("created_at",)
+
+    # Must be set by subclasses
+    model = None  # Will be set by Django
+
+
+class UserBookingInline(BaseBookingInline):
+    """Inline display of bookings on User admin page."""
+
+    from bookings.models import Booking
+    model = Booking
+    fields = ("session_slot", "status", "assigned_kart", "created_at")
+    readonly_fields = ("session_slot", "created_at")
+    verbose_name_plural = "User Bookings"
+    fk_name = "driver"
+
+
+class SessionBookingInline(BaseBookingInline):
+    """Inline display of bookings on SessionSlot admin page."""
+
+    from bookings.models import Booking
+    model = Booking
+    fields = ("driver", "status", "assigned_kart", "created_at")
+    verbose_name_plural = "Bookings for this Session"

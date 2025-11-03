@@ -9,22 +9,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils import timezone
 from .models import Profile
-from bookings.models import Booking
-from core.admin_utils import ROLE_COLORS, create_role_badge
-
-
-class BookingInline(admin.TabularInline):
-    """Inline display of bookings for a user."""
-
-    model = Booking
-    extra = 0
-    fields = ("session_slot", "status", "assigned_kart", "created_at")
-    readonly_fields = ("session_slot", "created_at")
-    can_delete = False
-    show_change_link = True
-    verbose_name = "Booking"
-    verbose_name_plural = "User Bookings"
-    fk_name = "driver"
+from core.admin_utils import ROLE_COLORS, create_role_badge, UserBookingInline
 
 
 class ProfileInline(admin.StackedInline):
@@ -138,7 +123,7 @@ class ProfileInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     """Extended User admin with Profile inline and CRM features."""
 
-    inlines = (ProfileInline, BookingInline)
+    inlines = (ProfileInline, UserBookingInline)
     list_display = (
         "username",
         "get_full_name_display",

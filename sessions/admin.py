@@ -7,21 +7,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils import timezone
 from .models import Track, SessionSlot
-from bookings.models import Booking
-from core.admin_utils import create_session_type_badge
-
-
-class BookingInline(admin.TabularInline):
-    """Inline display of bookings for a session."""
-
-    model = Booking
-    extra = 0
-    fields = ("driver", "status", "assigned_kart", "created_at")
-    readonly_fields = ("created_at",)
-    can_delete = False
-    show_change_link = True
-    verbose_name = "Booking"
-    verbose_name_plural = "Bookings for this Session"
+from core.admin_utils import create_session_type_badge, SessionBookingInline
 
 
 @admin.register(Track)
@@ -127,7 +113,7 @@ class SessionSlotAdmin(admin.ModelAdmin):
     )
     date_hierarchy = "start_datetime"
     ordering = ("-start_datetime",)
-    inlines = [BookingInline]
+    inlines = [SessionBookingInline]
 
     fieldsets = (
         (None, {"fields": ("get_session_summary",)}),
