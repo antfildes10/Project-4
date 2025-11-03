@@ -42,8 +42,8 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - Shows up to 6 upcoming available sessions with real-time availability indicators (spots remaining shown in green if available, red if nearly full).
 - This personalization helps drivers quickly assess their booking status and encourages continued engagement with the platform.
 
-![Homepage - Logged Out](docs/screenshots/home-logged-out.png)
-![Homepage - Logged In](docs/screenshots/home-logged-in.png)
+![Homepage - Desktop](docs/screenshots/home-page.png)
+![Homepage - Mobile](docs/screenshots/home-page-mobile.png)
 
 #### Session Browsing and Advanced Filtering
 
@@ -72,6 +72,8 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - This comprehensive view ensures users have all necessary information before making a booking decision, reducing no-shows and customer confusion.
 
 ![Session Detail](docs/screenshots/session-detail.png)
+![Session Booking](docs/screenshots/session-booking.png)
+![Book Now Button](docs/screenshots/book-now.png)
 
 #### Streamlined User Registration and Authentication
 
@@ -84,7 +86,7 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - This streamlined onboarding process gets new users racing faster, with an average registration time of under 60 seconds.
 
 ![Registration Page](docs/screenshots/registration.png)
-![Login Page](docs/screenshots/login.png)
+![Login Page](docs/screenshots/customer-login.png)
 
 #### Comprehensive Booking Management for Drivers
 
@@ -105,6 +107,7 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 
 ![My Bookings](docs/screenshots/my-bookings.png)
 ![Booking Detail](docs/screenshots/booking-detail.png)
+![Confirm Booking](docs/screenshots/confirm-booking.png)
 
 #### Powerful Manager Dashboard and Administrative Tools
 
@@ -128,7 +131,7 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - **Dashboard Analytics**: Quick overview of pending bookings, upcoming sessions, and fleet status on the admin homepage.
 - These tools give managers complete operational control while automating complex logic, reducing management time by an estimated 60%.
 
-![Manager Dashboard](docs/screenshots/manager-dashboard.png)
+![Manager Dashboard](docs/screenshots/admin-dashboard.png)
 ![Admin Bookings](docs/screenshots/admin-bookings.png)
 
 #### Robust Business Logic and Data Validation
@@ -240,6 +243,12 @@ KartControl is built using modern web technologies following Django best practic
 - **black**: Automatic Python code formatting
 - **Coverage.py**: Code coverage analysis for test suite
 - **Django Debug Toolbar**: Development debugging and optimization
+
+### Software Architecture
+
+KartControl follows a traditional Django MVC (Model-View-Controller) architecture pattern, adapted to Django's MTV (Model-Template-View) terminology. The application is organized into distinct Django apps, each handling a specific domain of functionality:
+
+![Software Architecture](docs/diagrams/architecture.png)
 
 ## Design and Planning
 
