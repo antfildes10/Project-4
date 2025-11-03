@@ -315,31 +315,6 @@
         <a href="{% url 'admin:karts_kart_changelist' %}" class="footer-link">Manage all karts →</a>
       </div>
     </div>
-
-    <!-- Quick Actions -->
-    <div class="module quick-actions-module">
-      <h2>
-        Quick Actions
-      </h2>
-      <div class="quick-actions-grid">
-        <a href="{% url 'admin:session_slots_sessionslot_add' %}"
-           class="button quick-action-btn">
-          <i class="fas fa-plus-circle"></i> Create Session
-        </a>
-        <a href="{% url 'admin:bookings_booking_add' %}"
-           class="button quick-action-btn">
-          <i class="fas fa-plus-circle"></i> New Booking
-        </a>
-        <a href="{% url 'admin:karts_kart_add' %}"
-           class="button quick-action-btn">
-          <i class="fas fa-plus-circle"></i> Add Kart
-        </a>
-        <a href="{% url 'admin:bookings_booking_changelist' %}?status__exact=PENDING"
-           class="button quick-action-btn">
-          <i class="fas fa-clipboard-check"></i> Review Pending
-        </a>
-      </div>
-    </div>
   </div>
 
 {% endblock %}
