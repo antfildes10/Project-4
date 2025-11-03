@@ -137,14 +137,60 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* Responsive spacing */
+/* Mobile Optimizations */
 @media (max-width: 768px) {
+  /* Navbar improvements */
   .navbar-brand {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
+  .navbar-nav .nav-link {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+
+  .navbar-collapse {
+    background-color: #1e1e1e;
+    margin: 0 -1rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+  }
+
+  .dropdown-menu {
+    background-color: #2d2d2d;
+    border: none;
+    margin-top: 0.5rem;
+  }
+
+  /* Typography */
   h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  /* Spacing adjustments */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Button sizing */
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .btn-lg {
+    padding: 0.65rem 1.5rem;
+    font-size: 1rem;
   }
 }
 
