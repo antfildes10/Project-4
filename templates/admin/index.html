@@ -27,10 +27,7 @@
           <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
             Today's Sessions
           </h3>
-          <p style="margin: 0;
-                    font-size: 28px;
-                    font-weight: bold;
-                    color: #28a745">
+          <p style="margin: 0; font-size: 28px; font-weight: bold; color: #28a745">
             {{ stats.todays_sessions }}
           </p>
         </div>
@@ -41,10 +38,7 @@
           <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
             Pending Bookings
           </h3>
-          <p style="margin: 0;
-                    font-size: 28px;
-                    font-weight: bold;
-                    color: #ffc107">
+          <p style="margin: 0; font-size: 28px; font-weight: bold; color: #ffc107">
             {{ stats.pending_bookings }}
           </p>
         </div>
@@ -55,10 +49,7 @@
           <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
             Confirmed Bookings
           </h3>
-          <p style="margin: 0;
-                    font-size: 28px;
-                    font-weight: bold;
-                    color: #007bff">
+          <p style="margin: 0; font-size: 28px; font-weight: bold; color: #007bff">
             {{ stats.confirmed_bookings }}
           </p>
         </div>
@@ -69,10 +60,7 @@
           <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
             Active Karts
           </h3>
-          <p style="margin: 0;
-                    font-size: 28px;
-                    font-weight: bold;
-                    color: #17a2b8">
+          <p style="margin: 0; font-size: 28px; font-weight: bold; color: #17a2b8">
             {{ stats.active_karts }} / {{ stats.total_karts }}
           </p>
         </div>
@@ -185,10 +173,7 @@
               </tr>
             {% empty %}
               <tr>
-                <td colspan="4"
-                    style="text-align: center;
-                           color: #28a745;
-                           padding: 20px">
+                <td colspan="4" style="text-align: center; color: #28a745; padding: 20px">
                   ✓ No pending bookings
                 </td>
               </tr>
@@ -355,8 +340,7 @@
         </tbody>
       </table>
       <div style="padding: 10px; text-align: right; border-top: 1px solid #ddd;">
-        <a href="{% url 'admin:karts_kart_changelist' %}"
-           style="color: #447e9b">Manage all karts →</a>
+        <a href="{% url 'admin:karts_kart_changelist' %}" style="color: #447e9b">Manage all karts →</a>
       </div>
     </div>
 
