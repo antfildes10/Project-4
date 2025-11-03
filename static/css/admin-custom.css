@@ -1135,6 +1135,7 @@ select:focus {
    FIX ADD BUTTON POSITIONING
    =========================== */
 .object-tools {
+    margin-top: 0 !important;
     margin-bottom: 1rem !important;
     float: none !important;
     position: static !important;
@@ -1185,9 +1186,15 @@ select:focus {
 
 /* Additional specificity for all admin pages */
 #content-main .object-tools {
+    margin-top: 0 !important;
     position: static !important;
     float: none !important;
     width: 100% !important;
     display: block !important;
     margin-bottom: 1.5rem !important;
+}
+
+/* Override Django's flexbox changelist layout that causes issues */
+#changelist {
+    display: block !important;
 }
