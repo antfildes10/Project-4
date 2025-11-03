@@ -4,11 +4,13 @@
     <div class="app-dashboard module">
         <table>
             <caption>
-                <a href="{% url 'admin:index' %}" class="section">
-                    <i class="fas fa-tachometer-alt"></i>
-                    Dashboard
-                </a>
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
             </caption>
+            <tr>
+                <th scope="row"><a href="{% url 'admin:index' %}">Overview</a></th>
+                <td>&nbsp;</td>
+            </tr>
         </table>
     </div>
     {% for app in app_list %}
