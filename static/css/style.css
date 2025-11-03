@@ -398,6 +398,49 @@ footer a:hover {
   .contact-info-section .card-text {
     font-size: 0.9rem;
   }
+
+  /* Bookings page */
+  .nav-tabs {
+    font-size: 0.85rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-tabs .nav-link {
+    padding: 0.5rem 0.75rem;
+    white-space: nowrap;
+  }
+
+  /* Make tables scroll horizontally on mobile */
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Cards in bookings */
+  .booking-card {
+    margin-bottom: 1rem;
+  }
+
+  .booking-card .card-body {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Registration and auth forms */
+  .auth-form .form-control {
+    font-size: 1rem;
+    padding: 0.65rem 1rem;
+  }
+
+  .auth-form .btn {
+    font-size: 1rem;
+    padding: 0.65rem 1.5rem;
+  }
 }
 
 /* Focus indicators for accessibility */
