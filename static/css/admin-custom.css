@@ -133,7 +133,7 @@
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.2s ease;
-    z-index: 1000;
+    z-index: 9999;
 }
 
 .user-dropdown-menu.show {
