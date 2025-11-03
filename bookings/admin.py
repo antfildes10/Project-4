@@ -7,7 +7,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from .models import Booking
-from core.admin_utils import STATUS_COLORS, create_status_badge
+from core.admin_utils import create_status_badge
 
 
 @admin.register(Booking)
