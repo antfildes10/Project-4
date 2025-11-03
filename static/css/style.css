@@ -517,3 +517,52 @@ textarea:focus {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(211, 47, 47, 0.4);
 }
+
+/* Contact Info Cards */
+.contact-info-section h2 {
+  color: #2d3748;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.contact-info-section .card {
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.contact-info-section .card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info-section .card-title {
+  color: #2d3748;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.contact-info-section .card-title i {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.contact-info-section .card-text {
+  color: #4a5568;
+  line-height: 1.7;
+}
+
+.contact-info-section a {
+  color: #667eea;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-info-section a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
