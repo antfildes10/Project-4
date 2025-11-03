@@ -83,10 +83,15 @@
                   {{ session.bookings.count }} / {{ session.capacity }}
                 </td>
                 <td>
-                  {% if session.is_full %}
+                  {% now "U" as current_timestamp %}
+                  {% if session.end_datetime.timestamp < current_timestamp|add:"0" %}
+                    <span class="badge-secondary">Completed</span>
+                  {% elif session.start_datetime.timestamp <= current_timestamp|add:"0" and session.end_datetime.timestamp > current_timestamp|add:"0" %}
+                    <span class="badge-warning">In Progress</span>
+                  {% elif session.is_full %}
                     <span class="badge-danger">FULL</span>
                   {% else %}
-                    <span class="badge-success">{{ session.get_available_spots }} spots left</span>
+                    <span class="badge-success">{{ session.get_available_spots }} spots</span>
                   {% endif %}
                 </td>
               </tr>
