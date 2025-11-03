@@ -101,6 +101,7 @@
     padding: 0.75rem 2rem !important;
     font-size: 0.9rem !important;
     box-shadow: 0 1px 3px var(--admin-shadow);
+    color: var(--admin-primary) !important;
 }
 
 .breadcrumbs a {
