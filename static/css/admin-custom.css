@@ -5,12 +5,13 @@
 
 /* ===========================
    CSS CUSTOM PROPERTIES
-   Matching motorsport theme: Red, White, Black
+   Matching motorsport theme: Red, White, Black (Subtle)
    =========================== */
 :root {
     --admin-primary: #d32f2f;
     --admin-primary-dark: #b71c1c;
-    --admin-secondary: #1e1e1e;
+    --admin-primary-light: #ef5350;
+    --admin-secondary: #424242;
     --admin-accent: #ffb300;
     --admin-success: #28a745;
     --admin-warning: #ffb300;
@@ -28,7 +29,7 @@
    ADMIN HEADER
    =========================== */
 #header {
-    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     padding: 1rem 2rem !important;
     border-bottom: 3px solid var(--admin-accent);
@@ -151,7 +152,7 @@
 
 .module h2,
 .module caption {
-    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
     color: #ffffff !important;
     font-size: 1.1rem !important;
     font-weight: 600 !important;
@@ -265,12 +266,13 @@
 }
 
 .dashboard-table thead {
-    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
+    background: linear-gradient(135deg, var(--admin-light) 0%, #e8e8e8 100%) !important;
+    border-bottom: 3px solid var(--admin-primary);
 }
 
 .dashboard-table thead th {
-    color: #ffffff !important;
-    font-weight: 600 !important;
+    color: var(--admin-dark) !important;
+    font-weight: 700 !important;
     padding: 0.875rem !important;
     text-align: left;
     text-transform: uppercase;
@@ -548,7 +550,7 @@ input[type="submit"].default {
 }
 
 #changelist-filter h2 {
-    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
     color: #ffffff !important;
     padding: 1rem !important;
     margin: 0 !important;
@@ -619,7 +621,7 @@ input[type="submit"].default {
 }
 
 #result_list thead th {
-    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
     color: #ffffff !important;
     font-weight: 600 !important;
     padding: 1rem !important;
@@ -640,7 +642,7 @@ input[type="submit"].default {
 
 /* Action checkbox column */
 #result_list thead th.action-checkbox-column {
-    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
 }
 
 #result_list thead th input[type="checkbox"] {
