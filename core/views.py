@@ -55,3 +55,8 @@ def contact(request):
 def privacy_policy(request):
     """Display privacy policy page."""
     return render(request, "core/privacy.html")
+
+
+def terms_of_service(request):
+    """Display terms of service page."""
+    return render(request, "core/terms.html")
