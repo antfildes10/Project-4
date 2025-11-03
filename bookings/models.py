@@ -148,6 +148,10 @@ class Booking(models.Model):
             models.Index(fields=["driver"]),
             models.Index(fields=["session_slot"]),
             models.Index(fields=["status"]),
+            # Composite indexes for common query patterns
+            models.Index(fields=["driver", "session_slot"]),
+            models.Index(fields=["session_slot", "status"]),
+            models.Index(fields=["driver", "status"]),
         ]
 
     def __str__(self):
