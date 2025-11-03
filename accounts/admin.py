@@ -34,6 +34,21 @@ class ProfileInline(admin.StackedInline):
     verbose_name_plural = "Profile"
     fields = ("role", "phone_number")
 
+    def formfield_for_choice_field(self, db_field, request, **kwargs):
+        """Add helpful descriptions to role choices."""
+        if db_field.name == "role":
+            kwargs["help_text"] = mark_safe(
+                """
+                <div style="margin-top: 10px; padding: 10px; background: #f0f8ff; border-left: 4px solid #007bff; border-radius: 4px;">
+                    <strong style="color: #007bff;">Role Descriptions:</strong><br><br>
+                    <strong style="color: #17a2b8;">🏎️ Driver:</strong> Regular users who can view sessions and manage their own bookings.<br>
+                    <strong style="color: #ffc107;">👔 Manager:</strong> Staff members who can manage all bookings, sessions, karts, and access admin dashboard.<br>
+                    <strong style="color: #6f42c1;">🛡️ Marshal:</strong> Safety officers who can view all bookings and monitor track operations.
+                </div>
+                """
+            )
+        return super().formfield_for_choice_field(db_field, request, **kwargs)
+
 
 class UserAdmin(BaseUserAdmin):
     """Extended User admin with Profile inline and CRM features."""
