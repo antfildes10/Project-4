@@ -1476,37 +1476,19 @@ select:focus {
 
 /* Mobile Phone */
 @media screen and (max-width: 768px) {
-    /* Full-width dropdown on mobile */
+    /* Full-width dropdown panel only */
     #changelist-filter {
         width: calc(100vw - 1rem) !important;
         max-width: none !important;
         left: 0.5rem !important;
         right: 0.5rem !important;
         transform: none !important;
+        max-height: 70vh !important;
     }
 
-    /* Stack action buttons vertically on mobile */
-    .admin-actions-bar {
-        flex-direction: column !important;
-        align-items: stretch !important;
-    }
-
-    .object-tools,
-    .filter-dropdown-container {
-        width: 100% !important;
-    }
-
-    /* Keep filter button same size as add button */
-    .filter-toggle-btn {
-        width: 100%;
-        justify-content: center !important;
-        /* DO NOT change padding or font-size - matches add button */
-    }
-
-    /* Object-tools buttons stay same size too */
-    .object-tools a {
-        /* Keep existing size - no changes */
-    }
+    /* DO NOT change button layout - keep buttons inline and same size */
+    /* admin-actions-bar stays flex-direction: row (horizontal) */
+    /* Buttons stay their normal size, NOT full-width */
 
     /* Larger touch targets inside dropdown only */
     #changelist-filter summary {
@@ -1529,10 +1511,5 @@ select:focus {
 
     .filter-dropdown-content {
         padding: 0.75rem !important;
-    }
-
-    /* Increase max height for mobile */
-    #changelist-filter {
-        max-height: 70vh !important;
     }
 }
