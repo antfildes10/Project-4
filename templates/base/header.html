@@ -46,7 +46,9 @@
                  data-bs-toggle="dropdown"
                  aria-expanded="false">
                 <i class="fas fa-user"></i> {{ user.username }}
-                {% if user.profile.role %}
+                {% if user.is_superuser %}
+                  <span class="badge bg-danger">Admin</span>
+                {% elif user.profile.role %}
                   <span class="badge bg-primary">{{ user.profile.get_role_display }}</span>
                 {% endif %}
               </a>
