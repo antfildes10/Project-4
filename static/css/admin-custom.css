@@ -488,49 +488,70 @@ input[type="submit"].default {
     background: #ffffff !important;
     border: 1px solid var(--admin-border) !important;
     border-radius: 8px !important;
-    padding: 1rem !important;
+    padding: 0 !important;
     box-shadow: 0 2px 8px var(--admin-shadow);
 }
 
 #changelist-filter h2 {
-    background: var(--admin-primary) !important;
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
     color: #ffffff !important;
-    padding: 0.75rem !important;
-    margin: -1rem -1rem 1rem -1rem !important;
+    padding: 1rem !important;
+    margin: 0 !important;
     border-radius: 8px 8px 0 0;
-    font-size: 1rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 #changelist-filter h3 {
     color: var(--admin-dark) !important;
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
-    margin-top: 1rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    margin: 1.5rem 1rem 0.75rem 1rem !important;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--admin-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
 #changelist-filter ul {
-    padding-left: 0 !important;
+    padding: 0 1rem 1rem 1rem !important;
+    margin: 0 !important;
 }
 
 #changelist-filter li {
-    padding: 0.5rem 0 !important;
-    border-bottom: 1px solid var(--admin-border);
+    padding: 0.625rem 0.75rem !important;
+    margin: 0.25rem 0 !important;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
 }
 
-#changelist-filter li:last-child {
-    border-bottom: none;
+#changelist-filter li:hover {
+    background-color: var(--admin-light);
+}
+
+#changelist-filter li.selected {
+    background-color: #e3f2fd;
+    border-left: 3px solid var(--admin-primary);
+    padding-left: 0.5rem !important;
 }
 
 #changelist-filter a {
-    color: var(--admin-primary) !important;
+    color: var(--admin-dark) !important;
     font-weight: 500 !important;
     transition: color 0.2s ease;
+    text-decoration: none !important;
+    display: block;
 }
 
 #changelist-filter a:hover {
-    color: var(--admin-primary-dark) !important;
+    color: var(--admin-primary) !important;
+}
+
+#changelist-filter li.selected a {
+    color: var(--admin-primary) !important;
+    font-weight: 700 !important;
 }
 
 /* Result List Table */
@@ -549,6 +570,27 @@ input[type="submit"].default {
     border: none !important;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+#result_list thead th a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+#result_list thead th a:hover {
+    color: #f0f0f0 !important;
+    text-decoration: underline !important;
+}
+
+/* Action checkbox column */
+#result_list thead th.action-checkbox-column {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
+}
+
+#result_list thead th input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }
 
 #result_list tbody tr {
@@ -732,6 +774,24 @@ select:focus {
 
     #changelist .actions {
         margin-bottom: 1rem;
+    }
+
+    #changelist-filter h2 {
+        font-size: 1rem !important;
+        padding: 0.875rem !important;
+    }
+
+    #changelist-filter h3 {
+        font-size: 0.85rem !important;
+        margin: 1rem 0.75rem 0.5rem 0.75rem !important;
+    }
+
+    #changelist-filter ul {
+        padding: 0 0.75rem 0.75rem 0.75rem !important;
+    }
+
+    #changelist-filter li {
+        padding: 0.5rem 0.625rem !important;
     }
 
     /* Tables - Horizontal Scroll */
