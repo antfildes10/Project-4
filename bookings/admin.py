@@ -132,18 +132,7 @@ class BookingAdmin(admin.ModelAdmin):
 
     def get_status_badge(self, obj):
         """Display status with color badge."""
-        colors = {
-            "PENDING": "#FFA500",  # Orange
-            "CONFIRMED": "#28a745",  # Green
-            "CANCELLED": "#dc3545",  # Red
-            "COMPLETED": "#6c757d",  # Gray
-        }
-        color = colors.get(obj.status, "#000000")
-        return format_html(
-            '<span style="background-color: {}; color: white; padding: 3px 10px; border-radius: 3px;">{}</span>',
-            color,
-            obj.get_status_display(),
-        )
+        return create_status_badge(obj.status, obj.get_status_display())
 
     get_status_badge.short_description = "Status"
 
