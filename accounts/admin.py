@@ -10,6 +10,7 @@ from django.utils.safestring import mark_safe
 from django.utils import timezone
 from .models import Profile
 from bookings.models import Booking
+from core.admin_utils import ROLE_COLORS, create_role_badge
 
 
 class BookingInline(admin.TabularInline):
