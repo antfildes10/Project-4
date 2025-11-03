@@ -15,11 +15,4 @@
 
 {% block nav-global %}{% endblock %}
 
-{% block nav-sidebar %}
-{{ block.super }}
-<div class="module" id="dashboard-nav-link">
-    <a href="{% url 'admin:index' %}" class="sidebar-dashboard-link">
-        <i class="fas fa-tachometer-alt"></i> Dashboard
-    </a>
-</div>
 {% endblock %}

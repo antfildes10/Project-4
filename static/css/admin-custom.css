@@ -1032,32 +1032,16 @@ select:focus {
 /* ===========================
    SIDEBAR DASHBOARD LINK
    =========================== */
-#dashboard-nav-link {
-    margin-bottom: 1rem !important;
-    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
-    border: none !important;
-    border-radius: 8px !important;
+.app-dashboard {
+    margin-bottom: 1.5rem;
 }
 
-.sidebar-dashboard-link {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    padding: 0.75rem 1rem !important;
-    color: #ffffff !important;
-    text-decoration: none !important;
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-    transition: all 0.2s ease !important;
+.app-dashboard caption {
+    cursor: pointer;
 }
 
-.sidebar-dashboard-link:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    transform: translateX(4px);
-}
-
-.sidebar-dashboard-link i {
-    font-size: 1.1rem;
+.app-dashboard caption i {
+    margin-right: 0.5rem;
 }
 
 /* ===========================
