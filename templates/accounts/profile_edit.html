@@ -25,18 +25,19 @@
 
               <!-- Username Field -->
               <div class="mb-3">
-                <label for="id_username" class="form-label">
-                  Username <span class="text-danger" aria-label="required">*</span>
+                <label for="{{ user_form.username.id_for_label }}" class="form-label">
+                  Username <span class="text-danger" aria-hidden="true">*</span>
                 </label>
                 <input type="text"
                        name="username"
-                       id="id_username"
-                       value="{{ user_form.username.value|default:user.username }}"
+                       id="{{ user_form.username.id_for_label }}"
+                       value="{% if user_form.username.value %}{{ user_form.username.value }}{% else %}{{ user.username }}{% endif %}"
                        class="form-control
                               {% if user_form.username.errors %}
                                 is-invalid
                               {% endif %}"
                        required
+                       autocomplete="username"
                        maxlength="150" />
                 <div class="form-text">
                   150 characters or fewer. Letters, digits and @/./+/-/_ only.
@@ -50,18 +51,19 @@
 
               <!-- Email Field -->
               <div class="mb-3">
-                <label for="id_email" class="form-label">
-                  Email Address <span class="text-danger" aria-label="required">*</span>
+                <label for="{{ user_form.email.id_for_label }}" class="form-label">
+                  Email Address <span class="text-danger" aria-hidden="true">*</span>
                 </label>
                 <input type="email"
                        name="email"
-                       id="id_email"
-                       value="{{ user_form.email.value|default:user.email }}"
+                       id="{{ user_form.email.id_for_label }}"
+                       value="{% if user_form.email.value %}{{ user_form.email.value }}{% else %}{{ user.email }}{% endif %}"
                        class="form-control
                               {% if user_form.email.errors %}
                                 is-invalid
                               {% endif %}"
-                       required />
+                       required
+                       autocomplete="email" />
                 {% if user_form.email.errors %}
                   <div class="invalid-feedback" role="alert">
                     {{ user_form.email.errors|join:", " }}
@@ -71,18 +73,19 @@
 
               <!-- First Name Field -->
               <div class="mb-3">
-                <label for="id_first_name" class="form-label">
-                  First Name <span class="text-danger" aria-label="required">*</span>
+                <label for="{{ user_form.first_name.id_for_label }}" class="form-label">
+                  First Name <span class="text-danger" aria-hidden="true">*</span>
                 </label>
                 <input type="text"
                        name="first_name"
-                       id="id_first_name"
-                       value="{{ user_form.first_name.value|default:user.first_name }}"
+                       id="{{ user_form.first_name.id_for_label }}"
+                       value="{% if user_form.first_name.value %}{{ user_form.first_name.value }}{% else %}{{ user.first_name }}{% endif %}"
                        class="form-control
                               {% if user_form.first_name.errors %}
                                 is-invalid
                               {% endif %}"
                        required
+                       autocomplete="given-name"
                        maxlength="150" />
                 {% if user_form.first_name.errors %}
                   <div class="invalid-feedback" role="alert">
@@ -93,18 +96,19 @@
 
               <!-- Last Name Field -->
               <div class="mb-3">
-                <label for="id_last_name" class="form-label">
-                  Last Name <span class="text-danger" aria-label="required">*</span>
+                <label for="{{ user_form.last_name.id_for_label }}" class="form-label">
+                  Last Name <span class="text-danger" aria-hidden="true">*</span>
                 </label>
                 <input type="text"
                        name="last_name"
-                       id="id_last_name"
-                       value="{{ user_form.last_name.value|default:user.last_name }}"
+                       id="{{ user_form.last_name.id_for_label }}"
+                       value="{% if user_form.last_name.value %}{{ user_form.last_name.value }}{% else %}{{ user.last_name }}{% endif %}"
                        class="form-control
                               {% if user_form.last_name.errors %}
                                 is-invalid
                               {% endif %}"
                        required
+                       autocomplete="family-name"
                        maxlength="150" />
                 {% if user_form.last_name.errors %}
                   <div class="invalid-feedback" role="alert">
@@ -121,17 +125,18 @@
 
               <!-- Phone Number Field -->
               <div class="mb-3">
-                <label for="id_phone_number" class="form-label">
+                <label for="{{ profile_form.phone_number.id_for_label }}" class="form-label">
                   Phone Number
                 </label>
                 <input type="tel"
                        name="phone_number"
-                       id="id_phone_number"
-                       value="{{ profile_form.phone_number.value|default:user.profile.phone_number }}"
+                       id="{{ profile_form.phone_number.id_for_label }}"
+                       value="{% if profile_form.phone_number.value %}{{ profile_form.phone_number.value }}{% elif user.profile.phone_number %}{{ user.profile.phone_number }}{% endif %}"
                        class="form-control
                               {% if profile_form.phone_number.errors %}
                                 is-invalid
                               {% endif %}"
+                       autocomplete="tel"
                        maxlength="20" />
                 <div class="form-text">
                   Optional. Format: +353 1 234 5678
