@@ -277,18 +277,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def get_role_badge(self, obj):
         """Display role with color badge."""
-        role_colors = {
-            "DRIVER": "#17a2b8",
-            "MANAGER": "#ffc107",
-            "MARSHAL": "#6f42c1",
-        }
-        color = role_colors.get(obj.role, "#6c757d")
-
-        return format_html(
-            '<span style="background-color: {}; color: white; padding: 3px 10px; border-radius: 3px; font-weight: bold;">{}</span>',
-            color,
-            obj.get_role_display(),
-        )
+        return create_role_badge(obj.role)
 
     get_role_badge.short_description = "Role"
     get_role_badge.admin_order_field = "role"
