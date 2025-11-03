@@ -50,3 +50,8 @@ def contact(request):
         form = ContactForm()
 
     return render(request, "core/contact.html", {"form": form})
+
+
+def privacy_policy(request):
+    """Display privacy policy page."""
+    return render(request, "core/privacy.html")
