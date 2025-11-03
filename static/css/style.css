@@ -355,6 +355,49 @@ footer a:hover {
   .cta-section h2 {
     font-size: 1.5rem;
   }
+
+  /* Contact page */
+  .contact-page hr {
+    margin: 1.5rem 0;
+  }
+
+  .contact-form-section {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .contact-form-section h2 {
+    font-size: 1.35rem;
+  }
+
+  .contact-form-section .form-label {
+    font-size: 0.9rem;
+  }
+
+  .contact-form-section .form-control,
+  .contact-form-section textarea {
+    font-size: 1rem;
+  }
+
+  .contact-info-section h2 {
+    font-size: 1.35rem;
+  }
+
+  .contact-info-section .card {
+    margin-bottom: 1rem;
+  }
+
+  .contact-info-section .card-body {
+    padding: 1rem;
+  }
+
+  .contact-info-section .card-title {
+    font-size: 1rem;
+  }
+
+  .contact-info-section .card-text {
+    font-size: 0.9rem;
+  }
 }
 
 /* Focus indicators for accessibility */
