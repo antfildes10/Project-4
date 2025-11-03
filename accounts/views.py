@@ -24,7 +24,10 @@ def register(request):
             # Log the user in automatically
             login(request, user)
 
-            messages.success(request, f"Welcome {user.username}! Your account has been created successfully.")
+            messages.success(
+                request,
+                f"Welcome {user.username}! Your account has been created successfully.",
+            )
             return redirect("core:home")
     else:
         form = UserRegistrationForm()
@@ -44,7 +47,9 @@ def profile(request):
     from bookings.models import Booking
 
     # Get user's bookings ordered by creation date
-    user_bookings = Booking.objects.filter(driver=request.user).order_by("-created_at")[:10]
+    user_bookings = Booking.objects.filter(driver=request.user).order_by("-created_at")[
+        :10
+    ]
 
     context = {
         "user_bookings": user_bookings,

@@ -1,0 +1,14 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203, W503
+exclude =
+    venv,
+    migrations,
+    __pycache__,
+    */migrations/*,
+    venv/*
+# Allow longer lines for HTML strings in admin files
+# Allow star imports in settings files (standard Django pattern)
+per-file-ignores =
+    */admin.py:E501
+    */settings/*.py:F403,F405

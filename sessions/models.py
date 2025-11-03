@@ -18,7 +18,9 @@ class Track(models.Model):
     address = models.TextField(help_text="Full track address")
     phone = models.CharField(max_length=20, help_text="Contact phone number")
     email = models.EmailField(help_text="Contact email address")
-    description = models.TextField(blank=True, help_text="Track description for public display")
+    description = models.TextField(
+        blank=True, help_text="Track description for public display"
+    )
     notes = models.TextField(blank=True, help_text="Internal notes")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -50,7 +52,10 @@ class SessionSlot(models.Model):
 
     track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name="sessions")
     session_type = models.CharField(
-        max_length=20, choices=SESSION_TYPE_CHOICES, default="OPEN_SESSION", help_text="Type of racing session"
+        max_length=20,
+        choices=SESSION_TYPE_CHOICES,
+        default="OPEN_SESSION",
+        help_text="Type of racing session",
     )
     start_datetime = models.DateTimeField(help_text="Session start date and time")
     end_datetime = models.DateTimeField(help_text="Session end date and time")
@@ -58,9 +63,14 @@ class SessionSlot(models.Model):
         validators=[MinValueValidator(1)], help_text="Maximum number of drivers allowed"
     )
     price = models.DecimalField(
-        max_digits=6, decimal_places=2, validators=[MinValueValidator(0)], help_text="Session price in euros"
+        max_digits=6,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        help_text="Session price in euros",
     )
-    description = models.TextField(blank=True, help_text="Session description or special notes")
+    description = models.TextField(
+        blank=True, help_text="Session description or special notes"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -74,7 +84,10 @@ class SessionSlot(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.get_session_type_display()} - {self.start_datetime.strftime('%Y-%m-%d %H:%M')}"
+        return (
+            f"{self.get_session_type_display()} - "
+            f"{self.start_datetime.strftime('%Y-%m-%d %H:%M')}"
+        )
 
     def clean(self):
         """Validate that start time is before end time."""
@@ -104,7 +117,9 @@ class SessionSlot(models.Model):
         """Calculate remaining capacity."""
         from bookings.models import Booking  # noqa: F401
 
-        confirmed_count = self.bookings.filter(status__in=["PENDING", "CONFIRMED"]).count()
+        confirmed_count = self.bookings.filter(
+            status__in=["PENDING", "CONFIRMED"]
+        ).count()
         return self.capacity - confirmed_count
 
     def is_full(self):

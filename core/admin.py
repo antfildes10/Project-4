@@ -39,7 +39,9 @@ def setup_admin_dashboard(site):
 
         # Upcoming sessions (next 7 days)
         upcoming_sessions = (
-            SessionSlot.objects.filter(start_datetime__gte=now, start_datetime__lte=next_week)
+            SessionSlot.objects.filter(
+                start_datetime__gte=now, start_datetime__lte=next_week
+            )
             .select_related("track")
             .prefetch_related("bookings")
             .order_by("start_datetime")[:20]
@@ -49,7 +51,8 @@ def setup_admin_dashboard(site):
         karts = Kart.objects.all().order_by("number")
         for kart in karts:
             kart.upcoming_count = kart.bookings.filter(
-                session_slot__start_datetime__gte=now, status__in=["PENDING", "CONFIRMED"]
+                session_slot__start_datetime__gte=now,
+                status__in=["PENDING", "CONFIRMED"],
             ).count()
 
         # Statistics

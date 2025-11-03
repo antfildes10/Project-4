@@ -12,9 +12,16 @@ class Command(BaseCommand):
     help = "Creates a recurring schedule of sessions (9am-10pm hourly)"
 
     def add_arguments(self, parser):
-        parser.add_argument("--days", type=int, default=30, help="Number of days to schedule (default: 30)")
         parser.add_argument(
-            "--clear", action="store_true", help="Clear existing future sessions before creating new ones"
+            "--days",
+            type=int,
+            default=30,
+            help="Number of days to schedule (default: 30)",
+        )
+        parser.add_argument(
+            "--clear",
+            action="store_true",
+            help="Clear existing future sessions before creating new ones",
         )
 
     def handle(self, *args, **options):
@@ -24,15 +31,21 @@ class Command(BaseCommand):
         # Get or create track
         track = Track.objects.first()
         if not track:
-            self.stdout.write(self.style.ERROR("No track found. Please create a track first."))
+            self.stdout.write(
+                self.style.ERROR("No track found. Please create a track first.")
+            )
             return
 
         # Clear existing future sessions if requested
         if clear_existing:
-            future_sessions = SessionSlot.objects.filter(start_datetime__gte=timezone.now())
+            future_sessions = SessionSlot.objects.filter(
+                start_datetime__gte=timezone.now()
+            )
             count = future_sessions.count()
             future_sessions.delete()
-            self.stdout.write(self.style.WARNING(f"Deleted {count} existing future sessions"))
+            self.stdout.write(
+                self.style.WARNING(f"Deleted {count} existing future sessions")
+            )
 
         # Session configuration
         HOURLY_SLOTS = list(range(9, 23))  # 9am to 10pm (9, 10, 11, ..., 22)
@@ -55,7 +68,9 @@ class Command(BaseCommand):
         now = timezone.now()
         start_date = now.date()
 
-        self.stdout.write(f"Creating schedule for {days_ahead} days starting from {start_date}...")
+        self.stdout.write(
+            f"Creating schedule for {days_ahead} days starting from {start_date}..."
+        )
 
         for day_offset in range(days_ahead):
             current_date = start_date + timedelta(days=day_offset)
@@ -82,7 +97,9 @@ class Command(BaseCommand):
                     price = OPEN_SESSION_PRICE
 
                 # Create datetime objects (timezone-aware)
-                start_dt = timezone.make_aware(datetime.combine(current_date, time(hour=hour, minute=0)))
+                start_dt = timezone.make_aware(
+                    datetime.combine(current_date, time(hour=hour, minute=0))
+                )
                 end_dt = start_dt + timedelta(minutes=duration)
 
                 # Skip if in the past
@@ -95,20 +112,30 @@ class Command(BaseCommand):
                     track=track,
                     session_type=session_type,
                     start_datetime=start_dt,
-                    defaults={"end_datetime": end_dt, "capacity": capacity, "price": price},
+                    defaults={
+                        "end_datetime": end_dt,
+                        "capacity": capacity,
+                        "price": price,
+                    },
                 )
 
                 if created:
                     created_count += 1
 
-        self.stdout.write(self.style.SUCCESS(f"\n✓ Created {created_count} new sessions"))
+        self.stdout.write(
+            self.style.SUCCESS(f"\n✓ Created {created_count} new sessions")
+        )
         if skipped_count > 0:
             self.stdout.write(f"  Skipped {skipped_count} past time slots")
 
         # Summary statistics
         total_sessions = SessionSlot.objects.filter(start_datetime__gte=now).count()
-        open_sessions = SessionSlot.objects.filter(start_datetime__gte=now, session_type="OPEN_SESSION").count()
-        grand_prix = SessionSlot.objects.filter(start_datetime__gte=now, session_type="GRAND_PRIX").count()
+        open_sessions = SessionSlot.objects.filter(
+            start_datetime__gte=now, session_type="OPEN_SESSION"
+        ).count()
+        grand_prix = SessionSlot.objects.filter(
+            start_datetime__gte=now, session_type="GRAND_PRIX"
+        ).count()
 
         self.stdout.write(self.style.SUCCESS("\n=== Schedule Summary ==="))
         self.stdout.write(f"Total upcoming sessions: {total_sessions}")
@@ -116,4 +143,6 @@ class Command(BaseCommand):
         self.stdout.write(f"  • Grand Prix: {grand_prix}")
         self.stdout.write("\nSchedule:")
         self.stdout.write("  • Monday-Friday: Hourly 9am-10pm (6pm = Grand Prix)")
-        self.stdout.write("  • Saturday-Sunday: Hourly 9am-10pm (12pm, 3pm, 6pm = Grand Prix)")
+        self.stdout.write(
+            "  • Saturday-Sunday: Hourly 9am-10pm (12pm, 3pm, 6pm = Grand Prix)"
+        )

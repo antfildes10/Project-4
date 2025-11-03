@@ -20,7 +20,10 @@ class HomeViewTests(TestCase):
         """Set up test data."""
         self.client = Client()
         self.track = Track.objects.create(
-            name="Test Track", address="123 Test St", phone="555-1234", email="test@track.com"
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            email="test@track.com",
         )
 
         # Create upcoming sessions
@@ -86,8 +89,12 @@ class HomeViewTests(TestCase):
         user = User.objects.create_user(username="testuser", password="testpass123")
 
         # Create bookings
-        Booking.objects.create(session_slot=self.session1, driver=user, status="PENDING")
-        Booking.objects.create(session_slot=self.session2, driver=user, status="CONFIRMED")
+        Booking.objects.create(
+            session_slot=self.session1, driver=user, status="PENDING"
+        )
+        Booking.objects.create(
+            session_slot=self.session2, driver=user, status="CONFIRMED"
+        )
 
         self.client.login(username="testuser", password="testpass123")
         response = self.client.get(reverse("core:home"))

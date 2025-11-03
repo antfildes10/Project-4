@@ -32,10 +32,22 @@ class KartBookingInline(admin.TabularInline):
 class KartAdmin(admin.ModelAdmin):
     """Admin interface for Kart model with CRM-style enhancements."""
 
-    list_display = ("get_kart_number", "get_status_badge", "get_total_bookings", "get_upcoming_bookings", "updated_at")
+    list_display = (
+        "get_kart_number",
+        "get_status_badge",
+        "get_total_bookings",
+        "get_upcoming_bookings",
+        "updated_at",
+    )
     list_filter = ("status", "created_at")
     search_fields = ("number", "notes")
-    readonly_fields = ("created_at", "updated_at", "get_kart_statistics", "get_total_bookings", "get_upcoming_bookings")
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "get_kart_statistics",
+        "get_total_bookings",
+        "get_upcoming_bookings",
+    )
     ordering = ("number",)
     inlines = [KartBookingInline]
 
@@ -49,12 +61,17 @@ class KartAdmin(admin.ModelAdmin):
             },
         ),
         ("Notes", {"fields": ("notes",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
+        (
+            "Timestamps",
+            {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
+        ),
     )
 
     def get_kart_number(self, obj):
         """Display kart number with icon."""
-        return format_html('<strong style="font-size: 1.1em;">Kart #{}</strong>', obj.number)
+        return format_html(
+            '<strong style="font-size: 1.1em;">Kart #{}</strong>', obj.number
+        )
 
     get_kart_number.short_description = "Kart"
     get_kart_number.admin_order_field = "number"
@@ -77,7 +94,9 @@ class KartAdmin(admin.ModelAdmin):
         total = obj.bookings.count()
         completed = obj.bookings.filter(status="COMPLETED").count()
         return format_html(
-            '<strong>{}</strong> total (<span style="color: #6c757d;">{} completed</span>)', total, completed
+            '<strong>{}</strong> total (<span style="color: #6c757d;">{} completed</span>)',
+            total,
+            completed,
         )
 
     get_total_bookings.short_description = "Total Bookings"
@@ -85,10 +104,13 @@ class KartAdmin(admin.ModelAdmin):
     def get_upcoming_bookings(self, obj):
         """Display upcoming bookings for this kart."""
         upcoming = obj.bookings.filter(
-            session_slot__start_datetime__gte=timezone.now(), status__in=["PENDING", "CONFIRMED"]
+            session_slot__start_datetime__gte=timezone.now(),
+            status__in=["PENDING", "CONFIRMED"],
         ).count()
         if upcoming > 0:
-            return format_html('<span style="color: #007bff; font-weight: bold;">{}</span>', upcoming)
+            return format_html(
+                '<span style="color: #007bff; font-weight: bold;">{}</span>', upcoming
+            )
         return format_html('<span style="color: #6c757d;">0</span>')
 
     get_upcoming_bookings.short_description = "Upcoming"
@@ -97,13 +119,18 @@ class KartAdmin(admin.ModelAdmin):
         """Display comprehensive kart statistics."""
         total_bookings = obj.bookings.count()
         upcoming_bookings = obj.bookings.filter(
-            session_slot__start_datetime__gte=timezone.now(), status__in=["PENDING", "CONFIRMED"]
+            session_slot__start_datetime__gte=timezone.now(),
+            status__in=["PENDING", "CONFIRMED"],
         ).count()
         completed_bookings = obj.bookings.filter(status="COMPLETED").count()
         cancelled_bookings = obj.bookings.filter(status="CANCELLED").count()
 
         status_color = "#28a745" if obj.is_available() else "#ffc107"
-        status_text = "Active - Available for Assignment" if obj.is_available() else "In Maintenance - Not Available"
+        status_text = (
+            "Active - Available for Assignment"
+            if obj.is_available()
+            else "In Maintenance - Not Available"
+        )
 
         html = f"""
         <div style="font-family: monospace; background: #f5f5f5; padding: 15px; border-radius: 5px; border-left: 4px solid {status_color};">

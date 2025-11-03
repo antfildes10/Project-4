@@ -18,12 +18,19 @@ class Kart(models.Model):
     ]
 
     number = models.PositiveIntegerField(
-        unique=True, validators=[MinValueValidator(1), MaxValueValidator(99)], help_text="Unique kart number (1-99)"
+        unique=True,
+        validators=[MinValueValidator(1), MaxValueValidator(99)],
+        help_text="Unique kart number (1-99)",
     )
     status = models.CharField(
-        max_length=15, choices=STATUS_CHOICES, default="ACTIVE", help_text="Current operational status of the kart"
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default="ACTIVE",
+        help_text="Current operational status of the kart",
     )
-    notes = models.TextField(blank=True, help_text="Internal notes about kart condition or maintenance")
+    notes = models.TextField(
+        blank=True, help_text="Internal notes about kart condition or maintenance"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

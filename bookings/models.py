@@ -25,10 +25,16 @@ class Booking(models.Model):
 
     # Core relationships
     session_slot = models.ForeignKey(
-        SessionSlot, on_delete=models.CASCADE, related_name="bookings", help_text="The session being booked"
+        SessionSlot,
+        on_delete=models.CASCADE,
+        related_name="bookings",
+        help_text="The session being booked",
     )
     driver = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="bookings", help_text="Driver making the booking"
+        User,
+        on_delete=models.CASCADE,
+        related_name="bookings",
+        help_text="Driver making the booking",
     )
 
     # Kart assignment
@@ -46,7 +52,10 @@ class Booking(models.Model):
 
     # Booking state
     status = models.CharField(
-        max_length=15, choices=STATUS_CHOICES, default="PENDING", help_text="Current booking status"
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default="PENDING",
+        help_text="Current booking status",
     )
 
     # Timestamps
@@ -68,7 +77,10 @@ class Booking(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.driver.username} - {self.session_slot} ({self.get_status_display()})"
+        return (
+            f"{self.driver.username} - {self.session_slot} "
+            f"({self.get_status_display()})"
+        )
 
     def clean(self):
         """
@@ -83,12 +95,14 @@ class Booking(models.Model):
 
         # Check session capacity
         if self.session_slot:
-            existing_bookings = self.session_slot.bookings.filter(status__in=["PENDING", "CONFIRMED"]).exclude(
-                pk=self.pk
-            )
+            existing_bookings = self.session_slot.bookings.filter(
+                status__in=["PENDING", "CONFIRMED"]
+            ).exclude(pk=self.pk)
 
             if existing_bookings.count() >= self.session_slot.capacity:
-                raise ValidationError({"session_slot": "This session is at full capacity."})
+                raise ValidationError(
+                    {"session_slot": "This session is at full capacity."}
+                )
 
         # Check for driver overlap (same driver, overlapping time)
         if self.driver and self.session_slot:
@@ -100,7 +114,9 @@ class Booking(models.Model):
             ).exclude(pk=self.pk)
 
             if overlapping.exists():
-                raise ValidationError({"session_slot": "You already have a booking during this time."})
+                raise ValidationError(
+                    {"session_slot": "You already have a booking during this time."}
+                )
 
         # Validate chosen kart exists and is active
         if self.chosen_kart_number:
@@ -108,10 +124,21 @@ class Booking(models.Model):
                 kart = Kart.objects.get(number=self.chosen_kart_number)
                 if not kart.is_available():
                     raise ValidationError(
-                        {"chosen_kart_number": f"Kart #{self.chosen_kart_number} is currently in maintenance."}
+                        {
+                            "chosen_kart_number": (
+                                f"Kart #{self.chosen_kart_number} is "
+                                "currently in maintenance."
+                            )
+                        }
                     )
             except Kart.DoesNotExist:
-                raise ValidationError({"chosen_kart_number": f"Kart #{self.chosen_kart_number} does not exist."})
+                raise ValidationError(
+                    {
+                        "chosen_kart_number": (
+                            f"Kart #{self.chosen_kart_number} does not exist."
+                        )
+                    }
+                )
 
     def save(self, *args, **kwargs):
         """Run validation before saving."""
@@ -120,15 +147,24 @@ class Booking(models.Model):
 
     def can_be_cancelled(self):
         """Check if booking can be cancelled (before session start)."""
-        return self.status in ["PENDING", "CONFIRMED"] and self.session_slot.start_datetime > timezone.now()
+        return (
+            self.status in ["PENDING", "CONFIRMED"]
+            and self.session_slot.start_datetime > timezone.now()
+        )
 
     def can_be_confirmed(self):
         """Check if booking can be confirmed by manager."""
-        return self.status == "PENDING" and self.session_slot.start_datetime > timezone.now()
+        return (
+            self.status == "PENDING"
+            and self.session_slot.start_datetime > timezone.now()
+        )
 
     def can_be_completed(self):
         """Check if booking can be marked complete (after session end)."""
-        return self.status == "CONFIRMED" and self.session_slot.end_datetime < timezone.now()
+        return (
+            self.status == "CONFIRMED"
+            and self.session_slot.end_datetime < timezone.now()
+        )
 
     def assign_random_kart(self):
         """
@@ -140,7 +176,9 @@ class Booking(models.Model):
 
         # Exclude karts already assigned to this session
         assigned_kart_ids = (
-            self.session_slot.bookings.filter(status__in=["CONFIRMED", "COMPLETED"], assigned_kart__isnull=False)
+            self.session_slot.bookings.filter(
+                status__in=["CONFIRMED", "COMPLETED"], assigned_kart__isnull=False
+            )
             .exclude(pk=self.pk)
             .values_list("assigned_kart_id", flat=True)
         )

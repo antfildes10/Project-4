@@ -13,7 +13,9 @@ from sessions.models import SessionSlot
 
 def is_manager(user):
     """Check if user has manager role."""
-    return user.is_authenticated and hasattr(user, "profile") and user.profile.is_manager()
+    return (
+        user.is_authenticated and hasattr(user, "profile") and user.profile.is_manager()
+    )
 
 
 @login_required
@@ -25,7 +27,9 @@ def booking_list(request):
     from django.utils import timezone
 
     # Get user's bookings
-    bookings = Booking.objects.filter(driver=request.user).select_related("session_slot", "assigned_kart")
+    bookings = Booking.objects.filter(driver=request.user).select_related(
+        "session_slot", "assigned_kart"
+    )
 
     # Apply status filter
     status_filter = request.GET.get("status", "all")
@@ -33,7 +37,8 @@ def booking_list(request):
     if status_filter == "upcoming":
         # Show confirmed bookings for future sessions
         bookings = bookings.filter(
-            status__in=["PENDING", "CONFIRMED"], session_slot__start_datetime__gte=timezone.now()
+            status__in=["PENDING", "CONFIRMED"],
+            session_slot__start_datetime__gte=timezone.now(),
         )
     elif status_filter in ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"]:
         # Filter by specific status
@@ -80,7 +85,9 @@ def booking_create(request, session_id):
                 booking = form.save()
 
                 messages.success(
-                    request, "Your booking has been created successfully. " "It is pending confirmation by a manager."
+                    request,
+                    "Your booking has been created successfully. "
+                    "It is pending confirmation by a manager.",
                 )
                 return redirect("bookings:booking_detail", pk=booking.pk)
 
@@ -135,7 +142,11 @@ def booking_cancel(request, pk):
 
     # Check if booking can be cancelled
     if not booking.can_be_cancelled():
-        messages.error(request, "This booking cannot be cancelled. It may have already started or been completed.")
+        messages.error(
+            request,
+            "This booking cannot be cancelled. It may have already "
+            "started or been completed.",
+        )
         return redirect("bookings:booking_detail", pk=booking.pk)
 
     if request.method == "POST":
@@ -162,7 +173,11 @@ def booking_confirm(request, pk):
 
     # Check if booking can be confirmed
     if not booking.can_be_confirmed():
-        messages.error(request, "This booking cannot be confirmed. It may have already started or is not pending.")
+        messages.error(
+            request,
+            "This booking cannot be confirmed. It may have already "
+            "started or is not pending.",
+        )
         return redirect("bookings:booking_detail", pk=booking.pk)
 
     # Try to assign a kart
@@ -176,7 +191,11 @@ def booking_confirm(request, pk):
             f"Kart #{booking.assigned_kart.number} has been assigned.",
         )
     else:
-        messages.error(request, "No available karts for this session. Please check kart status or session conflicts.")
+        messages.error(
+            request,
+            "No available karts for this session. Please check kart "
+            "status or session conflicts.",
+        )
 
     return redirect("bookings:booking_detail", pk=booking.pk)
 
@@ -192,11 +211,16 @@ def booking_complete(request, pk):
 
     # Check if booking can be completed
     if not booking.can_be_completed():
-        messages.error(request, "This booking cannot be completed. The session may not have ended yet.")
+        messages.error(
+            request,
+            "This booking cannot be completed. The session may not have ended yet.",
+        )
         return redirect("bookings:booking_detail", pk=booking.pk)
 
     booking.status = "COMPLETED"
     booking.save()
 
-    messages.success(request, f"Booking for {booking.driver.username} has been marked as completed.")
+    messages.success(
+        request, f"Booking for {booking.driver.username} has been marked as completed."
+    )
     return redirect("bookings:booking_detail", pk=booking.pk)

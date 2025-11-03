@@ -13,7 +13,9 @@ def session_list(request):
     Public view - accessible to all users.
     """
     # Get all upcoming sessions
-    sessions = SessionSlot.objects.filter(start_datetime__gte=timezone.now()).order_by("start_datetime")
+    sessions = SessionSlot.objects.filter(start_datetime__gte=timezone.now()).order_by(
+        "start_datetime"
+    )
 
     # Apply filters
     session_type = request.GET.get("session_type")
@@ -34,9 +36,13 @@ def session_list(request):
     if request.user.is_authenticated:
         from bookings.models import Booking
 
-        user_bookings = Booking.objects.filter(driver=request.user, status__in=["PENDING", "CONFIRMED"])
+        user_bookings = Booking.objects.filter(
+            driver=request.user, status__in=["PENDING", "CONFIRMED"]
+        )
         context["user_bookings_count"] = user_bookings.count()
-        context["user_booked_sessions"] = list(user_bookings.values_list("session_slot_id", flat=True))
+        context["user_booked_sessions"] = list(
+            user_bookings.values_list("session_slot_id", flat=True)
+        )
 
     return render(request, "sessions/session_list.html", context)
 
@@ -59,7 +65,9 @@ def session_detail(request, pk):
     # Check if user already has a booking for this session
     user_has_booking = False
     if request.user.is_authenticated:
-        user_has_booking = session.bookings.filter(driver=request.user, status__in=["PENDING", "CONFIRMED"]).exists()
+        user_has_booking = session.bookings.filter(
+            driver=request.user, status__in=["PENDING", "CONFIRMED"]
+        ).exists()
 
     context = {
         "session": session,

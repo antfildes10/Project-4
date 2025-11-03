@@ -22,10 +22,17 @@ class Command(BaseCommand):
         track, created = Track.objects.get_or_create(
             name="KartControl Racing Track",
             defaults={
-                "address": "Dublin International Karting Circuit\nNaas Road\nDublin 12\nIreland",
+                "address": (
+                    "Dublin International Karting Circuit\n"
+                    "Naas Road\nDublin 12\nIreland"
+                ),
                 "phone": "+353 1 234 5678",
                 "email": "info@kartcontrol.com",
-                "description": "Ireland's premier indoor and outdoor karting facility featuring a challenging 1.2km circuit with 15 corners. Perfect for both beginners and experienced racers.",
+                "description": (
+                    "Ireland's premier indoor and outdoor karting facility "
+                    "featuring a challenging 1.2km circuit with 15 corners. "
+                    "Perfect for both beginners and experienced racers."
+                ),
             },
         )
         if created:
@@ -36,7 +43,9 @@ class Command(BaseCommand):
         # Create Karts
         kart_count = 0
         for i in range(1, 11):  # Create karts 1-10
-            kart, created = Kart.objects.get_or_create(number=i, defaults={"status": "ACTIVE"})
+            kart, created = Kart.objects.get_or_create(
+                number=i, defaults={"status": "ACTIVE"}
+            )
             if created:
                 kart_count += 1
         self.stdout.write(self.style.SUCCESS(f"✓ Created {kart_count} karts"))
@@ -76,7 +85,9 @@ class Command(BaseCommand):
         user_count = 0
         for user_data in users_data:
             role = user_data.pop("role")
-            user, created = User.objects.get_or_create(username=user_data["username"], defaults=user_data)
+            user, created = User.objects.get_or_create(
+                username=user_data["username"], defaults=user_data
+            )
             if created:
                 user.set_password("password123")
                 user.save()
@@ -218,7 +229,9 @@ class Command(BaseCommand):
             )
             if created:
                 session_count += 1
-        self.stdout.write(self.style.SUCCESS(f"✓ Created {session_count} session slots"))
+        self.stdout.write(
+            self.style.SUCCESS(f"✓ Created {session_count} session slots")
+        )
 
         # Create some sample bookings for past sessions
         past_sessions = SessionSlot.objects.filter(start_datetime__lt=now)[:2]
@@ -230,7 +243,10 @@ class Command(BaseCommand):
                 booking, created = Booking.objects.get_or_create(
                     session_slot=session,
                     driver=driver,
-                    defaults={"status": "COMPLETED", "assigned_kart": Kart.objects.filter(status="ACTIVE").first()},
+                    defaults={
+                        "status": "COMPLETED",
+                        "assigned_kart": Kart.objects.filter(status="ACTIVE").first(),
+                    },
                 )
                 if created:
                     booking_count += 1
@@ -240,14 +256,20 @@ class Command(BaseCommand):
         for session in upcoming_sessions:
             if drivers.exists():
                 booking, created = Booking.objects.get_or_create(
-                    session_slot=session, driver=drivers.first(), defaults={"status": "PENDING"}
+                    session_slot=session,
+                    driver=drivers.first(),
+                    defaults={"status": "PENDING"},
                 )
                 if created:
                     booking_count += 1
 
-        self.stdout.write(self.style.SUCCESS(f"✓ Created {booking_count} sample bookings"))
+        self.stdout.write(
+            self.style.SUCCESS(f"✓ Created {booking_count} sample bookings")
+        )
 
-        self.stdout.write(self.style.SUCCESS("\n=== Sample Data Created Successfully! ==="))
+        self.stdout.write(
+            self.style.SUCCESS("\n=== Sample Data Created Successfully! ===")
+        )
         self.stdout.write("\nTest User Credentials (all passwords: password123):")
         self.stdout.write("  • john_driver (Driver)")
         self.stdout.write("  • jane_racer (Driver)")
@@ -256,6 +278,12 @@ class Command(BaseCommand):
         self.stdout.write("\nAdmin User:")
         self.stdout.write("  • admin (superuser - set password on first login)")
         self.stdout.write("\nSessions Created:")
-        self.stdout.write(f'  • Open Sessions: {SessionSlot.objects.filter(session_type="OPEN_SESSION").count()}')
-        self.stdout.write(f'  • Grand Prix: {SessionSlot.objects.filter(session_type="GRAND_PRIX").count()}')
+        self.stdout.write(
+            "  • Open Sessions: "
+            f'{SessionSlot.objects.filter(session_type="OPEN_SESSION").count()}'
+        )
+        self.stdout.write(
+            "  • Grand Prix: "
+            f'{SessionSlot.objects.filter(session_type="GRAND_PRIX").count()}'
+        )
         self.stdout.write(f"  • Total Karts: {Kart.objects.count()}")

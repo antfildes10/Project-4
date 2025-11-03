@@ -172,7 +172,9 @@ class ProfileViewTests(TestCase):
     def setUp(self):
         """Set up test data."""
         self.client = Client()
-        self.user = User.objects.create_user(username="testuser", password="testpass123")
+        self.user = User.objects.create_user(
+            username="testuser", password="testpass123"
+        )
 
     def test_profile_view_requires_login(self):
         """Test that profile view redirects unauthenticated users."""
@@ -196,7 +198,10 @@ class ProfileViewTests(TestCase):
 
         # Create test data
         track = Track.objects.create(
-            name="Test Track", address="123 Test St", phone="555-1234", email="test@track.com"
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            email="test@track.com",
         )
         session = SessionSlot.objects.create(
             track=track,
@@ -260,18 +265,26 @@ class AuthenticationFlowTests(TestCase):
     def setUp(self):
         """Set up test data."""
         self.client = Client()
-        self.user = User.objects.create_user(username="testuser", password="testpass123")
+        self.user = User.objects.create_user(
+            username="testuser", password="testpass123"
+        )
 
     def test_login_success(self):
         """Test successful login."""
-        response = self.client.post(reverse("accounts:login"), {"username": "testuser", "password": "testpass123"})
+        response = self.client.post(
+            reverse("accounts:login"),
+            {"username": "testuser", "password": "testpass123"},
+        )
 
         # Should redirect
         self.assertEqual(response.status_code, 302)
 
     def test_login_invalid_credentials(self):
         """Test login fails with invalid credentials."""
-        response = self.client.post(reverse("accounts:login"), {"username": "testuser", "password": "wrongpassword"})
+        response = self.client.post(
+            reverse("accounts:login"),
+            {"username": "testuser", "password": "wrongpassword"},
+        )
 
         # Should not redirect (show error)
         self.assertEqual(response.status_code, 200)

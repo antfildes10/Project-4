@@ -14,13 +14,22 @@ class UserRegistrationForm(UserCreationForm):
     Creates new user accounts with required email validation.
     """
 
-    email = forms.EmailField(required=True, help_text="Required. Enter a valid email address.")
+    email = forms.EmailField(
+        required=True, help_text="Required. Enter a valid email address."
+    )
     first_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
     last_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
 
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
+        fields = (
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "password1",
+            "password2",
+        )
 
     def clean_email(self):
         """Validate that email is unique."""
@@ -40,7 +49,9 @@ class ProfileEditForm(forms.ModelForm):
         model = Profile
         fields = ("phone_number",)
         widgets = {
-            "phone_number": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter phone number"})
+            "phone_number": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Enter phone number"}
+            )
         }
 
 

@@ -53,7 +53,9 @@ class ProfileInline(admin.StackedInline):
     def role_permissions_summary(self, obj):
         """Display detailed permissions for the selected role."""
         if not obj or not obj.pk:
-            return mark_safe('<p style="color: #999;">Save user first to see role permissions.</p>')
+            return mark_safe(
+                '<p style="color: #999;">Save user first to see role permissions.</p>'
+            )
 
         permissions_map = {
             "DRIVER": {
@@ -145,8 +147,20 @@ class UserAdmin(BaseUserAdmin):
         "is_active",
         "date_joined",
     )
-    list_filter = ("is_staff", "is_superuser", "is_active", "profile__role", "date_joined")
-    search_fields = ("username", "email", "first_name", "last_name", "profile__phone_number")
+    list_filter = (
+        "is_staff",
+        "is_superuser",
+        "is_active",
+        "profile__role",
+        "date_joined",
+    )
+    search_fields = (
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "profile__phone_number",
+    )
 
     # Hide Groups and Permissions - we use Profile.role instead
     fieldsets = (
@@ -202,13 +216,18 @@ class UserAdmin(BaseUserAdmin):
         """Display user's booking count."""
         total = obj.bookings.count()
         upcoming = obj.bookings.filter(
-            session_slot__start_datetime__gte=timezone.now(), status__in=["PENDING", "CONFIRMED"]
+            session_slot__start_datetime__gte=timezone.now(),
+            status__in=["PENDING", "CONFIRMED"],
         ).count()
 
         if total == 0:
             return format_html('<span style="color: #6c757d;">0</span>')
 
-        return format_html('<strong>{}</strong> (<span style="color: #007bff;">{} upcoming</span>)', total, upcoming)
+        return format_html(
+            '<strong>{}</strong> (<span style="color: #007bff;">{} upcoming</span>)',
+            total,
+            upcoming,
+        )
 
     get_booking_count.short_description = "Bookings"
 
@@ -225,17 +244,37 @@ admin.site.unregister(Group)
 class ProfileAdmin(admin.ModelAdmin):
     """Admin interface for Profile model with CRM enhancements."""
 
-    list_display = ("get_user_link", "get_role_badge", "phone_number", "get_booking_count", "created_at")
+    list_display = (
+        "get_user_link",
+        "get_role_badge",
+        "phone_number",
+        "get_booking_count",
+        "created_at",
+    )
     list_filter = ("role", "created_at")
-    search_fields = ("user__username", "user__email", "phone_number", "user__first_name", "user__last_name")
-    readonly_fields = ("created_at", "updated_at", "get_profile_summary", "get_booking_count")
+    search_fields = (
+        "user__username",
+        "user__email",
+        "phone_number",
+        "user__first_name",
+        "user__last_name",
+    )
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "get_profile_summary",
+        "get_booking_count",
+    )
 
     fieldsets = (
         (None, {"fields": ("get_profile_summary",)}),
         ("User Information", {"fields": ("user",)}),
         ("Profile Details", {"fields": ("role", "phone_number")}),
         ("Statistics", {"fields": ("get_booking_count",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
+        (
+            "Timestamps",
+            {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
+        ),
     )
 
     def get_user_link(self, obj):
@@ -270,7 +309,8 @@ class ProfileAdmin(admin.ModelAdmin):
         """Display booking statistics."""
         total = obj.user.bookings.count()
         upcoming = obj.user.bookings.filter(
-            session_slot__start_datetime__gte=timezone.now(), status__in=["PENDING", "CONFIRMED"]
+            session_slot__start_datetime__gte=timezone.now(),
+            status__in=["PENDING", "CONFIRMED"],
         ).count()
         completed = obj.user.bookings.filter(status="COMPLETED").count()
 
@@ -287,7 +327,8 @@ class ProfileAdmin(admin.ModelAdmin):
         """Display comprehensive profile summary."""
         total_bookings = obj.user.bookings.count()
         upcoming_bookings = obj.user.bookings.filter(
-            session_slot__start_datetime__gte=timezone.now(), status__in=["PENDING", "CONFIRMED"]
+            session_slot__start_datetime__gte=timezone.now(),
+            status__in=["PENDING", "CONFIRMED"],
         ).count()
         completed_bookings = obj.user.bookings.filter(status="COMPLETED").count()
         cancelled_bookings = obj.user.bookings.filter(status="CANCELLED").count()

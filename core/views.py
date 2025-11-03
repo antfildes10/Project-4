@@ -11,7 +11,9 @@ from .forms import ContactForm
 
 def home(request):
     """Display homepage with upcoming sessions."""
-    upcoming_sessions = SessionSlot.objects.filter(start_datetime__gte=timezone.now()).order_by("start_datetime")[:6]
+    upcoming_sessions = SessionSlot.objects.filter(
+        start_datetime__gte=timezone.now()
+    ).order_by("start_datetime")[:6]
 
     context = {
         "upcoming_sessions": upcoming_sessions,
@@ -24,7 +26,9 @@ def home(request):
         user_bookings = Booking.objects.filter(driver=request.user)
         context["user_bookings_count"] = user_bookings.count()
         context["user_pending_count"] = user_bookings.filter(status="PENDING").count()
-        context["user_confirmed_count"] = user_bookings.filter(status="CONFIRMED").count()
+        context["user_confirmed_count"] = user_bookings.filter(
+            status="CONFIRMED"
+        ).count()
 
     return render(request, "core/home.html", context)
 
@@ -44,7 +48,9 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             # In a real application, send email here
-            messages.success(request, "Thank you for your message! We will get back to you soon.")
+            messages.success(
+                request, "Thank you for your message! We will get back to you soon."
+            )
             return redirect("core:contact")
     else:
         form = ContactForm()

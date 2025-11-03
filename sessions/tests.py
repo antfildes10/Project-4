@@ -33,16 +33,31 @@ class TrackModelTests(TestCase):
 
     def test_track_string_representation(self):
         """Test track __str__ method."""
-        track = Track.objects.create(name="Test Track", address="123 Test St", phone="555-1234", email="test@track.com")
+        track = Track.objects.create(
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            email="test@track.com",
+        )
         self.assertEqual(str(track), "Test Track")
 
     def test_only_one_track_allowed(self):
         """Test that only one track instance can exist."""
-        Track.objects.create(name="Track 1", address="123 Test St", phone="555-1234", email="test@track.com")
+        Track.objects.create(
+            name="Track 1",
+            address="123 Test St",
+            phone="555-1234",
+            email="test@track.com",
+        )
 
         # Try to create second track
         with self.assertRaises(ValidationError) as context:
-            Track.objects.create(name="Track 2", address="456 Test Ave", phone="555-5678", email="test2@track.com")
+            Track.objects.create(
+                name="Track 2",
+                address="456 Test Ave",
+                phone="555-5678",
+                email="test2@track.com",
+            )
 
         self.assertIn("Only one track instance is allowed", str(context.exception))
 
@@ -53,7 +68,11 @@ class SessionSlotModelTests(TestCase):
     def setUp(self):
         """Set up test data."""
         self.track = Track.objects.create(
-            name="Test Track", address="123 Test St", phone="555-1234", email="test@track.com", notes="Test track"
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            email="test@track.com",
+            notes="Test track",
         )
 
     def test_session_creation(self):
@@ -172,7 +191,9 @@ class SessionSlotModelTests(TestCase):
 
         # Create 3 bookings
         for i in range(3):
-            user = User.objects.create_user(username=f"driver{i}", password="testpass123")
+            user = User.objects.create_user(
+                username=f"driver{i}", password="testpass123"
+            )
             Booking.objects.create(session_slot=session, driver=user, status="PENDING")
 
         # Should have 7 spots left
@@ -195,8 +216,12 @@ class SessionSlotModelTests(TestCase):
 
         # Fill to capacity
         for i in range(5):
-            user = User.objects.create_user(username=f"driver{i}", password="testpass123")
-            Booking.objects.create(session_slot=session, driver=user, status="CONFIRMED")
+            user = User.objects.create_user(
+                username=f"driver{i}", password="testpass123"
+            )
+            Booking.objects.create(
+                session_slot=session, driver=user, status="CONFIRMED"
+            )
 
         self.assertTrue(session.is_full())
 
@@ -215,13 +240,19 @@ class SessionSlotModelTests(TestCase):
 
         # Create 5 pending bookings
         for i in range(5):
-            user = User.objects.create_user(username=f"driver{i}", password="testpass123")
+            user = User.objects.create_user(
+                username=f"driver{i}", password="testpass123"
+            )
             Booking.objects.create(session_slot=session, driver=user, status="PENDING")
 
         # Create 2 cancelled bookings
         for i in range(5, 7):
-            user = User.objects.create_user(username=f"driver{i}", password="testpass123")
-            Booking.objects.create(session_slot=session, driver=user, status="CANCELLED")
+            user = User.objects.create_user(
+                username=f"driver{i}", password="testpass123"
+            )
+            Booking.objects.create(
+                session_slot=session, driver=user, status="CANCELLED"
+            )
 
         # Should only count pending bookings (5 out of 10)
         self.assertEqual(session.get_available_spots(), 5)
@@ -236,11 +267,17 @@ class SessionViewTests(TestCase):
 
         # Create track
         self.track = Track.objects.create(
-            name="Test Track", address="123 Test St", phone="555-1234", email="test@track.com", notes="Test track"
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            email="test@track.com",
+            notes="Test track",
         )
 
         # Create users
-        self.driver = User.objects.create_user(username="testdriver", password="testpass123")
+        self.driver = User.objects.create_user(
+            username="testdriver", password="testpass123"
+        )
 
         # Create sessions
         self.session1 = SessionSlot.objects.create(
@@ -276,7 +313,9 @@ class SessionViewTests(TestCase):
 
     def test_session_list_filter_by_type(self):
         """Test filtering sessions by type."""
-        response = self.client.get(reverse("sessions:session_list") + "?session_type=GRAND_PRIX")
+        response = self.client.get(
+            reverse("sessions:session_list") + "?session_type=GRAND_PRIX"
+        )
         self.assertEqual(response.status_code, 200)
         sessions = response.context["sessions"]
         self.assertEqual(len(sessions), 1)
@@ -292,13 +331,17 @@ class SessionViewTests(TestCase):
 
     def test_session_detail_public_access(self):
         """Test that session detail is accessible to anonymous users."""
-        response = self.client.get(reverse("sessions:session_detail", args=[self.session1.pk]))
+        response = self.client.get(
+            reverse("sessions:session_detail", args=[self.session1.pk])
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "sessions/session_detail.html")
 
     def test_session_detail_shows_availability(self):
         """Test that session detail shows availability information."""
-        response = self.client.get(reverse("sessions:session_detail", args=[self.session1.pk]))
+        response = self.client.get(
+            reverse("sessions:session_detail", args=[self.session1.pk])
+        )
         self.assertEqual(response.status_code, 200)
         self.assertIn("available_spots", response.context)
         self.assertIn("is_full", response.context)
@@ -310,10 +353,14 @@ class SessionViewTests(TestCase):
         from bookings.models import Booking
 
         # Create booking for user
-        Booking.objects.create(session_slot=self.session1, driver=self.driver, status="PENDING")
+        Booking.objects.create(
+            session_slot=self.session1, driver=self.driver, status="PENDING"
+        )
 
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.get(reverse("sessions:session_detail", args=[self.session1.pk]))
+        response = self.client.get(
+            reverse("sessions:session_detail", args=[self.session1.pk])
+        )
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("user_has_booking", response.context)
@@ -323,7 +370,9 @@ class SessionViewTests(TestCase):
         """Test that authenticated users see their booking count."""
         from bookings.models import Booking
 
-        Booking.objects.create(session_slot=self.session1, driver=self.driver, status="CONFIRMED")
+        Booking.objects.create(
+            session_slot=self.session1, driver=self.driver, status="CONFIRMED"
+        )
 
         self.client.login(username="testdriver", password="testpass123")
         response = self.client.get(reverse("sessions:session_list"))

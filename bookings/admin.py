@@ -43,7 +43,12 @@ class BookingAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
     ordering = ("-created_at",)
     list_per_page = 25
-    list_select_related = ("driver", "session_slot", "assigned_kart", "session_slot__track")
+    list_select_related = (
+        "driver",
+        "session_slot",
+        "assigned_kart",
+        "session_slot__track",
+    )
 
     fieldsets = (
         (None, {"fields": ("get_booking_summary",)}),
@@ -55,8 +60,14 @@ class BookingAdmin(admin.ModelAdmin):
                 "description": "Assign a kart to this booking. Leave empty for automatic assignment.",
             },
         ),
-        ("Notes", {"fields": ("driver_notes", "manager_notes"), "classes": ("collapse",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
+        (
+            "Notes",
+            {"fields": ("driver_notes", "manager_notes"), "classes": ("collapse",)},
+        ),
+        (
+            "Timestamps",
+            {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
+        ),
     )
 
     actions = ["confirm_bookings", "cancel_bookings", "complete_bookings"]
@@ -71,7 +82,9 @@ class BookingAdmin(admin.ModelAdmin):
 
     def get_session_link(self, obj):
         """Display clickable session link with details."""
-        url = reverse("admin:session_slots_sessionslot_change", args=[obj.session_slot.id])
+        url = reverse(
+            "admin:session_slots_sessionslot_change", args=[obj.session_slot.id]
+        )
         session_type = "GP" if obj.session_slot.session_type == "GRAND_PRIX" else "Open"
         return format_html('<a href="{}">{} Session</a>', url, session_type)
 
@@ -144,7 +157,11 @@ class BookingAdmin(admin.ModelAdmin):
                     booking.save()
                     confirmed_count += 1
                 else:
-                    self.message_user(request, f"Booking #{booking.id}: No available karts", level="warning")
+                    self.message_user(
+                        request,
+                        f"Booking #{booking.id}: No available karts",
+                        level="warning",
+                    )
 
         if confirmed_count:
             self.message_user(request, f"{confirmed_count} booking(s) confirmed.")
@@ -164,7 +181,9 @@ class BookingAdmin(admin.ModelAdmin):
             self.message_user(request, f"{cancelled_count} booking(s) cancelled.")
         else:
             self.message_user(
-                request, "No bookings could be cancelled (check if sessions have already started)", level="warning"
+                request,
+                "No bookings could be cancelled (check if sessions have already started)",
+                level="warning",
             )
 
     cancel_bookings.short_description = "Cancel selected bookings"
@@ -179,8 +198,14 @@ class BookingAdmin(admin.ModelAdmin):
                 completed_count += 1
 
         if completed_count:
-            self.message_user(request, f"{completed_count} booking(s) marked as completed.")
+            self.message_user(
+                request, f"{completed_count} booking(s) marked as completed."
+            )
         else:
-            self.message_user(request, "No bookings could be completed (sessions must have ended)", level="warning")
+            self.message_user(
+                request,
+                "No bookings could be completed (sessions must have ended)",
+                level="warning",
+            )
 
     complete_bookings.short_description = "Mark selected bookings as completed"

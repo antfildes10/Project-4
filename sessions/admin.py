@@ -29,7 +29,12 @@ class TrackAdmin(admin.ModelAdmin):
 
     list_display = ("name", "phone", "email", "get_session_count", "created_at")
     search_fields = ("name", "address", "phone", "email")
-    readonly_fields = ("created_at", "updated_at", "get_session_count", "get_track_stats")
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "get_session_count",
+        "get_track_stats",
+    )
 
     fieldsets = (
         ("Track Information", {"fields": ("name", "address", "phone", "email")}),
@@ -41,7 +46,10 @@ class TrackAdmin(admin.ModelAdmin):
         ),
         ("Description", {"fields": ("description",)}),
         ("Internal Notes", {"fields": ("notes",), "classes": ("collapse",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
+        (
+            "Timestamps",
+            {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
+        ),
     )
 
     def get_session_count(self, obj):
@@ -49,7 +57,9 @@ class TrackAdmin(admin.ModelAdmin):
         total = obj.sessions.count()
         upcoming = obj.sessions.filter(start_datetime__gte=timezone.now()).count()
         return format_html(
-            '<strong>{}</strong> total (<span style="color: #28a745;">{} upcoming</span>)', total, upcoming
+            '<strong>{}</strong> total (<span style="color: #28a745;">{} upcoming</span>)',
+            total,
+            upcoming,
         )
 
     get_session_count.short_description = "Sessions"
@@ -60,11 +70,15 @@ class TrackAdmin(admin.ModelAdmin):
         from bookings.models import Booking
 
         total_sessions = obj.sessions.count()
-        upcoming_sessions = obj.sessions.filter(start_datetime__gte=timezone.now()).count()
+        upcoming_sessions = obj.sessions.filter(
+            start_datetime__gte=timezone.now()
+        ).count()
         past_sessions = obj.sessions.filter(end_datetime__lt=timezone.now()).count()
 
         total_bookings = Booking.objects.filter(session_slot__track=obj).count()
-        confirmed_bookings = Booking.objects.filter(session_slot__track=obj, status="CONFIRMED").count()
+        confirmed_bookings = Booking.objects.filter(
+            session_slot__track=obj, status="CONFIRMED"
+        ).count()
 
         html = f"""
         <div style="font-family: monospace; background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #007bff;">
@@ -103,17 +117,39 @@ class SessionSlotAdmin(admin.ModelAdmin):
     )
     list_filter = ("session_type", "start_datetime", "track")
     search_fields = ("description",)
-    readonly_fields = ("created_at", "updated_at", "get_booked_count", "get_available_spots", "get_session_summary")
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "get_booked_count",
+        "get_available_spots",
+        "get_session_summary",
+    )
     date_hierarchy = "start_datetime"
     ordering = ("-start_datetime",)
     inlines = [BookingInline]
 
     fieldsets = (
         (None, {"fields": ("get_session_summary",)}),
-        ("Session Details", {"fields": ("track", "session_type", "start_datetime", "end_datetime")}),
-        ("Capacity & Pricing", {"fields": ("capacity", "price", "get_booked_count", "get_available_spots")}),
+        (
+            "Session Details",
+            {"fields": ("track", "session_type", "start_datetime", "end_datetime")},
+        ),
+        (
+            "Capacity & Pricing",
+            {
+                "fields": (
+                    "capacity",
+                    "price",
+                    "get_booked_count",
+                    "get_available_spots",
+                )
+            },
+        ),
         ("Description", {"fields": ("description",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
+        (
+            "Timestamps",
+            {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
+        ),
     )
 
     def get_session_name(self, obj):
@@ -135,9 +171,13 @@ class SessionSlotAdmin(admin.ModelAdmin):
         """Display available spots."""
         available = obj.get_available_spots()
         if available <= 0:
-            return format_html('<span style="color: #dc3545; font-weight: bold;">0 (FULL)</span>')
+            return format_html(
+                '<span style="color: #dc3545; font-weight: bold;">0 (FULL)</span>'
+            )
         elif available <= 3:
-            return format_html('<span style="color: #ffc107; font-weight: bold;">{}</span>', available)
+            return format_html(
+                '<span style="color: #ffc107; font-weight: bold;">{}</span>', available
+            )
         return format_html('<span style="color: #28a745;">{}</span>', available)
 
     get_available_spots.short_description = "Available"
@@ -171,7 +211,7 @@ class SessionSlotAdmin(admin.ModelAdmin):
             '{} <span style="color: {};">({}%)</span>',
             int(obj.capacity),
             color,
-            int(round(percentage))
+            int(round(percentage)),
         )
 
     get_capacity_display.short_description = "Capacity"

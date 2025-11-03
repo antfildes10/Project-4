@@ -129,7 +129,10 @@ class KartModelTests(TestCase):
 
         # Create test data
         track = Track.objects.create(
-            name="Test Track", address="123 Test St", phone="555-1234", email="test@track.com"
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            email="test@track.com",
         )
         session = SessionSlot.objects.create(
             track=track,
@@ -146,7 +149,9 @@ class KartModelTests(TestCase):
         kart_maintenance = Kart.objects.create(number=2, status="MAINTENANCE")
 
         # Create booking
-        booking = Booking.objects.create(session_slot=session, driver=user, status="PENDING")
+        booking = Booking.objects.create(
+            session_slot=session, driver=user, status="PENDING"
+        )
 
         # Try to assign random kart (should only get active kart)
         result = booking.assign_random_kart()
@@ -166,7 +171,10 @@ class KartModelTests(TestCase):
 
         # Create test data
         track = Track.objects.create(
-            name="Test Track", address="123 Test St", phone="555-1234", email="test@track.com"
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            email="test@track.com",
         )
         session = SessionSlot.objects.create(
             track=track,
@@ -183,7 +191,9 @@ class KartModelTests(TestCase):
         Kart.objects.create(number=2, status="MAINTENANCE")
 
         # Create booking
-        booking = Booking.objects.create(session_slot=session, driver=user, status="PENDING")
+        booking = Booking.objects.create(
+            session_slot=session, driver=user, status="PENDING"
+        )
 
         # Try to assign random kart (should fail)
         result = booking.assign_random_kart()

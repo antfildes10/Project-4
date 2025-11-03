@@ -23,13 +23,22 @@ class BookingModelTests(TestCase):
         """Set up test data."""
         # Create track
         self.track = Track.objects.create(
-            name="Test Track", address="123 Test St", phone="555-1234", notes="Test track"
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            notes="Test track",
         )
 
         # Create users
-        self.driver = User.objects.create_user(username="testdriver", password="testpass123")
-        self.driver2 = User.objects.create_user(username="driver2", password="testpass123")
-        self.manager = User.objects.create_user(username="manager", password="testpass123")
+        self.driver = User.objects.create_user(
+            username="testdriver", password="testpass123"
+        )
+        self.driver2 = User.objects.create_user(
+            username="driver2", password="testpass123"
+        )
+        self.manager = User.objects.create_user(
+            username="manager", password="testpass123"
+        )
 
         # Set manager role
         self.manager.profile.role = "MANAGER"
@@ -83,11 +92,17 @@ class BookingModelTests(TestCase):
         """Test that bookings cannot exceed session capacity."""
         # Fill session to capacity (10)
         for i in range(10):
-            user = User.objects.create_user(username=f"capacitydriver{i}", password="testpass123")
-            Booking.objects.create(session_slot=self.future_session, driver=user, status="PENDING")
+            user = User.objects.create_user(
+                username=f"capacitydriver{i}", password="testpass123"
+            )
+            Booking.objects.create(
+                session_slot=self.future_session, driver=user, status="PENDING"
+            )
 
         # Try to create 11th booking
-        booking = Booking(session_slot=self.future_session, driver=self.driver2, status="PENDING")
+        booking = Booking(
+            session_slot=self.future_session, driver=self.driver2, status="PENDING"
+        )
 
         with self.assertRaises(ValidationError) as context:
             booking.full_clean()
@@ -97,7 +112,9 @@ class BookingModelTests(TestCase):
     def test_booking_driver_overlap_prevention(self):
         """Test that a driver cannot have overlapping bookings."""
         # Create first booking
-        Booking.objects.create(session_slot=self.future_session, driver=self.driver, status="PENDING")
+        Booking.objects.create(
+            session_slot=self.future_session, driver=self.driver, status="PENDING"
+        )
 
         # Try to create overlapping booking for same driver
         overlapping_booking = Booking(
@@ -177,8 +194,12 @@ class BookingModelTests(TestCase):
         """Test that cancelled bookings skip capacity validation."""
         # Fill session to capacity
         for i in range(10):
-            user = User.objects.create_user(username=f"canceldriver{i}", password="testpass123")
-            Booking.objects.create(session_slot=self.future_session, driver=user, status="PENDING")
+            user = User.objects.create_user(
+                username=f"canceldriver{i}", password="testpass123"
+            )
+            Booking.objects.create(
+                session_slot=self.future_session, driver=user, status="PENDING"
+            )
 
         # Cancel one booking
         booking_to_cancel = Booking.objects.first()
@@ -195,12 +216,19 @@ class BookingViewTests(TestCase):
 
         # Create track
         self.track = Track.objects.create(
-            name="Test Track", address="123 Test St", phone="555-1234", notes="Test track"
+            name="Test Track",
+            address="123 Test St",
+            phone="555-1234",
+            notes="Test track",
         )
 
         # Create users
-        self.driver = User.objects.create_user(username="testdriver", password="testpass123")
-        self.manager = User.objects.create_user(username="manager", password="testpass123")
+        self.driver = User.objects.create_user(
+            username="testdriver", password="testpass123"
+        )
+        self.manager = User.objects.create_user(
+            username="manager", password="testpass123"
+        )
         self.manager.profile.role = "MANAGER"
         self.manager.profile.save()
 
@@ -232,7 +260,9 @@ class BookingViewTests(TestCase):
 
     def test_booking_create_requires_login(self):
         """Test booking creation requires authentication."""
-        response = self.client.get(reverse("bookings:booking_create", args=[self.session.pk]))
+        response = self.client.get(
+            reverse("bookings:booking_create", args=[self.session.pk])
+        )
         self.assertEqual(response.status_code, 302)
 
     def test_booking_create_authenticated(self):
@@ -246,11 +276,17 @@ class BookingViewTests(TestCase):
         """Test cannot book full session."""
         # Fill session to capacity
         for i in range(10):
-            user = User.objects.create_user(username=f"driver{i}", password="testpass123")
-            Booking.objects.create(session_slot=self.session, driver=user, status="PENDING")
+            user = User.objects.create_user(
+                username=f"driver{i}", password="testpass123"
+            )
+            Booking.objects.create(
+                session_slot=self.session, driver=user, status="PENDING"
+            )
 
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.post(reverse("bookings:booking_create", args=[self.session.pk]), {})
+        response = self.client.post(
+            reverse("bookings:booking_create", args=[self.session.pk]), {}
+        )
 
         # Should show error message
         messages = list(response.wsgi_request._messages)
@@ -262,17 +298,23 @@ class BookingViewTests(TestCase):
             session_slot=self.session, driver=self.driver, status="PENDING"
         )
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.get(reverse("bookings:booking_detail", args=[booking.pk]))
+        response = self.client.get(
+            reverse("bookings:booking_detail", args=[booking.pk])
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_booking_detail_other_booking(self):
         """Test driver cannot view other's booking."""
-        other_driver = User.objects.create_user(username="other", password="testpass123")
+        other_driver = User.objects.create_user(
+            username="other", password="testpass123"
+        )
         booking = Booking.objects.create(
             session_slot=self.session, driver=other_driver, status="PENDING"
         )
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.get(reverse("bookings:booking_detail", args=[booking.pk]))
+        response = self.client.get(
+            reverse("bookings:booking_detail", args=[booking.pk])
+        )
         # Should redirect with error
         self.assertEqual(response.status_code, 302)
 
@@ -284,12 +326,16 @@ class BookingViewTests(TestCase):
 
         # Driver cannot confirm
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.get(reverse("bookings:booking_confirm", args=[booking.pk]))
+        response = self.client.get(
+            reverse("bookings:booking_confirm", args=[booking.pk])
+        )
         self.assertNotEqual(response.status_code, 200)
 
         # Manager can confirm
         self.client.login(username="manager", password="testpass123")
-        response = self.client.get(reverse("bookings:booking_confirm", args=[booking.pk]))
+        response = self.client.get(
+            reverse("bookings:booking_confirm", args=[booking.pk])
+        )
         # Should redirect after confirmation
         booking.refresh_from_db()
         self.assertEqual(booking.status, "CONFIRMED")
@@ -300,22 +346,32 @@ class BookingViewTests(TestCase):
             session_slot=self.session, driver=self.driver, status="PENDING"
         )
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.get(reverse("bookings:booking_cancel", args=[booking.pk]))
+        response = self.client.get(
+            reverse("bookings:booking_cancel", args=[booking.pk])
+        )
         self.assertEqual(response.status_code, 200)
 
         # Actually cancel
-        response = self.client.post(reverse("bookings:booking_cancel", args=[booking.pk]))
+        response = self.client.post(
+            reverse("bookings:booking_cancel", args=[booking.pk])
+        )
         booking.refresh_from_db()
         self.assertEqual(booking.status, "CANCELLED")
 
     def test_booking_list_filter_upcoming(self):
         """Test booking list filter for upcoming bookings."""
         # Create bookings with different statuses
-        Booking.objects.create(session_slot=self.session, driver=self.driver, status="PENDING")
-        Booking.objects.create(session_slot=self.session, driver=self.driver, status="CANCELLED")
+        Booking.objects.create(
+            session_slot=self.session, driver=self.driver, status="PENDING"
+        )
+        Booking.objects.create(
+            session_slot=self.session, driver=self.driver, status="CANCELLED"
+        )
 
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.get(reverse("bookings:booking_list") + "?status=upcoming")
+        response = self.client.get(
+            reverse("bookings:booking_list") + "?status=upcoming"
+        )
 
         self.assertEqual(response.status_code, 200)
         # Should only show PENDING/CONFIRMED bookings
@@ -336,10 +392,16 @@ class BookingViewTests(TestCase):
             price=35.00,
         )
 
-        Booking.objects.create(session_slot=self.session, driver=self.driver, status="PENDING")
-        Booking.objects.create(session_slot=session2, driver=self.driver, status="CONFIRMED")
+        Booking.objects.create(
+            session_slot=self.session, driver=self.driver, status="PENDING"
+        )
+        Booking.objects.create(
+            session_slot=session2, driver=self.driver, status="CONFIRMED"
+        )
 
         self.client.login(username="testdriver", password="testpass123")
-        response = self.client.get(reverse("bookings:booking_list") + "?status=CONFIRMED")
+        response = self.client.get(
+            reverse("bookings:booking_list") + "?status=CONFIRMED"
+        )
 
         self.assertEqual(response.status_code, 200)

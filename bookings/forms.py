@@ -18,7 +18,12 @@ class BookingForm(forms.ModelForm):
         fields = ("chosen_kart_number", "driver_notes")
         widgets = {
             "chosen_kart_number": forms.NumberInput(
-                attrs={"class": "form-control", "placeholder": "Preferred kart number (optional)", "min": 1, "max": 99}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Preferred kart number (optional)",
+                    "min": 1,
+                    "max": 99,
+                }
             ),
             "driver_notes": forms.Textarea(
                 attrs={
@@ -36,10 +41,14 @@ class BookingForm(forms.ModelForm):
         self.fields["driver_notes"].required = False
 
         # Get list of active karts for help text
-        active_karts = Kart.objects.filter(status="ACTIVE").values_list("number", flat=True)
+        active_karts = Kart.objects.filter(status="ACTIVE").values_list(
+            "number", flat=True
+        )
         if active_karts:
             kart_list = ", ".join(str(k) for k in sorted(active_karts))
-            self.fields["chosen_kart_number"].help_text = f"Available karts: {kart_list}"
+            self.fields["chosen_kart_number"].help_text = (
+                f"Available karts: {kart_list}"
+            )
         else:
             self.fields["chosen_kart_number"].help_text = "No karts currently available"
 
@@ -52,10 +61,12 @@ class BookingForm(forms.ModelForm):
                 if not kart.is_available():
                     raise forms.ValidationError(
                         f"Kart #{kart_number} is currently in maintenance. "
-                        "Please choose another kart or leave blank for automatic assignment."
+                        "Please choose another kart or leave blank for "
+                        "automatic assignment."
                     )
             except Kart.DoesNotExist:
                 raise forms.ValidationError(
-                    f"Kart #{kart_number} does not exist. " "Please choose from the available karts."
+                    f"Kart #{kart_number} does not exist. "
+                    "Please choose from the available karts."
                 )
         return kart_number

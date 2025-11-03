@@ -16,16 +16,34 @@ class SessionSlotForm(forms.ModelForm):
 
     class Meta:
         model = SessionSlot
-        fields = ("track", "session_type", "start_datetime", "end_datetime", "capacity", "price", "description")
+        fields = (
+            "track",
+            "session_type",
+            "start_datetime",
+            "end_datetime",
+            "capacity",
+            "price",
+            "description",
+        )
         widgets = {
             "track": forms.Select(attrs={"class": "form-control"}),
             "session_type": forms.Select(attrs={"class": "form-control"}),
-            "start_datetime": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
-            "end_datetime": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
+            "start_datetime": forms.DateTimeInput(
+                attrs={"class": "form-control", "type": "datetime-local"}
+            ),
+            "end_datetime": forms.DateTimeInput(
+                attrs={"class": "form-control", "type": "datetime-local"}
+            ),
             "capacity": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
-            "price": forms.NumberInput(attrs={"class": "form-control", "step": "0.01", "min": 0}),
+            "price": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01", "min": 0}
+            ),
             "description": forms.Textarea(
-                attrs={"class": "form-control", "rows": 3, "placeholder": "Optional session description"}
+                attrs={
+                    "class": "form-control",
+                    "rows": 3,
+                    "placeholder": "Optional session description",
+                }
             ),
         }
 
@@ -38,16 +56,22 @@ class SessionSlotForm(forms.ModelForm):
         # Validate start time is in the future (for new sessions)
         if start_datetime and not self.instance.pk:
             if start_datetime < timezone.now():
-                raise ValidationError({"start_datetime": "Cannot create sessions in the past."})
+                raise ValidationError(
+                    {"start_datetime": "Cannot create sessions in the past."}
+                )
 
         # Validate start is before end
         if start_datetime and end_datetime:
             if start_datetime >= end_datetime:
-                raise ValidationError({"end_datetime": "End time must be after start time."})
+                raise ValidationError(
+                    {"end_datetime": "End time must be after start time."}
+                )
 
             # Validate session duration is reasonable (at least 15 minutes)
             duration = end_datetime - start_datetime
             if duration.total_seconds() < 900:  # 15 minutes
-                raise ValidationError({"end_datetime": "Session must be at least 15 minutes long."})
+                raise ValidationError(
+                    {"end_datetime": "Session must be at least 15 minutes long."}
+                )
 
         return cleaned_data
