@@ -50,17 +50,14 @@
     </div>
 
     <!-- Two Column Layout -->
-    <div style="display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-                margin-bottom: 20px">
+    <div class="dashboard-two-col">
 
       <!-- Today's Sessions -->
       <div class="module">
         <h2>
           Today's Sessions
         </h2>
-        <table style="width: 100%;">
+        <table class="dashboard-table">
           <thead>
             <tr>
               <th>
@@ -91,15 +88,15 @@
                 </td>
                 <td>
                   {% if session.is_full %}
-                    <span style="color: #dc3545; font-weight: bold;">FULL</span>
+                    <span class="badge-danger">FULL</span>
                   {% else %}
-                    <span style="color: #28a745;">{{ session.get_available_spots }} spots left</span>
+                    <span class="badge-success">{{ session.get_available_spots }} spots left</span>
                   {% endif %}
                 </td>
               </tr>
             {% empty %}
               <tr>
-                <td colspan="4" style="text-align: center; color: #999; padding: 20px;">
+                <td colspan="4" class="empty-state">
                   No sessions scheduled for today
                 </td>
               </tr>
@@ -107,9 +104,9 @@
           </tbody>
         </table>
         {% if todays_sessions %}
-          <div style="padding: 10px; text-align: right; border-top: 1px solid #ddd;">
+          <div class="module-footer">
             <a href="{% url 'admin:session_slots_sessionslot_changelist' %}?start_datetime__day={{ today.day }}&start_datetime__month={{ today.month }}&start_datetime__year={{ today.year }}"
-               style="color: #447e9b">View all today's sessions →</a>
+               class="footer-link">View all today's sessions →</a>
           </div>
         {% endif %}
       </div>
@@ -119,7 +116,7 @@
         <h2>
           Pending Bookings - Action Required
         </h2>
-        <table style="width: 100%;">
+        <table class="dashboard-table">
           <thead>
             <tr>
               <th>
@@ -150,12 +147,12 @@
                 </td>
                 <td>
                   <a href="{% url 'admin:bookings_booking_change' booking.pk %}"
-                     style="color: #447e9b">Review</a>
+                     class="action-link">Review</a>
                 </td>
               </tr>
             {% empty %}
               <tr>
-                <td colspan="4" style="text-align: center; color: #28a745; padding: 20px">
+                <td colspan="4" class="empty-state empty-success">
                   ✓ No pending bookings
                 </td>
               </tr>
@@ -163,198 +160,179 @@
           </tbody>
         </table>
         {% if pending_bookings %}
-          <div style="padding: 10px; text-align: right; border-top: 1px solid #ddd;">
+          <div class="module-footer">
             <a href="{% url 'admin:bookings_booking_changelist' %}?status__exact=PENDING"
-               style="color: #447e9b">View all pending bookings →</a>
+               class="footer-link">View all pending bookings →</a>
           </div>
         {% endif %}
       </div>
     </div>
 
     <!-- Upcoming Sessions -->
-    <div class="module" style="margin-bottom: 20px;">
+    <div class="module">
       <h2>
         Upcoming Sessions (Next 7 Days)
       </h2>
-      <table style="width: 100%;">
-        <thead>
-          <tr>
-            <th>
-              Date & Time
-            </th>
-            <th>
-              Type
-            </th>
-            <th>
-              Track
-            </th>
-            <th>
-              Bookings
-            </th>
-            <th>
-              Available
-            </th>
-            <th>
-              Status
-            </th>
-            <th>
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for session in upcoming_sessions %}
+      <div class="table-responsive">
+        <table class="dashboard-table">
+          <thead>
             <tr>
-              <td>
-                {{ session.start_datetime|date:"D, M j - H:i" }}
-              </td>
-              <td>
-                {% if session.session_type == 'GRAND_PRIX' %}
-                  <span style="background: #ffc107;
-                               color: #000;
-                               padding: 2px 8px;
-                               border-radius: 3px;
-                               font-size: 11px">GP</span>
-                {% else %}
-                  <span style="background: #17a2b8;
-                               color: white;
-                               padding: 2px 8px;
-                               border-radius: 3px;
-                               font-size: 11px">OPEN</span>
-                {% endif %}
-              </td>
-              <td>
-                {{ session.track.name }}
-              </td>
-              <td>
-                {{ session.bookings.count }}
-              </td>
-              <td>
-                {{ session.get_available_spots }}
-              </td>
-              <td>
-                {% if session.is_full %}
-                  <span style="color: #dc3545; font-weight: bold;">FULL</span>
-                {% else %}
-                  <span style="color: #28a745;">Available</span>
-                {% endif %}
-              </td>
-              <td>
-                <a href="{% url 'admin:session_slots_sessionslot_change' session.pk %}"
-                   style="color: #447e9b">Edit</a>
-              </td>
+              <th>
+                Date & Time
+              </th>
+              <th>
+                Type
+              </th>
+              <th>
+                Track
+              </th>
+              <th>
+                Bookings
+              </th>
+              <th>
+                Available
+              </th>
+              <th>
+                Status
+              </th>
+              <th>
+                Actions
+              </th>
             </tr>
-          {% empty %}
-            <tr>
-              <td colspan="7" style="text-align: center; color: #999; padding: 20px;">
-                No upcoming sessions in the next 7 days
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for session in upcoming_sessions %}
+              <tr>
+                <td>
+                  {{ session.start_datetime|date:"D, M j - H:i" }}
+                </td>
+                <td>
+                  {% if session.session_type == 'GRAND_PRIX' %}
+                    <span class="badge badge-warning">GP</span>
+                  {% else %}
+                    <span class="badge badge-info">OPEN</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {{ session.track.name }}
+                </td>
+                <td>
+                  {{ session.bookings.count }}
+                </td>
+                <td>
+                  {{ session.get_available_spots }}
+                </td>
+                <td>
+                  {% if session.is_full %}
+                    <span class="badge-danger">FULL</span>
+                  {% else %}
+                    <span class="badge-success">Available</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'admin:session_slots_sessionslot_change' session.pk %}"
+                     class="action-link">Edit</a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="7" class="empty-state">
+                  No upcoming sessions in the next 7 days
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
       {% if upcoming_sessions %}
-        <div style="padding: 10px; text-align: right; border-top: 1px solid #ddd;">
+        <div class="module-footer">
           <a href="{% url 'admin:session_slots_sessionslot_changelist' %}"
-             style="color: #447e9b">View all sessions →</a>
+             class="footer-link">View all sessions →</a>
         </div>
       {% endif %}
     </div>
 
     <!-- Kart Status -->
-    <div class="module" style="margin-bottom: 20px;">
+    <div class="module">
       <h2>
         Kart Fleet Status
       </h2>
-      <table style="width: 100%;">
-        <thead>
-          <tr>
-            <th>
-              Kart #
-            </th>
-            <th>
-              Status
-            </th>
-            <th>
-              Upcoming Bookings
-            </th>
-            <th>
-              Last Updated
-            </th>
-            <th>
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for kart in karts %}
+      <div class="table-responsive">
+        <table class="dashboard-table">
+          <thead>
             <tr>
-              <td>
-                <strong>Kart #{{ kart.number }}</strong>
-              </td>
-              <td>
-                {% if kart.status == 'ACTIVE' %}
-                  <span style="background: #28a745;
-                               color: white;
-                               padding: 2px 8px;
-                               border-radius: 3px;
-                               font-size: 11px">ACTIVE</span>
-                {% else %}
-                  <span style="background: #ffc107;
-                               color: #000;
-                               padding: 2px 8px;
-                               border-radius: 3px;
-                               font-size: 11px">MAINTENANCE</span>
-                {% endif %}
-              </td>
-              <td>
-                {{ kart.upcoming_count }}
-              </td>
-              <td>
-                {{ kart.updated_at|date:"M j, H:i" }}
-              </td>
-              <td>
-                <a href="{% url 'admin:karts_kart_change' kart.pk %}"
-                   style="color: #447e9b">Edit</a>
-              </td>
+              <th>
+                Kart #
+              </th>
+              <th>
+                Status
+              </th>
+              <th>
+                Upcoming Bookings
+              </th>
+              <th>
+                Last Updated
+              </th>
+              <th>
+                Actions
+              </th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <div style="padding: 10px; text-align: right; border-top: 1px solid #ddd;">
-        <a href="{% url 'admin:karts_kart_changelist' %}" style="color: #447e9b">Manage all karts →</a>
+          </thead>
+          <tbody>
+            {% for kart in karts %}
+              <tr>
+                <td>
+                  <strong>Kart #{{ kart.number }}</strong>
+                </td>
+                <td>
+                  {% if kart.status == 'ACTIVE' %}
+                    <span class="badge badge-success">ACTIVE</span>
+                  {% else %}
+                    <span class="badge badge-warning">MAINTENANCE</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {{ kart.upcoming_count }}
+                </td>
+                <td>
+                  {{ kart.updated_at|date:"M j, H:i" }}
+                </td>
+                <td>
+                  <a href="{% url 'admin:karts_kart_change' kart.pk %}"
+                     class="action-link">Edit</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="module-footer">
+        <a href="{% url 'admin:karts_kart_changelist' %}" class="footer-link">Manage all karts →</a>
       </div>
     </div>
 
     <!-- Quick Actions -->
-    <div class="module" style="margin-bottom: 20px;">
+    <div class="module quick-actions-module">
       <h2>
         Quick Actions
       </h2>
-      <div style="display: grid;
-                  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                  gap: 10px;
-                  padding: 15px">
+      <div class="quick-actions-grid">
         <a href="{% url 'admin:session_slots_sessionslot_add' %}"
-           class="button"
-           style="text-align: center;
-                  padding: 12px;
-                  text-decoration: none">+ Create Session</a>
+           class="button quick-action-btn">
+          <i class="fas fa-plus-circle"></i> Create Session
+        </a>
         <a href="{% url 'admin:bookings_booking_add' %}"
-           class="button"
-           style="text-align: center;
-                  padding: 12px;
-                  text-decoration: none">+ New Booking</a>
+           class="button quick-action-btn">
+          <i class="fas fa-plus-circle"></i> New Booking
+        </a>
         <a href="{% url 'admin:karts_kart_add' %}"
-           class="button"
-           style="text-align: center;
-                  padding: 12px;
-                  text-decoration: none">+ Add Kart</a>
+           class="button quick-action-btn">
+          <i class="fas fa-plus-circle"></i> Add Kart
+        </a>
         <a href="{% url 'admin:bookings_booking_changelist' %}?status__exact=PENDING"
-           class="button"
-           style="text-align: center;
-                  padding: 12px;
-                  text-decoration: none">Review Pending</a>
+           class="button quick-action-btn">
+          <i class="fas fa-clipboard-check"></i> Review Pending
+        </a>
       </div>
     </div>
 

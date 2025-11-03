@@ -215,6 +215,170 @@
 }
 
 /* ===========================
+   DASHBOARD TWO-COLUMN LAYOUT
+   =========================== */
+.dashboard-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ===========================
+   DASHBOARD TABLES
+   =========================== */
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dashboard-table thead {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%) !important;
+}
+
+.dashboard-table thead th {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 0.875rem !important;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-table tbody tr {
+    border-bottom: 1px solid var(--admin-border);
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-table tbody tr:hover {
+    background-color: #f0f4ff;
+}
+
+.dashboard-table tbody td {
+    padding: 0.875rem;
+    font-size: 0.9rem;
+}
+
+/* Table Responsiveness */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Module Footer */
+.module-footer {
+    padding: 0.75rem 1rem;
+    text-align: right;
+    border-top: 1px solid var(--admin-border);
+    background: var(--admin-light);
+}
+
+.footer-link {
+    color: var(--admin-primary) !important;
+    font-weight: 600 !important;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: var(--admin-primary-dark) !important;
+    text-decoration: underline;
+}
+
+/* Action Links */
+.action-link {
+    color: var(--admin-primary) !important;
+    font-weight: 600 !important;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+
+.action-link:hover {
+    color: var(--admin-primary-dark) !important;
+    text-decoration: underline;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center !important;
+    color: #999 !important;
+    padding: 1.5rem !important;
+    font-style: italic;
+}
+
+.empty-success {
+    color: var(--admin-success) !important;
+    font-weight: 600;
+}
+
+/* ===========================
+   BADGES
+   =========================== */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-success,
+.badge.badge-success {
+    background: var(--admin-success);
+    color: #ffffff;
+}
+
+.badge-danger {
+    background: var(--admin-danger);
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.badge-warning,
+.badge.badge-warning {
+    background: var(--admin-warning);
+    color: #000000;
+}
+
+.badge-info,
+.badge.badge-info {
+    background: var(--admin-info);
+    color: #ffffff;
+}
+
+/* ===========================
+   QUICK ACTIONS
+   =========================== */
+.quick-actions-module {
+    margin-bottom: 1.5rem;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1.25rem;
+}
+
+.quick-action-btn {
+    text-align: center !important;
+    padding: 1rem 1.25rem !important;
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1rem !important;
+}
+
+.quick-action-btn i {
+    font-size: 1.1rem;
+}
+
+/* ===========================
    DASHBOARD APP LIST
    =========================== */
 #content-main .app-list {
@@ -653,6 +817,60 @@ select:focus {
 
     .stat-value {
         font-size: 1.75rem !important;
+    }
+
+    /* Dashboard Two-Column Layout */
+    .dashboard-two-col {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Dashboard Tables */
+    .dashboard-table {
+        font-size: 0.85rem;
+    }
+
+    .dashboard-table thead th {
+        padding: 0.625rem 0.5rem !important;
+        font-size: 0.75rem;
+    }
+
+    .dashboard-table tbody td {
+        padding: 0.625rem 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    /* Table Responsive Wrapper */
+    .table-responsive {
+        margin: 0 -0.5rem;
+    }
+
+    .table-responsive .dashboard-table {
+        min-width: 600px;
+    }
+
+    /* Quick Actions */
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .quick-action-btn {
+        width: 100%;
+        padding: 0.875rem 1rem !important;
+    }
+
+    /* Module Footer */
+    .module-footer {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.85rem;
+    }
+
+    /* Badges */
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
     }
 }
 
