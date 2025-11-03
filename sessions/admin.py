@@ -167,7 +167,7 @@ class SessionSlotAdmin(admin.ModelAdmin):
         else:
             color = "#28a745"  # Green
 
-        return format_html('{} <span style="color: {};">({:.0f}%)</span>', obj.capacity, color, percentage)
+        return format_html('{} <span style="color: {};">({:.0f}%)</span>', obj.capacity, color, float(percentage))
 
     get_capacity_display.short_description = "Capacity"
 
