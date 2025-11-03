@@ -32,7 +32,7 @@
             <!-- Name Field -->
             <div class="mb-3">
               <label for="{{ form.name.id_for_label }}" class="form-label">
-                Name <span class="text-danger" aria-label="required">*</span>
+                Name <span class="text-danger" aria-hidden="true">*</span>
               </label>
               {{ form.name }}
               {% if form.name.errors %}
@@ -45,7 +45,7 @@
             <!-- Email Field -->
             <div class="mb-3">
               <label for="{{ form.email.id_for_label }}" class="form-label">
-                Email Address <span class="text-danger" aria-label="required">*</span>
+                Email Address <span class="text-danger" aria-hidden="true">*</span>
               </label>
               {{ form.email }}
               {% if form.email.errors %}
@@ -58,7 +58,7 @@
             <!-- Subject Field -->
             <div class="mb-3">
               <label for="{{ form.subject.id_for_label }}" class="form-label">
-                Subject <span class="text-danger" aria-label="required">*</span>
+                Subject <span class="text-danger" aria-hidden="true">*</span>
               </label>
               {{ form.subject }}
               {% if form.subject.errors %}
@@ -71,7 +71,7 @@
             <!-- Message Field -->
             <div class="mb-3">
               <label for="{{ form.message.id_for_label }}" class="form-label">
-                Message <span class="text-danger" aria-label="required">*</span>
+                Message <span class="text-danger" aria-hidden="true">*</span>
               </label>
               {{ form.message }}
               {% if form.message.errors %}

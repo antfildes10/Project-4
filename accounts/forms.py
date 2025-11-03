@@ -15,10 +15,22 @@ class UserRegistrationForm(UserCreationForm):
     """
 
     email = forms.EmailField(
-        required=True, help_text="Required. Enter a valid email address."
+        required=True,
+        help_text="Required. Enter a valid email address.",
+        widget=forms.EmailInput(attrs={"autocomplete": "email"})
     )
-    first_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
-    last_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
+    first_name = forms.CharField(
+        max_length=30,
+        required=False,
+        help_text="Optional.",
+        widget=forms.TextInput(attrs={"autocomplete": "given-name"})
+    )
+    last_name = forms.CharField(
+        max_length=30,
+        required=False,
+        help_text="Optional.",
+        widget=forms.TextInput(attrs={"autocomplete": "family-name"})
+    )
 
     class Meta:
         model = User
@@ -30,6 +42,14 @@ class UserRegistrationForm(UserCreationForm):
             "password1",
             "password2",
         )
+        widgets = {
+            "username": forms.TextInput(attrs={"autocomplete": "username"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["password1"].widget.attrs.update({"autocomplete": "new-password"})
+        self.fields["password2"].widget.attrs.update({"autocomplete": "new-password"})
 
     def clean_email(self):
         """Validate that email is unique."""
@@ -67,9 +87,9 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ("email", "first_name", "last_name")
         widgets = {
-            "email": forms.EmailInput(attrs={"class": "form-control"}),
-            "first_name": forms.TextInput(attrs={"class": "form-control"}),
-            "last_name": forms.TextInput(attrs={"class": "form-control"}),
+            "email": forms.EmailInput(attrs={"class": "form-control", "autocomplete": "email"}),
+            "first_name": forms.TextInput(attrs={"class": "form-control", "autocomplete": "given-name"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control", "autocomplete": "family-name"}),
         }
 
     def __init__(self, *args, **kwargs):

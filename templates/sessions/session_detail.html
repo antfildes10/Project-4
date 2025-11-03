@@ -135,18 +135,24 @@
                      aria-valuenow="{{ session.bookings.count }}"
                      aria-valuemin="0"
                      aria-valuemax="{{ session.capacity }}">
-                  {% widthratio session.bookings.count session.capacity 100 as capacity_percentage %}
-                  <div class="progress-bar
-                              {% if capacity_percentage >= 90 %}
-                                bg-danger
-                              {% elif capacity_percentage >= 70 %}
-                                bg-warning
-                              {% else %}
-                                bg-success
-                              {% endif %}"
-                       style="width: {{ capacity_percentage }}%">
-                    {{ capacity_percentage }}%
-                  </div>
+                  {% if session.capacity > 0 %}
+                    {% widthratio session.bookings.count session.capacity 100 as capacity_percentage %}
+                    <div class="progress-bar
+                                {% if capacity_percentage >= 90 %}
+                                  bg-danger
+                                {% elif capacity_percentage >= 70 %}
+                                  bg-warning
+                                {% else %}
+                                  bg-success
+                                {% endif %}"
+                         style="width: {{ capacity_percentage }}%">
+                      {{ capacity_percentage }}%
+                    </div>
+                  {% else %}
+                    <div class="progress-bar bg-secondary" style="width: 100%">
+                      No capacity set
+                    </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
