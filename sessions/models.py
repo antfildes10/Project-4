@@ -114,9 +114,10 @@ class SessionSlot(models.Model):
         return self.start_datetime <= now <= self.end_datetime
 
     def get_available_spots(self):
-        """Calculate remaining capacity."""
-        from bookings.models import Booking  # noqa: F401
-
+        """
+        Calculate remaining capacity.
+        Uses reverse relation from SessionSlot -> Booking (no import needed).
+        """
         confirmed_count = self.bookings.filter(
             status__in=["PENDING", "CONFIRMED"]
         ).count()
