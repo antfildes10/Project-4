@@ -1138,11 +1138,16 @@ select:focus {
     margin-bottom: 1rem !important;
     float: none !important;
     position: static !important;
+    width: 100% !important;
+    clear: both !important;
+    display: block !important;
 }
 
 .object-tools li {
     display: inline-block !important;
     margin-right: 0.5rem !important;
+    float: none !important;
+    list-style: none !important;
 }
 
 .object-tools a {
@@ -1155,6 +1160,7 @@ select:focus {
     display: inline-block !important;
     transition: all 0.2s ease !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    float: none !important;
 }
 
 .object-tools a:hover {
@@ -1164,9 +1170,24 @@ select:focus {
 
 /* Clear floats to prevent overlap */
 #changelist {
-    clear: both;
+    clear: both !important;
 }
 
 #changelist-filter {
     margin-top: 1rem !important;
+    clear: both !important;
+}
+
+/* Ensure content wrapper doesn't allow floating */
+.changelist-form-container {
+    clear: both !important;
+}
+
+/* Additional specificity for all admin pages */
+#content-main .object-tools {
+    position: static !important;
+    float: none !important;
+    width: 100% !important;
+    display: block !important;
+    margin-bottom: 1.5rem !important;
 }
