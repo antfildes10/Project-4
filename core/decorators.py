@@ -31,7 +31,8 @@ def manager_required(view_func):
 
         if not (hasattr(request.user, "profile") and request.user.profile.is_manager()):
             messages.error(
-                request, "You do not have permission to access this page. Manager role required."
+                request,
+                "You do not have permission to access this page. Manager role required."
             )
             return redirect("core:home")
 
