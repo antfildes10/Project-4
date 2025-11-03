@@ -1316,6 +1316,13 @@ select:focus {
 
 #changelist-filter.show {
     display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Debug: Force visible when show class is present */
+.filter-dropdown-panel.show {
+    display: block !important;
 }
 
 .filter-dropdown-header {
