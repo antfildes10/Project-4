@@ -1218,6 +1218,16 @@ select:focus {
     width: auto !important;
     display: inline-flex !important;
     flex: 0 0 auto !important;
+    padding: 0 !important;
+    align-items: center !important;
+}
+
+#content-main .admin-actions-bar .object-tools li {
+    display: inline-block !important;
+    margin: 0 0.5rem 0 0 !important;
+    float: none !important;
+    list-style: none !important;
+    height: auto !important;
 }
 
 #content-main .admin-actions-bar .filter-dropdown-container {
