@@ -1196,13 +1196,28 @@ select:focus {
 }
 
 /* Additional specificity for all admin pages */
-#content-main .object-tools {
+#content-main .admin-actions-bar {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    margin-bottom: 1.5rem !important;
+    flex-wrap: wrap !important;
+}
+
+#content-main .admin-actions-bar .object-tools {
     margin-top: 0 !important;
+    margin-bottom: 0 !important;
     position: static !important;
     float: none !important;
-    width: 100% !important;
-    display: block !important;
-    margin-bottom: 1.5rem !important;
+    width: auto !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+}
+
+#content-main .admin-actions-bar .filter-dropdown-container {
+    position: relative !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
 }
 
 /* Override Django's flexbox changelist layout that causes issues */
