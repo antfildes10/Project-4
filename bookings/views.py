@@ -180,21 +180,30 @@ def booking_confirm(request, pk):
         )
         return redirect("bookings:booking_detail", pk=booking.pk)
 
-    # Try to assign a kart
-    if booking.assign_random_kart():
-        booking.status = "CONFIRMED"
-        booking.save()
+    # Try to assign a kart (wrapped in transaction for data consistency)
+    from django.db import transaction
 
-        messages.success(
-            request,
-            f"Booking confirmed for {booking.driver.username}. "
-            f"Kart #{booking.assigned_kart.number} has been assigned.",
-        )
-    else:
+    try:
+        with transaction.atomic():
+            if booking.assign_random_kart():
+                booking.status = "CONFIRMED"
+                booking.save()
+
+                messages.success(
+                    request,
+                    f"Booking confirmed for {booking.driver.username}. "
+                    f"Kart #{booking.assigned_kart.number} has been assigned.",
+                )
+            else:
+                messages.error(
+                    request,
+                    "No available karts for this session. Please check kart "
+                    "status or session conflicts.",
+                )
+    except Exception as e:
         messages.error(
             request,
-            "No available karts for this session. Please check kart "
-            "status or session conflicts.",
+            f"Error confirming booking: {str(e)}",
         )
 
     return redirect("bookings:booking_detail", pk=booking.pk)

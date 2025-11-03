@@ -138,19 +138,30 @@ class BookingAdmin(admin.ModelAdmin):
 
     def confirm_bookings(self, request, queryset):
         """Bulk action to confirm pending bookings."""
+        from django.db import transaction
+
         confirmed_count = 0
         for booking in queryset.filter(status="PENDING"):
             if booking.can_be_confirmed():
-                # Try to assign kart
-                if booking.assign_random_kart():
-                    booking.status = "CONFIRMED"
-                    booking.save()
-                    confirmed_count += 1
-                else:
+                # Wrap in transaction for data consistency
+                try:
+                    with transaction.atomic():
+                        # Try to assign kart
+                        if booking.assign_random_kart():
+                            booking.status = "CONFIRMED"
+                            booking.save()
+                            confirmed_count += 1
+                        else:
+                            self.message_user(
+                                request,
+                                f"Booking #{booking.id}: No available karts",
+                                level="warning",
+                            )
+                except Exception as e:
                     self.message_user(
                         request,
-                        f"Booking #{booking.id}: No available karts",
-                        level="warning",
+                        f"Booking #{booking.id}: Error - {str(e)}",
+                        level="error",
                     )
 
         if confirmed_count:
