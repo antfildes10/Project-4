@@ -68,26 +68,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {% block content %}
   <div id="content-main">
-    {% block object-tools %}
-        <ul class="object-tools">
-          {% block object-tools-items %}
-            {% change_list_object_tools %}
-          {% endblock %}
-        </ul>
-    {% endblock %}
+    <div class="admin-actions-bar">
+      {% block object-tools %}
+          <ul class="object-tools">
+            {% block object-tools-items %}
+              {% change_list_object_tools %}
+            {% endblock %}
+          </ul>
+      {% endblock %}
 
-    <!-- Filter Dropdown Button -->
-    {% if cl.has_filters %}
-    <div class="filter-dropdown-container">
-      <button type="button" class="filter-toggle-btn" id="filterToggleBtn">
-        <i class="fas fa-filter"></i> Filters
-        {% if cl.has_active_filters %}
-          <span class="filter-active-badge">{{ cl.get_filters_params|length }}</span>
-        {% endif %}
-        <i class="fas fa-chevron-down filter-chevron"></i>
-      </button>
+      <!-- Filter Dropdown Button -->
+      {% if cl.has_filters %}
+      <div class="filter-dropdown-container">
+        <button type="button" class="filter-toggle-btn" id="filterToggleBtn">
+          <i class="fas fa-filter"></i> Filters
+          {% if cl.has_active_filters %}
+            <span class="filter-active-badge">{{ cl.get_filters_params|length }}</span>
+          {% endif %}
+          <i class="fas fa-chevron-down filter-chevron"></i>
+        </button>
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
 
     {% if cl.formset and cl.formset.errors %}
         <p class="errornote">
