@@ -4,8 +4,6 @@ KartControl is a comprehensive web-based booking platform designed specifically 
 
 **Live Application:** [https://project-4-karting-121d969fb7d5.herokuapp.com](https://project-4-karting-121d969fb7d5.herokuapp.com)
 
-![KartControl Responsive Mockup](docs/screenshots/responsive-mockup.png)
-
 ## Table of Contents
 
 - [Features](#features)
@@ -55,8 +53,6 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - **Sorting**: Sessions are automatically sorted by date with the nearest sessions displayed first for convenience.
 - This transparency helps drivers make informed decisions about when to race and reduces customer service inquiries about availability.
 
-![Session List](docs/screenshots/sessions-list.png)
-![Session Filters](docs/screenshots/sessions-filters.png)
 
 #### Detailed Session Information
 
@@ -105,8 +101,6 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - **Booking History**: Complete history of all bookings maintained for reference and record-keeping.
 - This gives drivers full control and visibility over their racing schedule, reducing customer service calls and improving satisfaction.
 
-![My Bookings](docs/screenshots/my-bookings.png)
-![Booking Detail](docs/screenshots/booking-detail.png)
 ![Confirm Booking](docs/screenshots/confirm-booking.png)
 
 #### Powerful Manager Dashboard and Administrative Tools
@@ -132,7 +126,6 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - These tools give managers complete operational control while automating complex logic, reducing management time by an estimated 60%.
 
 ![Manager Dashboard](docs/screenshots/admin-dashboard.png)
-![Admin Bookings](docs/screenshots/admin-bookings.png)
 
 #### Robust Business Logic and Data Validation
 
@@ -156,7 +149,6 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - **Spam Prevention**: Form validation prevents automated spam submissions while remaining user-friendly.
 - This provides an easy, secure communication channel for inquiries and support without requiring users to find email addresses or make phone calls.
 
-![Contact Page](docs/screenshots/contact.png)
 
 #### Informative About Page
 
@@ -167,7 +159,6 @@ KartControl provides a comprehensive suite of features designed to make go-kart 
 - **Public Access**: Available to all visitors to browse before registering, helping convert visitors to users.
 - This helps potential customers learn about the track and its offerings, building trust before registration.
 
-![About Page](docs/screenshots/about.png)
 
 #### Modern Responsive Design
 
@@ -287,7 +278,6 @@ The database schema was designed to normalize data appropriately while maintaini
   - Kart availability validation
 - Status workflow (PENDING → CONFIRMED → COMPLETED/CANCELLED)
 
-**Database Diagram:** [View Entity Relationship Diagram](docs/diagrams/erd.png)
 
 ### User Flow and Navigation
 
@@ -340,7 +330,6 @@ Input validation was designed to prevent any invalid data from reaching the data
 - SQL injection prevention via ORM
 - XSS prevention via template escaping
 
-**Validation Flow:** [View Validation Logic Diagram](docs/diagrams/validation.png)
 
 ## Installation and Setup
 
