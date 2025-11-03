@@ -1175,10 +1175,14 @@ select:focus {
     border-radius: 6px !important;
     font-weight: 600 !important;
     text-decoration: none !important;
-    display: inline-block !important;
+    display: inline-flex !important;
+    align-items: center !important;
     transition: all 0.2s ease !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     float: none !important;
+    font-size: 0.8125rem !important;
+    line-height: 1 !important;
+    height: auto !important;
 }
 
 .object-tools a:hover {
@@ -1256,16 +1260,18 @@ select:focus {
     background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
     color: #ffffff !important;
     border: none !important;
-    padding: 0.75rem 1.5rem !important;
+    padding: 0.625rem 1.25rem !important;
     border-radius: 6px !important;
     font-weight: 600 !important;
-    font-size: 0.95rem !important;
+    font-size: 0.8125rem !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     gap: 0.5rem !important;
     transition: all 0.2s ease !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    height: auto !important;
+    line-height: 1 !important;
 }
 
 .filter-toggle-btn:hover {
