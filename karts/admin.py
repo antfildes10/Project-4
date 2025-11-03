@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from django.utils import timezone
 from .models import Kart
 from bookings.models import Booking
+from core.admin_utils import KART_STATUS_COLORS, create_kart_status_badge
 
 
 class KartBookingInline(admin.TabularInline):
