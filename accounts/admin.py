@@ -4,7 +4,7 @@ Admin configuration for accounts app with CRM-style enhancements.
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils import timezone
@@ -216,6 +216,9 @@ class UserAdmin(BaseUserAdmin):
 # Unregister the default User admin and register our custom one
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+
+# Unregister Groups - we don't use Django's permission system
+admin.site.unregister(Group)
 
 
 @admin.register(Profile)
