@@ -359,3 +359,46 @@ textarea:focus {
 .session-card .btn:hover {
   transform: scale(1.02);
 }
+
+/* About Page Styling */
+.about-page h1 {
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.about-page hr {
+  border: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--racing-red) 0%, var(--signal-yellow) 100%);
+  margin: 2rem 0;
+  border-radius: 2px;
+}
+
+.about-section .card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+
+.about-section .card-header {
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.about-section .card-body a {
+  color: white;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.about-section .card-body a:hover {
+  color: var(--signal-yellow);
+}
+
+.about-section address {
+  margin-bottom: 0;
+  font-style: normal;
+  line-height: 1.8;
+}
