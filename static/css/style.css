@@ -924,3 +924,119 @@ textarea:focus {
   color: #764ba2;
   text-decoration: underline;
 }
+
+/* ==================================================
+   RESPONSIVE & MOBILE IMPROVEMENTS
+   Addresses: sticky sidebars, mobile layouts, ultra-wide screens
+   ================================================== */
+
+/* Ultra-wide screen constraints */
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1400px;
+  }
+  
+  main {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+}
+
+/* Tablet optimizations (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .col-md-4 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  /* Three-column layouts become two-column on tablet */
+  .row > .col-md-4:nth-child(3n+1) {
+    clear: left;
+  }
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 767px) {
+  /* Disable sticky positioning on mobile to prevent layout issues */
+  .sticky-top,
+  [style*="position: sticky"] {
+    position: relative !important;
+    top: auto !important;
+  }
+  
+  /* Hero section icon size fix */
+  .fa-10x {
+    font-size: 5rem !important;
+  }
+  
+  /* Full-width filter buttons */
+  .btn-group-vertical {
+    width: 100%;
+  }
+  
+  .btn-group-vertical .btn {
+    width: 100%;
+  }
+  
+  /* Session cards without forced height */
+  .session-card.h-100 {
+    height: auto !important;
+    min-height: 200px;
+  }
+  
+  /* Responsive tables */
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .admin-table {
+    min-width: 600px;
+  }
+}
+
+/* Loading indicator for forms */
+.form-loading {
+  position: relative;
+}
+
+.form-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.form-loading.is-loading::after {
+  display: flex;
+  content: 'Processing...';
+  font-weight: bold;
+  color: #333;
+}
+
+/* Skip navigation enhancement */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--racing-red);
+  color: var(--white);
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: bold;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+}
