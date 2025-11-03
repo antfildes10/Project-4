@@ -402,3 +402,42 @@ textarea:focus {
   font-style: normal;
   line-height: 1.8;
 }
+
+/* Session Types Section on About Page */
+.session-types-section h2 {
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+}
+
+.session-types-section .card {
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+  transition: all 0.3s ease;
+}
+
+.session-types-section .card:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)) padding-box,
+    linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+}
+
+.session-types-section .card-title {
+  color: #2d3748;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.session-types-section .card-text {
+  color: #4a5568;
+  line-height: 1.7;
+}
+
+.session-types-section .list-unstyled li {
+  padding: 0.5rem 0;
+  color: #4a5568;
+}
+
+.session-types-section .fa-check {
+  margin-right: 0.5rem;
+}
