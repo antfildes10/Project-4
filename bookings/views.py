@@ -87,8 +87,14 @@ def booking_create(request, session_id):
                         messages.error(request, "This session is fully booked.")
                         return redirect("sessions:session_detail", pk=session_id)
 
-                    # Save the booking (model validation already ran during is_valid)
-                    booking = form.save()
+                    # Create the booking instance without saving
+                    booking = form.save(commit=False)
+
+                    # Now run full model validation with all fields set
+                    booking.full_clean()
+
+                    # Save the booking
+                    booking.save()
 
                 messages.success(
                     request,
@@ -99,9 +105,12 @@ def booking_create(request, session_id):
 
             except ValidationError as e:
                 # Display validation errors from model
-                for field, errors in e.message_dict.items():
-                    for error in errors:
-                        messages.error(request, error)
+                if hasattr(e, 'message_dict'):
+                    for field, errors in e.message_dict.items():
+                        for error in errors:
+                            messages.error(request, error)
+                else:
+                    messages.error(request, str(e))
     else:
         form = BookingForm()
 

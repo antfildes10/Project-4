@@ -70,3 +70,15 @@ class BookingForm(forms.ModelForm):
                     "Please choose from the available karts."
                 )
         return kart_number
+
+    def _post_clean(self):
+        """
+        Override _post_clean to skip model validation during form validation.
+
+        Model validation (clean()) will be run manually in the view after
+        session_slot, driver, and status are set. This prevents errors about
+        fields not in the form.
+        """
+        # Skip the parent's _post_clean which calls instance.full_clean()
+        # We'll validate manually in the view after all fields are set
+        pass
