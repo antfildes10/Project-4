@@ -120,7 +120,7 @@ class KartAdmin(admin.ModelAdmin):
         completed_bookings = obj.bookings.filter(status="COMPLETED").count()
         cancelled_bookings = obj.bookings.filter(status="CANCELLED").count()
 
-        status_color = "#28a745" if obj.is_available() else "#ffc107"
+        status_color = KART_STATUS_COLORS.get(obj.status, "#6c757d")
         status_text = (
             "Active - Available for Assignment"
             if obj.is_available()
