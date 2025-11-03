@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from django.utils import timezone
 from .models import Track, SessionSlot
 from bookings.models import Booking
+from core.admin_utils import SESSION_TYPE_COLORS, create_session_type_badge
 
 
 class BookingInline(admin.TabularInline):
