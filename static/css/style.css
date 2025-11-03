@@ -68,16 +68,48 @@ h6 {
 
 /* Cards */
 .card {
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border: none;
+  overflow: hidden;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Features Section Cards */
+.features-section .card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.features-section .card-body {
+  padding: 2.5rem 2rem;
+}
+
+.features-section .card .fa-3x {
+  transition: transform 0.3s ease;
+}
+
+.features-section .card:hover .fa-3x {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.features-section .card-title {
+  font-weight: 700;
+  color: #2d3748;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.features-section .card-text {
+  color: #718096;
+  line-height: 1.7;
 }
 
 /* Status Badges */
