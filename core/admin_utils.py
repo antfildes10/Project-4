@@ -35,8 +35,8 @@ KART_STATUS_COLORS = {
 }
 
 SESSION_TYPE_COLORS = {
-    'OPEN': '#17a2b8',        # Info blue
-    'GRAND_PRIX': '#ffc107',  # Warning yellow
+    'OPEN_SESSION': '#17a2b8',  # Info blue
+    'GRAND_PRIX': '#ffc107',    # Warning yellow
 }
 
 

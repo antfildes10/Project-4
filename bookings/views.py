@@ -53,13 +53,11 @@ def booking_create(request, session_id):
     """
     Create a new booking for a session.
     Validates capacity, driver overlap, and kart availability.
+    Uses database transactions to prevent race conditions.
     """
-    session = get_object_or_404(SessionSlot, pk=session_id)
+    from django.db import transaction
 
-    # Check if session is full
-    if session.is_full():
-        messages.error(request, "This session is fully booked.")
-        return redirect("sessions:session_detail", pk=session_id)
+    session = get_object_or_404(SessionSlot, pk=session_id)
 
     # Check if session is in the past
     if session.is_past():
@@ -75,8 +73,22 @@ def booking_create(request, session_id):
 
         if form.is_valid():
             try:
-                # Save the booking (model validation already ran during is_valid)
-                booking = form.save()
+                # Use atomic transaction with row locking to prevent race conditions
+                with transaction.atomic():
+                    # Lock the session row to prevent concurrent bookings
+                    session = SessionSlot.objects.select_for_update().get(pk=session_id)
+
+                    # Check capacity inside transaction
+                    existing_count = session.bookings.filter(
+                        status__in=["PENDING", "CONFIRMED"]
+                    ).count()
+
+                    if existing_count >= session.capacity:
+                        messages.error(request, "This session is fully booked.")
+                        return redirect("sessions:session_detail", pk=session_id)
+
+                    # Save the booking (model validation already ran during is_valid)
+                    booking = form.save()
 
                 messages.success(
                     request,

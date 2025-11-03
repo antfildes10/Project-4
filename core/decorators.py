@@ -59,8 +59,10 @@ def is_manager(user):
         def my_view(request):
             pass
     """
-    return (
-        user.is_authenticated
-        and hasattr(user, "profile")
-        and user.profile.is_manager()
-    )
+    if not user.is_authenticated:
+        return False
+
+    try:
+        return user.profile.is_manager()
+    except Exception:  # Handles DoesNotExist and AttributeError
+        return False
