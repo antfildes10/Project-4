@@ -248,16 +248,31 @@ class Booking(models.Model):
         """
         Assign a random available kart when confirming booking.
         Returns True if successful, False otherwise.
-        """
-        # Get all active karts
-        available_karts = Kart.objects.filter(status="ACTIVE")
 
-        # Exclude karts already assigned to this session
+        Uses row-level locking to prevent race conditions.
+        Checks for time-overlapping sessions to prevent double-booking.
+        """
+        import random
+        from django.db.models import Q
+
+        # Get all active karts with row-level lock to prevent race conditions
+        available_karts = Kart.objects.filter(status="ACTIVE").select_for_update()
+
+        # Find all sessions that overlap with this booking's session
+        overlapping_sessions = SessionSlot.objects.filter(
+            Q(start_datetime__lt=self.session_slot.end_datetime)
+            & Q(end_datetime__gt=self.session_slot.start_datetime)
+        )
+
+        # Exclude karts assigned to ANY overlapping session (not just this one)
         assigned_kart_ids = (
-            self.session_slot.bookings.filter(
-                status__in=["CONFIRMED", "COMPLETED"], assigned_kart__isnull=False
+            Booking.objects.filter(
+                session_slot__in=overlapping_sessions,
+                status__in=["CONFIRMED", "COMPLETED"],
+                assigned_kart__isnull=False,
             )
             .exclude(pk=self.pk)
+            .select_for_update()
             .values_list("assigned_kart_id", flat=True)
         )
 
@@ -273,9 +288,7 @@ class Booking(models.Model):
                 pass
 
         # Otherwise assign random available kart
-        # Use Python's random.choice for better performance than order_by("?")
         if available_karts.exists():
-            import random
             karts_list = list(available_karts)
             self.assigned_kart = random.choice(karts_list)
             return True
