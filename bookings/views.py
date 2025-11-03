@@ -9,13 +9,7 @@ from django.core.exceptions import ValidationError
 from .models import Booking
 from .forms import BookingForm
 from sessions.models import SessionSlot
-
-
-def is_manager(user):
-    """Check if user has manager role."""
-    return (
-        user.is_authenticated and hasattr(user, "profile") and user.profile.is_manager()
-    )
+from core.decorators import is_manager
 
 
 @login_required
