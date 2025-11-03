@@ -195,20 +195,7 @@ class UserAdmin(BaseUserAdmin):
         if not hasattr(obj, "profile"):
             return format_html('<span style="color: #999;">No profile</span>')
 
-        role_colors = {
-            "DRIVER": "#17a2b8",  # Info blue
-            "MANAGER": "#ffc107",  # Warning yellow
-            "MARSHAL": "#6f42c1",  # Purple
-        }
-
-        role = obj.profile.role
-        color = role_colors.get(role, "#6c757d")
-
-        return format_html(
-            '<span style="background-color: {}; color: white; padding: 3px 10px; border-radius: 3px; font-weight: bold;">{}</span>',
-            color,
-            obj.profile.get_role_display(),
-        )
+        return create_role_badge(obj.profile.role)
 
     get_role_badge.short_description = "Role"
     get_role_badge.admin_order_field = "profile__role"
