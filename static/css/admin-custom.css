@@ -1134,14 +1134,25 @@ select:focus {
 /* ===========================
    FIX ADD BUTTON POSITIONING
    =========================== */
+
+/* Admin Actions Bar - Container for buttons */
+.admin-actions-bar {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    margin-bottom: 1.5rem !important;
+    flex-wrap: wrap !important;
+}
+
 .object-tools {
     margin-top: 0 !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0 !important;
     float: none !important;
     position: static !important;
-    width: 100% !important;
-    clear: both !important;
-    display: block !important;
+    width: auto !important;
+    clear: none !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
 }
 
 .object-tools li {
@@ -1205,7 +1216,9 @@ select:focus {
 
 /* Filter Toggle Button */
 .filter-dropdown-container {
-    margin-bottom: 1rem;
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
 }
 
 .filter-toggle-btn {
@@ -1249,8 +1262,8 @@ select:focus {
 /* Filter Dropdown Panel */
 #changelist-filter {
     position: absolute;
-    right: 0;
-    top: 100%;
+    left: 0;
+    top: calc(100% + 0.5rem);
     background: #ffffff;
     border: 1px solid var(--admin-border);
     border-radius: 8px;
@@ -1259,7 +1272,6 @@ select:focus {
     max-height: 600px;
     overflow-y: auto;
     z-index: 1000;
-    margin-top: 0.5rem;
     display: none;
 }
 
