@@ -316,6 +316,45 @@ footer a:hover {
   .table th {
     padding: 0.5rem;
   }
+
+  /* About page */
+  .about-page hr {
+    margin: 1.5rem 0;
+  }
+
+  .about-section .card {
+    margin-bottom: 1.5rem;
+  }
+
+  .about-section .card-body {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .session-types-section .card-body {
+    padding: 1.25rem;
+  }
+
+  .session-types-section .card-title {
+    font-size: 1.1rem;
+  }
+
+  .session-types-section .card-text {
+    font-size: 0.9rem;
+  }
+
+  .session-types-section .list-unstyled li {
+    font-size: 0.9rem;
+    padding: 0.35rem 0;
+  }
+
+  .cta-section {
+    padding: 2rem 1.5rem !important;
+  }
+
+  .cta-section h2 {
+    font-size: 1.5rem;
+  }
 }
 
 /* Focus indicators for accessibility */
