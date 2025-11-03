@@ -1326,7 +1326,7 @@ select:focus {
 }
 
 .filter-dropdown-header {
-    padding: 0.75rem;
+    padding: 0.5rem;
     background: var(--admin-light);
     border-bottom: 1px solid var(--admin-border);
     display: flex;
@@ -1339,7 +1339,7 @@ select:focus {
 
 .filter-dropdown-header h2 {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--admin-primary);
     font-weight: 600;
 }
@@ -1347,9 +1347,9 @@ select:focus {
 .clear-filters-btn {
     color: #dc3545;
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.375rem;
     border-radius: 4px;
     transition: background 0.2s ease;
 }
@@ -1359,14 +1359,14 @@ select:focus {
 }
 
 .filter-dropdown-content {
-    padding: 0.75rem;
+    padding: 0.5rem;
 }
 
 /* Filter Details Styling - More Compressed */
 #changelist-filter details {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.375rem;
     border-bottom: 1px solid var(--admin-border);
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.375rem;
 }
 
 #changelist-filter details:last-child {
@@ -1378,10 +1378,10 @@ select:focus {
     font-weight: 600;
     color: var(--admin-primary);
     cursor: pointer;
-    padding: 0.375rem 0.5rem;
+    padding: 0.25rem 0.375rem;
     border-radius: 4px;
     transition: background 0.2s ease;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
 }
 
 #changelist-filter summary:hover {
@@ -1391,21 +1391,21 @@ select:focus {
 #changelist-filter ul {
     list-style: none;
     padding-left: 0;
-    margin: 0.25rem 0 0 0;
+    margin: 0.125rem 0 0 0;
 }
 
 #changelist-filter li {
-    padding: 0.125rem 0;
+    padding: 0 0;
 }
 
 #changelist-filter li a {
     color: var(--body-fg);
     text-decoration: none;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.375rem;
     display: block;
     border-radius: 4px;
     transition: all 0.2s ease;
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     border-bottom: 2px solid transparent;
 }
 
