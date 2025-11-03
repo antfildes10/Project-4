@@ -185,13 +185,7 @@ class SessionSlotAdmin(admin.ModelAdmin):
 
     def get_session_type_badge(self, obj):
         """Display session type with color badge."""
-        if obj.session_type == "GRAND_PRIX":
-            return format_html(
-                '<span style="background-color: #ffc107; color: #000; padding: 3px 10px; border-radius: 3px; font-weight: bold;">Grand Prix</span>'
-            )
-        return format_html(
-            '<span style="background-color: #17a2b8; color: white; padding: 3px 10px; border-radius: 3px;">Open Session</span>'
-        )
+        return create_session_type_badge(obj.session_type, obj.get_session_type_display())
 
     get_session_type_badge.short_description = "Type"
     get_session_type_badge.admin_order_field = "session_type"
