@@ -163,13 +163,45 @@ class Booking(models.Model):
     def clean(self):
         """
         Validate booking business rules:
-        1. Check capacity limits
-        2. Prevent driver overlap
-        3. Validate chosen kart is available
+        1. Validate state transitions
+        2. Check capacity limits
+        3. Prevent driver overlap
+        4. Validate chosen kart is available
+        5. Prevent booking past sessions
+        6. Ensure confirmed bookings have kart
         """
-        # Skip validation if being cancelled or completed
+        # Validate state transitions (prevent reactivation of cancelled/completed bookings)
+        if self.pk:  # Existing booking
+            try:
+                original = Booking.objects.get(pk=self.pk)
+                if original.status == "CANCELLED" and self.status != "CANCELLED":
+                    raise ValidationError({
+                        "status": "Cancelled bookings cannot be reactivated. "
+                                  "Please create a new booking instead."
+                    })
+                if original.status == "COMPLETED" and self.status != "COMPLETED":
+                    raise ValidationError({
+                        "status": "Completed bookings cannot be modified."
+                    })
+            except Booking.DoesNotExist:
+                pass
+
+        # Skip other validation if being cancelled or completed
         if self.status in ["CANCELLED", "COMPLETED"]:
             return
+
+        # Prevent booking past sessions (unless already completed/cancelled)
+        if self.session_slot and self.status in ["PENDING", "CONFIRMED"]:
+            if self.session_slot.is_past():
+                raise ValidationError({
+                    "session_slot": "Cannot create bookings for sessions that have already ended."
+                })
+
+        # Confirmed bookings must have an assigned kart
+        if self.status == "CONFIRMED" and not self.assigned_kart:
+            raise ValidationError({
+                "assigned_kart": "Confirmed bookings must have an assigned kart."
+            })
 
         # Check session capacity
         if self.session_slot:
@@ -219,8 +251,14 @@ class Booking(models.Model):
                 )
 
     def save(self, *args, **kwargs):
-        """Run validation before saving."""
-        self.clean()
+        """
+        Save booking instance.
+
+        Note: Validation is automatically run by forms via full_clean().
+        Only runs clean() manually if force_validation=True is passed.
+        """
+        if kwargs.pop('force_validation', False):
+            self.full_clean()
         super().save(*args, **kwargs)
 
     def can_be_cancelled(self):
