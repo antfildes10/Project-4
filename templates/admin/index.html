@@ -9,58 +9,40 @@
     </h1>
 
     <!-- Quick Stats Overview -->
-    <div class="module" style="margin-bottom: 20px;">
-      <h2 style="background-color: #417690;
-                 color: white;
-                 padding: 10px;
-                 margin: 0">
+    <div class="module dashboard-stats">
+      <h2>
         Today's Overview - {{ today|date:"l, F j, Y" }}
       </h2>
-      <div style="display: grid;
-                  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                  gap: 15px;
-                  padding: 15px">
-        <div style="background: #f8f9fa;
-                    padding: 15px;
-                    border-left: 4px solid #28a745;
-                    border-radius: 3px">
-          <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
+      <div class="stats-grid">
+        <div class="stat-card stat-success">
+          <h3 class="stat-label">
             Today's Sessions
           </h3>
-          <p style="margin: 0; font-size: 28px; font-weight: bold; color: #28a745">
+          <p class="stat-value">
             {{ stats.todays_sessions }}
           </p>
         </div>
-        <div style="background: #f8f9fa;
-                    padding: 15px;
-                    border-left: 4px solid #ffc107;
-                    border-radius: 3px">
-          <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
+        <div class="stat-card stat-warning">
+          <h3 class="stat-label">
             Pending Bookings
           </h3>
-          <p style="margin: 0; font-size: 28px; font-weight: bold; color: #ffc107">
+          <p class="stat-value">
             {{ stats.pending_bookings }}
           </p>
         </div>
-        <div style="background: #f8f9fa;
-                    padding: 15px;
-                    border-left: 4px solid #007bff;
-                    border-radius: 3px">
-          <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
+        <div class="stat-card stat-primary">
+          <h3 class="stat-label">
             Confirmed Bookings
           </h3>
-          <p style="margin: 0; font-size: 28px; font-weight: bold; color: #007bff">
+          <p class="stat-value">
             {{ stats.confirmed_bookings }}
           </p>
         </div>
-        <div style="background: #f8f9fa;
-                    padding: 15px;
-                    border-left: 4px solid #17a2b8;
-                    border-radius: 3px">
-          <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
+        <div class="stat-card stat-info">
+          <h3 class="stat-label">
             Active Karts
           </h3>
-          <p style="margin: 0; font-size: 28px; font-weight: bold; color: #17a2b8">
+          <p class="stat-value">
             {{ stats.active_karts }} / {{ stats.total_karts }}
           </p>
         </div>

@@ -141,6 +141,80 @@
 }
 
 /* ===========================
+   DASHBOARD STATISTICS
+   =========================== */
+.dashboard-stats {
+    margin-bottom: 1.5rem !important;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    padding: 1.25rem;
+}
+
+.stat-card {
+    background: var(--admin-light);
+    padding: 1.25rem;
+    border-radius: 8px;
+    border-left: 4px solid;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--admin-shadow-hover);
+}
+
+.stat-card.stat-success {
+    border-left-color: var(--admin-success);
+}
+
+.stat-card.stat-warning {
+    border-left-color: var(--admin-warning);
+}
+
+.stat-card.stat-primary {
+    border-left-color: var(--admin-primary);
+}
+
+.stat-card.stat-info {
+    border-left-color: var(--admin-info);
+}
+
+.stat-label {
+    margin: 0 0 0.625rem 0 !important;
+    font-size: 0.875rem !important;
+    color: #6c757d !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    margin: 0 !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+}
+
+.stat-card.stat-success .stat-value {
+    color: var(--admin-success);
+}
+
+.stat-card.stat-warning .stat-value {
+    color: var(--admin-warning);
+}
+
+.stat-card.stat-primary .stat-value {
+    color: var(--admin-primary);
+}
+
+.stat-card.stat-info .stat-value {
+    color: var(--admin-info);
+}
+
+/* ===========================
    DASHBOARD APP LIST
    =========================== */
 #content-main .app-list {
@@ -560,6 +634,25 @@ select:focus {
     .paginator a {
         padding: 0.375rem 0.5rem;
         font-size: 0.85rem;
+    }
+
+    /* Dashboard Stats */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem !important;
+    }
+
+    .stat-value {
+        font-size: 1.75rem !important;
     }
 }
 
