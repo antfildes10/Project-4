@@ -107,6 +107,21 @@ document.addEventListener('DOMContentLoaded', function() {
           {% endif %}
           <i class="fas fa-chevron-down filter-chevron"></i>
         </button>
+
+        <!-- Filter Dropdown Panel - Positioned relative to button -->
+        <div id="changelist-filter" class="filter-dropdown-panel">
+          <div class="filter-dropdown-header">
+            <h2>{% translate 'Filter' %}</h2>
+            {% if cl.has_active_filters %}
+              <a href="{{ cl.clear_all_filters_qs }}" class="clear-filters-btn">
+                <i class="fas fa-times-circle"></i> {% translate "Clear all" %}
+              </a>
+            {% endif %}
+          </div>
+          <div class="filter-dropdown-content">
+            {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+          </div>
+        </div>
       </div>
       {% endif %}
     </div>
@@ -136,21 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </form>
       </div>
       {% block filters %}
-        {% if cl.has_filters %}
-          <div id="changelist-filter" class="filter-dropdown-panel">
-            <div class="filter-dropdown-header">
-              <h2>{% translate 'Filter' %}</h2>
-              {% if cl.has_active_filters %}
-                <a href="{{ cl.clear_all_filters_qs }}" class="clear-filters-btn">
-                  <i class="fas fa-times-circle"></i> {% translate "Clear all" %}
-                </a>
-              {% endif %}
-            </div>
-            <div class="filter-dropdown-content">
-              {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
-            </div>
-          </div>
-        {% endif %}
+        {# Filters moved to dropdown button above #}
       {% endblock %}
     </div>
   </div>
