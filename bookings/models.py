@@ -273,8 +273,11 @@ class Booking(models.Model):
                 pass
 
         # Otherwise assign random available kart
+        # Use Python's random.choice for better performance than order_by("?")
         if available_karts.exists():
-            self.assigned_kart = available_karts.order_by("?").first()
+            import random
+            karts_list = list(available_karts)
+            self.assigned_kart = random.choice(karts_list)
             return True
 
         return False
