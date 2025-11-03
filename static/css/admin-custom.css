@@ -1451,12 +1451,10 @@ select:focus {
         transform: translateX(-50%) !important;
     }
 
-    /* Increase touch target sizes for mobile */
-    .filter-toggle-btn {
-        padding: 0.75rem 1rem !important;
-        font-size: 0.875rem !important;
-    }
+    /* Keep button sizes consistent - DO NOT increase touch targets for filter button */
+    /* Filter button should match add button at all screen sizes */
 
+    /* Increase touch target sizes inside dropdown only */
     #changelist-filter summary {
         padding: 0.375rem 0.5rem !important;
         font-size: 0.875rem !important;
@@ -1498,17 +1496,19 @@ select:focus {
         width: 100% !important;
     }
 
+    /* Keep filter button same size as add button */
     .filter-toggle-btn {
         width: 100%;
         justify-content: center !important;
+        /* DO NOT change padding or font-size - matches add button */
     }
 
-    /* Larger touch targets for mobile */
-    .filter-toggle-btn {
-        padding: 0.875rem 1rem !important;
-        font-size: 1rem !important;
+    /* Object-tools buttons stay same size too */
+    .object-tools a {
+        /* Keep existing size - no changes */
     }
 
+    /* Larger touch targets inside dropdown only */
     #changelist-filter summary {
         padding: 0.5rem !important;
         font-size: 1rem !important;
