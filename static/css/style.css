@@ -244,3 +244,70 @@ textarea:focus {
     transform: translateY(-20px);
   }
 }
+
+/* Sessions Page Styling */
+.sessions-page h1 {
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.sessions-page .lead {
+  color: #718096;
+  font-size: 1.15rem;
+}
+
+/* Filter Section */
+.filter-section .card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+}
+
+.filter-section .card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom: none;
+  padding: 1rem 1.5rem;
+  border-radius: 12px 12px 0 0;
+}
+
+.filter-section .card-header h2 {
+  color: white;
+  font-weight: 600;
+}
+
+.filter-section .form-label {
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+.filter-section .form-select,
+.filter-section .form-control {
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.filter-section .form-select:hover,
+.filter-section .form-control:hover {
+  border-color: #cbd5e0;
+}
+
+.filter-section .btn {
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.filter-section .btn-primary {
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+.filter-section .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.4);
+}
