@@ -14,3 +14,52 @@
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
+
+{% block usertools %}
+<div id="user-tools">
+    <div class="user-dropdown">
+        <button class="user-dropdown-toggle" id="userDropdownBtn">
+            <i class="fas fa-user-circle"></i>
+            <span>{{ user.get_username }}</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="user-dropdown-menu" id="userDropdownMenu">
+            {% if site_url %}
+                <a href="{{ site_url }}" class="dropdown-item">
+                    <i class="fas fa-external-link-alt"></i>
+                    View site
+                </a>
+            {% endif %}
+            {% if has_permission %}
+                <a href="{% url 'admin:password_change' %}" class="dropdown-item">
+                    <i class="fas fa-key"></i>
+                    Change password
+                </a>
+            {% endif %}
+            <a href="{% url 'admin:logout' %}" class="dropdown-item">
+                <i class="fas fa-sign-out-alt"></i>
+                Log out
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdownBtn = document.getElementById('userDropdownBtn');
+    const dropdownMenu = document.getElementById('userDropdownMenu');
+
+    if (dropdownBtn && dropdownMenu) {
+        dropdownBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            dropdownMenu.classList.remove('show');
+        });
+    }
+});
+</script>
+{% endblock %}
