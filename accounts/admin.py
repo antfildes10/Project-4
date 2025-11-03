@@ -32,7 +32,8 @@ class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     verbose_name_plural = "Profile"
-    fields = ("role", "phone_number")
+    fields = ("role", "role_permissions_summary", "phone_number")
+    readonly_fields = ("role_permissions_summary",)
 
     def formfield_for_choice_field(self, db_field, request, **kwargs):
         """Add helpful descriptions to role choices."""
@@ -48,6 +49,87 @@ class ProfileInline(admin.StackedInline):
                 """
             )
         return super().formfield_for_choice_field(db_field, request, **kwargs)
+
+    def role_permissions_summary(self, obj):
+        """Display detailed permissions for the selected role."""
+        if not obj or not obj.pk:
+            return mark_safe('<p style="color: #999;">Save user first to see role permissions.</p>')
+
+        permissions_map = {
+            "DRIVER": {
+                "icon": "🏎️",
+                "color": "#17a2b8",
+                "can_do": [
+                    "View available racing sessions",
+                    "Create their own bookings",
+                    "View their own bookings",
+                    "Cancel their own bookings (before session starts)",
+                ],
+                "cannot_do": [
+                    "View other users' bookings",
+                    "Manage sessions or karts",
+                    "Access admin dashboard",
+                ],
+            },
+            "MANAGER": {
+                "icon": "👔",
+                "color": "#ffc107",
+                "can_do": [
+                    "All Driver permissions",
+                    "View all bookings from all users",
+                    "Create/edit/delete any booking",
+                    "Manage sessions and karts",
+                    "Access full admin dashboard",
+                ],
+                "cannot_do": [
+                    "None - Managers have full access",
+                ],
+            },
+            "MARSHAL": {
+                "icon": "🛡️",
+                "color": "#6f42c1",
+                "can_do": [
+                    "View all racing sessions",
+                    "View all bookings from all users",
+                    "Cancel unsafe bookings (safety override)",
+                    "Monitor track operations",
+                ],
+                "cannot_do": [
+                    "Create or edit sessions",
+                    "Manage kart fleet",
+                    "Access full admin features",
+                ],
+            },
+        }
+
+        role_info = permissions_map.get(obj.role, None)
+        if not role_info:
+            return ""
+
+        html = f"""
+        <div style="margin-top: 10px; padding: 15px; background: #f8f9fa; border-left: 4px solid {role_info['color']}; border-radius: 4px;">
+            <h4 style="margin-top: 0; color: {role_info['color']};">
+                {role_info['icon']} {obj.get_role_display()} Permissions
+            </h4>
+
+            <div style="margin-bottom: 15px;">
+                <strong style="color: #28a745;">✅ Can Do:</strong>
+                <ul style="margin: 5px 0; padding-left: 20px;">
+                    {''.join(f'<li>{item}</li>' for item in role_info['can_do'])}
+                </ul>
+            </div>
+
+            <div>
+                <strong style="color: #dc3545;">❌ Cannot Do:</strong>
+                <ul style="margin: 5px 0; padding-left: 20px;">
+                    {''.join(f'<li style="color: #6c757d;">{item}</li>' for item in role_info['cannot_do'])}
+                </ul>
+            </div>
+        </div>
+        """
+        return mark_safe(html)
+
+    role_permissions_summary.short_description = "What This Role Can Do"
 
 
 class UserAdmin(BaseUserAdmin):
