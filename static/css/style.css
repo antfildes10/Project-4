@@ -192,6 +192,55 @@ footer a:hover {
     padding: 0.65rem 1.5rem;
     font-size: 1rem;
   }
+
+  /* Home page hero section */
+  .hero-section {
+    padding: 2rem 1.5rem !important;
+    border-radius: 8px;
+  }
+
+  .hero-section h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-section .lead {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-section .fa-car-side {
+    font-size: 6rem !important;
+    margin-top: 2rem;
+  }
+
+  .hero-section .alert {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  .hero-section .btn {
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .hero-section .btn-lg {
+    font-size: 1rem;
+  }
+
+  /* Features section */
+  .features-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .features-section .card-body {
+    padding: 1.5rem;
+  }
+
+  .features-section .fa-3x {
+    font-size: 2.5rem !important;
+  }
 }
 
 /* Focus indicators for accessibility */
