@@ -7,6 +7,16 @@
   --signal-yellow: #ffb300;
   --track-gray: #f4f4f4;
   --white: #ffffff;
+
+  /* Gradient definitions - centralized for consistency */
+  --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-purple-light: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  --gradient-racing: linear-gradient(90deg, var(--racing-red) 0%, var(--signal-yellow) 100%);
+  --gradient-light: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  --gradient-gray: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --gradient-white: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  --gradient-yellow: linear-gradient(135deg, #ffd54f 0%, #ffb300 100%);
+  --gradient-blue: linear-gradient(135deg, #4fc3f7 0%, #0288d1 100%);
 }
 
 /* Skip to main content link (accessibility) */
@@ -93,7 +103,7 @@ h6 {
 
 /* Features Section Cards */
 .features-section .card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  background: var(--gradient-white);
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -516,7 +526,7 @@ textarea:focus {
 .hero-section {
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: var(--gradient-purple) !important;
   position: relative;
   overflow: hidden;
   padding: 4rem 2rem !important;
@@ -540,7 +550,7 @@ textarea:focus {
 }
 
 .hero-section.bg-light {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+  background: var(--gradient-gray) !important;
 }
 
 .hero-section.bg-light::before {
@@ -607,13 +617,13 @@ textarea:focus {
 
 /* Filter Section */
 .filter-section .card {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: var(--gradient-light);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
 }
 
 .filter-section .card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-purple);
   color: white;
   border-bottom: none;
   padding: 1rem 1.5rem;
@@ -674,12 +684,12 @@ textarea:focus {
 }
 
 .session-card .card-header.bg-warning {
-  background: linear-gradient(135deg, #ffd54f 0%, #ffb300 100%) !important;
+  background: var(--gradient-yellow) !important;
   color: #1e1e1e;
 }
 
 .session-card .card-header.bg-info {
-  background: linear-gradient(135deg, #4fc3f7 0%, #0288d1 100%) !important;
+  background: var(--gradient-blue) !important;
 }
 
 .session-card .card-body {
@@ -718,13 +728,13 @@ textarea:focus {
 .about-page hr {
   border: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--racing-red) 0%, var(--signal-yellow) 100%);
+  background: var(--gradient-racing);
   margin: 2rem 0;
   border-radius: 2px;
 }
 
 .about-section .card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-purple);
   color: white;
   border: none;
 }
@@ -761,13 +771,13 @@ textarea:focus {
 .session-types-section .card {
   border: 2px solid transparent;
   background: linear-gradient(white, white) padding-box,
-    linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+    var(--gradient-purple) border-box;
   transition: all 0.3s ease;
 }
 
 .session-types-section .card:hover {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)) padding-box,
-    linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+    var(--gradient-purple) border-box;
 }
 
 .session-types-section .card-title {
@@ -805,14 +815,14 @@ textarea:focus {
 .contact-page hr {
   border: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--racing-red) 0%, var(--signal-yellow) 100%);
+  background: var(--gradient-racing);
   margin: 2rem 0;
   border-radius: 2px;
 }
 
 /* Contact Form Section */
 .contact-form-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: var(--gradient-light);
   padding: 2.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -876,7 +886,7 @@ textarea:focus {
 .contact-info-section .card {
   border: 2px solid transparent;
   background: linear-gradient(white, white) padding-box,
-    linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+    var(--gradient-purple) border-box;
   transition: all 0.3s ease;
   margin-bottom: 1rem;
 }
@@ -893,7 +903,7 @@ textarea:focus {
 }
 
 .contact-info-section .card-title i {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-purple);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
