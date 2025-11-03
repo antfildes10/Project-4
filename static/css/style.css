@@ -66,6 +66,15 @@ h6 {
   border-color: #b71c1c;
 }
 
+.btn-warning {
+  color: #000000;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+  color: #000000;
+}
+
 /* Cards */
 .card {
   border-radius: 12px;
@@ -108,7 +117,7 @@ h6 {
 }
 
 .features-section .card-text {
-  color: #718096;
+  color: #4a5568;
   line-height: 1.7;
 }
 
@@ -592,7 +601,7 @@ textarea:focus {
 }
 
 .sessions-page .lead {
-  color: #718096;
+  color: #4a5568;
   font-size: 1.15rem;
 }
 
@@ -789,7 +798,7 @@ textarea:focus {
 }
 
 .contact-page .lead {
-  color: #718096;
+  color: #4a5568;
   font-size: 1.15rem;
 }
 
