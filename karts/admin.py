@@ -79,13 +79,7 @@ class KartAdmin(admin.ModelAdmin):
 
     def get_status_badge(self, obj):
         """Display status with color badge."""
-        if obj.status == "ACTIVE":
-            return format_html(
-                '<span style="background-color: #28a745; color: white; padding: 4px 12px; border-radius: 3px; font-weight: bold;">Active</span>'
-            )
-        return format_html(
-            '<span style="background-color: #ffc107; color: #000; padding: 4px 12px; border-radius: 3px; font-weight: bold;">Maintenance</span>'
-        )
+        return create_kart_status_badge(obj.status, obj.get_status_display())
 
     get_status_badge.short_description = "Status"
     get_status_badge.admin_order_field = "status"
