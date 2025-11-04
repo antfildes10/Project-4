@@ -4,6 +4,8 @@ KartControl is a comprehensive web-based booking platform designed specifically 
 
 **Live Application:** [https://project-4-karting-121d969fb7d5.herokuapp.com](https://project-4-karting-121d969fb7d5.herokuapp.com)
 
+**GitHub Projects Board:** [KartControl Development](https://github.com/antfildes10/Project-4/projects/1)
+
 ## Table of Contents
 
 - [Features](#features)
@@ -244,6 +246,15 @@ KartControl follows a traditional Django MVC (Model-View-Controller) architectur
 ## Design and Planning
 
 KartControl was carefully designed with user experience, data integrity, and scalability as primary concerns. The planning process involved creating entity relationship diagrams, user flow maps, and wireframes before any code was written.
+
+### Agile Methodology
+
+This project was developed using Agile methodology with iterative sprints and continuous testing:
+
+- **GitHub Projects Board**: [KartControl Development](https://github.com/antfildes10/Project-4/projects/1) - Active project board showing all user stories
+- **User Stories**: 12+ user stories documented with clear acceptance criteria
+- **Sprints**: 8 development sprints covering foundation, authentication, models, views, testing, and deployment
+- **Detailed Documentation**: See [docs/AGILE.md](docs/AGILE.md) for complete Agile methodology, sprint breakdown, and velocity tracking
 
 ### Data Models and Relationships
 
